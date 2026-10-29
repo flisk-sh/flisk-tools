@@ -29,7 +29,7 @@ Cloudflare only.
 ```bash
 curl -s https://flisk-runs.onrender.com/ready
 curl -s https://flisk-runs.onrender.com/robots.txt
-curl -s 'https://flisk-runs.onrender.com/api/contrast?fg=767676&bg=ffffff'
+curl -s 'https://flisk-runs.onrender.com/api/tools'
 curl -s -X POST https://flisk-runs.onrender.com/mcp -H 'content-type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
 ```
 
