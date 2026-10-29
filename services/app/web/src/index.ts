@@ -7,7 +7,7 @@
 //   CALLS_PER_MINUTE  API and MCP calls per client address per minute (120)
 //   GITHUB_CLIENT_ID  client id of a GitHub OAuth App with "Enable Device Flow" on. Public, not a secret; without it
 //                     the console cannot sign anyone in
-//   RUNNER_REPO       owner/name that Actors are forked from (default: the repo in site.ts)
+//   RUNNER_REPO       owner/name that Tools are forked from (default: the repo in site.ts)
 import { createApp } from "./app";
 import { parseProxyMode } from "./guard";
 import { SITE } from "./site";

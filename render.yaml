@@ -1,8 +1,8 @@
-# Render Blueprint on the free plan: render.com → New → Blueprint → flisk-sh/flisk-actors. No database and
+# Render Blueprint on the free plan: render.com → New → Blueprint → flisk-sh/flisk-runs. No database and
 # no API keys to fill in. See DEPLOY.md.
 services:
   - type: web
-    name: flisk-actors
+    name: flisk-runs
     runtime: docker
     dockerfilePath: ./Dockerfile
     plan: free
@@ -12,11 +12,11 @@ services:
     # Your own domain: uncomment and put it in PUBLIC_URL too (`bun run rename` does both). Without a payment method
     # on file, Render allows two custom domains per workspace.
     domains:
-      - flisk-actors.onrender.com
+      - flisk-runs.onrender.com
     envVars:
       # The address people use. Without a custom domain, your service's https://<name>.onrender.com/.
       - key: PUBLIC_URL
-        value: https://flisk-actors.onrender.com/
+        value: https://flisk-runs.onrender.com/
       - key: TRUST_PROXY
         value: last-forwarded
       # Public, not a secret: the client id of a GitHub OAuth App with "Enable Device Flow" on (see DEPLOY.md). Without

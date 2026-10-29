@@ -1,8 +1,9 @@
-// The pages, rendered on the server with no JavaScript except the console's: home, an Actor, the console, about with
+// The pages, rendered on the server with no JavaScript except the console's: home, a Tool, the console, about with
 // the FAQ, and not found. Each one passes its own PageMeta to head(), which writes every SEO tag.
-import { ACTORS, type Actor, CATEGORIES } from "./actors";
+
 import { esc, faqJsonLd, head, type PageMeta } from "./seo";
 import { SITE } from "./site";
+import { CATEGORIES, TOOLS, type Tool } from "./tools";
 
 const STYLE = `
 :root{--bg:${SITE.themeColor.light};--fg:#141413;--muted:#66635c;--line:#e3e0d7;--card:#fff;--sunk:#efede7;--pass:#18794e;--fail:#c22a1f;--accent:#2d4cc8;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
@@ -93,8 +94,8 @@ ${script ? `<script src="${root}/console.js" defer></script>` : ""}
 </body></html>`;
 }
 
-const card = (root: string, a: Actor) =>
-	`<li><span class="tag">${esc(a.category)}</span><h3><a href="${root}/actors/${a.id}">${esc(a.name)}</a></h3><p>${esc(a.tagline)}</p></li>`;
+const card = (root: string, a: Tool) =>
+	`<li><span class="tag">${esc(a.category)}</span><h3><a href="${root}/tools/${a.id}">${esc(a.name)}</a></h3><p>${esc(a.tagline)}</p></li>`;
 
 export function homePage(base: string): string {
 	const root = new URL(`${base}/`).pathname.replace(/\/$/, "");
@@ -110,24 +111,24 @@ export function homePage(base: string): string {
 <a class="cta" href="${root}/console">Open the console</a>
 <p class="reassure"><b>●</b> Free · Sign in with GitHub · Nothing stored here</p></div></section>
 <div class="wrap"><p class="kick">How it works</p><h2>Your GitHub is the server.</h2>
-<ol class="steps"><li>Sign in with GitHub. No password, no key.</li><li>The console forks this repository to your account.</li><li>It starts the Actor as a GitHub Action, on your free minutes.</li><li>The result lands in your fork as a JSON file.</li></ol>
-<p class="kick">The store</p><h2>${ACTORS.length} Actors, ${CATEGORIES.length} categories</h2>
-<ul class="grid">${ACTORS.map((a) => card(root, a)).join("")}</ul>
+<ol class="steps"><li>Sign in with GitHub. No password, no key.</li><li>The console forks this repository to your account.</li><li>It starts the Tool as a GitHub Action, on your free minutes.</li><li>The result lands in your fork as a JSON file.</li></ol>
+<p class="kick">The store</p><h2>${TOOLS.length} Tools, ${CATEGORIES.length} categories</h2>
+<ul class="grid">${TOOLS.map((a) => card(root, a)).join("")}</ul>
 <h2>Add your own</h2>
-<p>An Actor is one file, <code>actors/&lt;name&gt;/main.ts</code>, that exports a function. Open a pull request to the <a href="${SITE.repo}">repository</a> and it joins the store.</p></div>`,
+<p>A tool is one file, <code>tools/&lt;name&gt;/main.ts</code>, that exports a function. Open a pull request to the <a href="${SITE.repo}">repository</a> and it joins the store.</p></div>`,
 	);
 }
 
-export function actorPage(base: string, a: Actor): string {
+export function toolPage(base: string, a: Tool): string {
 	const root = new URL(`${base}/`).pathname.replace(/\/$/, "");
-	const qs = new URLSearchParams({ actor: a.id, ...a.example }).toString();
+	const qs = new URLSearchParams({ tool: a.id, ...a.example }).toString();
 	return layout(
 		base,
 		{
-			path: `actors/${a.id}`,
+			path: `tools/${a.id}`,
 			title: `${a.name}: ${a.tagline}`.slice(0, 60),
 			description: a.description.slice(0, 160),
-			crumbs: [{ name: a.name, path: `actors/${a.id}` }],
+			crumbs: [{ name: a.name, path: `tools/${a.id}` }],
 		},
 		`<section class="hero short stage"><div class="wrap"><h1 class="grad">${esc(a.name)}</h1>
 <p class="lede">${esc(a.tagline)}</p><a class="cta" href="${root}/console?${esc(qs)}">Run it with GitHub</a></div></section>
@@ -135,7 +136,7 @@ export function actorPage(base: string, a: Actor): string {
 <h2>Input</h2><ul>${a.inputs.map((i) => `<li><code>${esc(i.name)}</code>: ${esc(i.label)}${i.required ? "" : " (optional)"}, like <code>${esc(i.placeholder)}</code></li>`).join("")}</ul>
 <h2>Output</h2><pre>${esc(a.output)}</pre>
 <h2>Read the catalog from code</h2>
-<pre>curl '${esc(base)}/api/actors/${a.id}'</pre></div>`,
+<pre>curl '${esc(base)}/api/tools/${a.id}'</pre></div>`,
 	);
 }
 
@@ -156,7 +157,7 @@ export function consolePage(
 			path: "console",
 			title: "Console",
 			description:
-				`Pick an Actor, sign in with GitHub and run it in your own fork. ${SITE.tagline}.`.slice(
+				`Pick a Tool, sign in with GitHub and run it in your own fork. ${SITE.tagline}.`.slice(
 					0,
 					160,
 				),
@@ -164,10 +165,10 @@ export function consolePage(
 			crumbs: [{ name: "Console", path: "console" }],
 		},
 		`<div class="wrap prose"><h1>Console</h1>
-<p class="lede">Sign in with GitHub, pick an Actor and run it in your own fork. The token stays in this browser.</p>
+<p class="lede">Sign in with GitHub, pick a Tool and run it in your own fork. The token stays in this browser.</p>
 <noscript><p>The console needs JavaScript to talk to GitHub. Every other page works without it.</p></noscript>
 <div id="app" data-root="${esc(root)}" data-client="${esc(cfg.clientId)}" data-repo="${esc(cfg.repo)}" data-workflow="${esc(cfg.workflow)}" data-branch="${esc(cfg.branch)}" data-ref="${esc(cfg.ref)}">
-<form id="form"><label>Actor <select id="actor"></select></label><p id="about" class="reassure"></p><div id="fields"></div><button type="submit">Run</button></form>
+<form id="form"><label>Tool <select id="tool"></select></label><p id="about" class="reassure"></p><div id="fields"></div><button type="submit">Run</button></form>
 <div id="code" hidden><p>Open <a href="#" rel="noopener noreferrer">GitHub</a> and enter this code:</p><b></b></div>
 <div id="log" aria-live="polite"></div>
 <button type="button" id="signout" class="link">Sign out of this browser</button></div></div>`,
@@ -205,9 +206,9 @@ export function notFoundPage(base: string): string {
 		{
 			path: "404",
 			title: "Page not found",
-			description: `This address is not a page on ${SITE.name}. Browse the Actor store from the home page.`,
+			description: `This address is not a page on ${SITE.name}. Browse the Tool store from the home page.`,
 			noindex: true,
 		},
-		`<div class="wrap prose"><h1>Page not found</h1><p class="lede">There is no page at this address. <a href="${root}/">Browse the Actors</a>.</p></div>`,
+		`<div class="wrap prose"><h1>Page not found</h1><p class="lede">There is no page at this address. <a href="${root}/">Browse the Tools</a>.</p></div>`,
 	);
 }

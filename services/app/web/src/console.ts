@@ -1,13 +1,13 @@
 // The one script on the site, served at /console.js and allowed only on /console. It signs in with GitHub's device
 // flow (the server relays two form posts because github.com sends no CORS headers; the token itself never touches the
-// server), forks the repository, starts run-actor.yml in the fork and waits for results/<ticket>.json. Every call to
+// server), forks the repository, starts run-tool.yml in the fork and waits for results/<ticket>.json. Every call to
 // api.github.com is made by the browser with the person's own token, kept in localStorage.
 //
 // No backticks or template placeholders in here: it is a plain string until the browser runs it.
-export const CONSOLE_JS = String.raw`(() => {
+export const CONSOLE_JS = `(() => {
 const app = document.getElementById("app");
 const d = app.dataset;
-const KEY = "actors-token";
+const KEY = "tools-token";
 const out = document.getElementById("log");
 const say = (text) => { const p = document.createElement("p"); p.textContent = text; out.appendChild(p); };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -61,7 +61,7 @@ async function ensureFork(login) {
   throw new Error("The fork is not ready yet. Run again in a minute.");
 }
 
-async function run(actor, input) {
+async function run(tool, input) {
   out.textContent = "";
   if (!token() && !(await signIn())) return;
   let me = await gh("/user");
@@ -73,11 +73,11 @@ async function run(actor, input) {
   // A fresh fork starts with Actions off; turning it on is allowed with the workflow scope.
   await gh("/repos/" + repo + "/actions/permissions", { method: "PUT", body: JSON.stringify({ enabled: true }) });
   const ticket = Array.from(crypto.getRandomValues(new Uint8Array(8)), (b) => b.toString(16).padStart(2, "0")).join("");
-  say("Starting " + actor.id + " in " + repo + "…");
+  say("Starting " + tool.id + " in " + repo + "…");
   let started = false;
   for (let i = 0; i < 10 && !started; i++) {
     const r = await gh("/repos/" + repo + "/actions/workflows/" + d.workflow + "/dispatches", {
-      method: "POST", body: JSON.stringify({ ref: d.ref, inputs: { actor: actor.id, input: JSON.stringify(input), ticket } }),
+      method: "POST", body: JSON.stringify({ ref: d.ref, inputs: { tool: tool.id, input: JSON.stringify(input), ticket } }),
     });
     if (r.status === 204) started = true;
     else if (r.status === 404) await sleep(4000);
@@ -103,13 +103,13 @@ async function run(actor, input) {
 }
 
 async function main() {
-  const list = await (await fetch(d.root + "/api/actors")).json();
-  const sel = document.getElementById("actor");
-  for (const a of list.actors) { const o = document.createElement("option"); o.value = a.id; o.textContent = a.name; sel.appendChild(o); }
+  const list = await (await fetch(d.root + "/api/tools")).json();
+  const sel = document.getElementById("tool");
+  for (const a of list.tools) { const o = document.createElement("option"); o.value = a.id; o.textContent = a.name; sel.appendChild(o); }
   const fields = document.getElementById("fields");
   const draw = () => {
     fields.textContent = "";
-    const a = list.actors.find((x) => x.id === sel.value);
+    const a = list.tools.find((x) => x.id === sel.value);
     document.getElementById("about").textContent = a.tagline;
     for (const i of a.inputs) {
       const l = document.createElement("label");
@@ -121,13 +121,13 @@ async function main() {
       fields.appendChild(l);
     }
   };
-  const want = new URLSearchParams(location.search).get("actor");
-  if (want && list.actors.some((a) => a.id === want)) sel.value = want;
+  const want = new URLSearchParams(location.search).get("tool");
+  if (want && list.tools.some((a) => a.id === want)) sel.value = want;
   sel.addEventListener("change", draw);
   draw();
   document.getElementById("form").addEventListener("submit", async (ev) => {
     ev.preventDefault();
-    const a = list.actors.find((x) => x.id === sel.value);
+    const a = list.tools.find((x) => x.id === sel.value);
     const input = {};
     for (const e of fields.querySelectorAll("input")) input[e.name] = e.value.trim();
     const btn = ev.target.querySelector("button");

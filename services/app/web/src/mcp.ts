@@ -1,11 +1,12 @@
 // A read-only MCP server over Streamable HTTP. Stateless and answered with plain JSON (no event stream), which the
-// transport allows, so there is no session to keep. Add tools to TOOLS; each one gets its arguments and returns text.
-import { ACTORS, describeActor, findActor } from "./actors";
+// transport allows, so there is no session to keep. Add tools to MCP_TOOLS; each one gets its arguments and returns text.
+
 import { SITE } from "./site";
+import { describeTool, findTool, TOOLS } from "./tools";
 
 const PROTOCOL_VERSIONS = ["2025-06-18", "2025-03-26", "2024-11-05"];
 
-interface Tool {
+interface McpTool {
 	definition: {
 		name: string;
 		title: string;
@@ -17,40 +18,40 @@ interface Tool {
 	run(args: Record<string, unknown>): Promise<string | { error: string }>;
 }
 
-const TOOLS: Tool[] = [
+const MCP_TOOLS: McpTool[] = [
 	{
 		definition: {
-			name: "list_actors",
-			title: "List Actors",
+			name: "list_tools",
+			title: "List Tools",
 			description:
-				"Every Actor in the store: its id, what it does and what input it takes. Actors run in the person's own GitHub Actions through the console, so this server only reads the catalog.",
+				"Every Tool in the store: its id, what it does and what input it takes. Tools run in the person's own GitHub Actions through the console, so this server only reads the catalog.",
 			inputSchema: { type: "object", properties: {} },
 			annotations: { readOnlyHint: true, openWorldHint: false },
 		},
 		async run() {
-			return ACTORS.map(describeActor).join("\n\n");
+			return TOOLS.map(describeTool).join("\n\n");
 		},
 	},
 	{
 		definition: {
-			name: "get_actor",
-			title: "Get one Actor",
+			name: "get_tool",
+			title: "Get one Tool",
 			description:
-				"One Actor with its input fields, its output shape and an example input.",
+				"One Tool with its input fields, its output shape and an example input.",
 			inputSchema: {
 				type: "object",
 				properties: {
-					id: { type: "string", description: "The Actor id, like repo-stats" },
+					id: { type: "string", description: "The Tool id, like repo-stats" },
 				},
 				required: ["id"],
 			},
 			annotations: { readOnlyHint: true, openWorldHint: false },
 		},
 		async run(args) {
-			const a = findActor(String(args.id ?? ""));
+			const a = findTool(String(args.id ?? ""));
 			return a
-				? `${describeActor(a)}\nExample input: ${JSON.stringify(a.example)}`
-				: { error: `No Actor with id ${String(args.id)}. Use list_actors.` };
+				? `${describeTool(a)}\nExample input: ${JSON.stringify(a.example)}`
+				: { error: `No Tool with id ${String(args.id)}. Use list_tools.` };
 		},
 	},
 ];
@@ -106,9 +107,9 @@ async function handleOne(message: JsonRpcRequest): Promise<unknown> {
 		case "ping":
 			return ok({});
 		case "tools/list":
-			return ok({ tools: TOOLS.map((t) => t.definition) });
+			return ok({ tools: MCP_TOOLS.map((t) => t.definition) });
 		case "tools/call": {
-			const tool = TOOLS.find((t) => t.definition.name === params.name);
+			const tool = MCP_TOOLS.find((t) => t.definition.name === params.name);
 			if (!tool)
 				return {
 					jsonrpc: "2.0",

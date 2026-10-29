@@ -5,7 +5,7 @@ export function headers(): Record<string, string> {
 	const token = process.env.GITHUB_TOKEN;
 	return {
 		accept: "application/vnd.github+json",
-		"user-agent": "flisk-actors",
+		"user-agent": "flisk-runs",
 		...(token ? { authorization: `Bearer ${token}` } : {}),
 	};
 }

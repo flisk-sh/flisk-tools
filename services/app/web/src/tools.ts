@@ -1,35 +1,35 @@
-// The Actor catalog. An Actor is a script in actors/<id>/main.ts at the repository root; the one workflow
-// .github/workflows/run-actor.yml runs it in the signed-in person's own fork, on their own free Actions minutes,
-// and publishes the result to that fork's `results` branch. This site holds no data and runs no Actor itself.
+// The Tool catalog. A tool is a script in tools/<id>/main.ts at the repository root; the one workflow
+// .github/workflows/run-tool.yml runs it in the signed-in person's own fork, on their own free Actions minutes,
+// and publishes the result to that fork's `results` branch. This site holds no data and runs no Tool itself.
 
-export interface ActorInput {
+export interface ToolInput {
 	name: string;
 	label: string;
 	placeholder: string;
 	required: boolean;
 }
 
-export interface Actor {
+export interface Tool {
 	id: string;
 	name: string;
 	tagline: string;
 	description: string;
 	category: string;
-	inputs: ActorInput[];
-	/** What the result JSON holds, for the Actor page and the API. */
+	inputs: ToolInput[];
+	/** What the result JSON holds, for the Tool page and the API. */
 	output: string;
-	/** Example input, shown on the Actor page and used by the "Try it" link. */
+	/** Example input, shown on the Tool page and used by the "Try it" link. */
 	example: Record<string, string>;
 }
 
-/** Where Actors run: this repository's workflow, copied into each person's fork. */
+/** Where Tools run: this repository's workflow, copied into each person's fork. */
 export const RUNNER = {
-	workflow: "run-actor.yml",
+	workflow: "run-tool.yml",
 	branch: "results",
 	ref: "main",
 } as const;
 
-export const ACTORS: Actor[] = [
+export const TOOLS: Tool[] = [
 	{
 		id: "repo-stats",
 		name: "Repo Stats",
@@ -90,12 +90,12 @@ export const ACTORS: Actor[] = [
 	},
 ];
 
-export const CATEGORIES = [...new Set(ACTORS.map((a) => a.category))];
+export const CATEGORIES = [...new Set(TOOLS.map((a) => a.category))];
 
-export const findActor = (id: string) => ACTORS.find((a) => a.id === id);
+export const findTool = (id: string) => TOOLS.find((a) => a.id === id);
 
 /** The same text for the MCP tool and llms.txt. */
-export function describeActor(a: Actor): string {
+export function describeTool(a: Tool): string {
 	return `${a.name} (${a.id}): ${a.tagline}. ${a.description} Input: ${a.inputs
 		.map((i) => `${i.name}${i.required ? "" : "?"}`)
 		.join(", ")}. Output: ${a.output}`;

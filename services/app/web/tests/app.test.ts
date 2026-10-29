@@ -1,8 +1,8 @@
 import { describe, expect, it } from "bun:test";
 import { existsSync } from "node:fs";
-import { ACTORS, findActor } from "../src/actors";
 import { createApp } from "../src/app";
 import { RateLimiter, TtlCache } from "../src/guard";
+import { findTool, TOOLS } from "../src/tools";
 
 const app = createApp({
 	publicUrl: "https://tool.test/",
@@ -16,38 +16,36 @@ const rpc = (a: ReturnType<typeof createApp>, body: unknown) =>
 	});
 
 describe("catalog", () => {
-	it("has an actors/<id>/main.ts for every Actor, and ids that are safe in a path", () => {
-		for (const a of ACTORS) {
+	it("has a tools/<id>/main.ts for every Tool, and ids that are safe in a path", () => {
+		for (const a of TOOLS) {
 			expect(a.id).toMatch(/^[a-z0-9-]+$/);
 			expect(
-				existsSync(`${import.meta.dir}/../../../../actors/${a.id}/main.ts`),
+				existsSync(`${import.meta.dir}/../../../../tools/${a.id}/main.ts`),
 			).toBe(true);
 			expect(a.inputs.length).toBeGreaterThan(0);
 			for (const i of a.inputs)
 				expect(Object.keys(a.example)).toContain(i.name);
 		}
-		expect(new Set(ACTORS.map((a) => a.id)).size).toBe(ACTORS.length);
+		expect(new Set(TOOLS.map((a) => a.id)).size).toBe(TOOLS.length);
 	});
 });
 
 describe("pages", () => {
-	it("lists every Actor on the home page under a policy that allows no scripts", async () => {
+	it("lists every Tool on the home page under a policy that allows no scripts", async () => {
 		const res = await app.request("/");
 		expect(res.status).toBe(200);
 		const csp = res.headers.get("content-security-policy");
 		expect(csp).toContain("default-src 'none'");
 		expect(csp).not.toContain("script-src");
 		const html = await res.text();
-		for (const a of ACTORS) expect(html).toContain(`/actors/${a.id}`);
+		for (const a of TOOLS) expect(html).toContain(`/tools/${a.id}`);
 		expect(html).not.toContain("<script src");
 	});
 
-	it("gives each Actor a page, and 404s an unknown one", async () => {
-		const html = await (await app.request("/actors/repo-stats")).text();
-		expect(html).toContain(
-			"console?actor=repo-stats&amp;repo=flisk-sh%2Fflisk",
-		);
-		expect((await app.request("/actors/nope")).status).toBe(404);
+	it("gives each Tool a page, and 404s an unknown one", async () => {
+		const html = await (await app.request("/tools/repo-stats")).text();
+		expect(html).toContain("console?tool=repo-stats&amp;repo=flisk-sh%2Fflisk");
+		expect((await app.request("/tools/nope")).status).toBe(404);
 	});
 
 	it("allows the console's script, and only that page", async () => {
@@ -82,24 +80,24 @@ describe("pages", () => {
 });
 
 describe("catalog API", () => {
-	it("lists and gets Actors", async () => {
-		const list = (await (await app.request("/api/actors")).json()) as {
-			actors: { id: string }[];
+	it("lists and gets Tools", async () => {
+		const list = (await (await app.request("/api/tools")).json()) as {
+			tools: { id: string }[];
 		};
-		expect(list.actors.map((a) => a.id)).toEqual(ACTORS.map((a) => a.id));
+		expect(list.tools.map((a) => a.id)).toEqual(TOOLS.map((a) => a.id));
 		const one = (await (
-			await app.request("/api/actors/stack-scanner")
+			await app.request("/api/tools/stack-scanner")
 		).json()) as {
 			name: string;
 		};
-		expect(one.name).toBe(findActor("stack-scanner")?.name as string);
-		expect((await app.request("/api/actors/nope")).status).toBe(404);
+		expect(one.name).toBe(findTool("stack-scanner")?.name as string);
+		expect((await app.request("/api/tools/nope")).status).toBe(404);
 	});
 
 	it("limits calls per client", async () => {
 		const tight = createApp({ callsPerMinute: 1 });
-		expect((await tight.request("/api/actors")).status).toBe(200);
-		const res = await tight.request("/api/actors");
+		expect((await tight.request("/api/tools")).status).toBe(200);
+		const res = await tight.request("/api/tools");
 		expect(res.status).toBe(429);
 		expect(res.headers.get("retry-after")).toBeTruthy();
 	});
@@ -151,7 +149,7 @@ describe("sign-in relay", () => {
 });
 
 describe("MCP", () => {
-	it("initializes, lists the tools and reads an Actor", async () => {
+	it("initializes, lists the tools and reads a Tool", async () => {
 		const init = (await (
 			await rpc(app, {
 				jsonrpc: "2.0",
@@ -169,15 +167,15 @@ describe("MCP", () => {
 			await rpc(app, { jsonrpc: "2.0", id: 2, method: "tools/list" })
 		).json()) as { result: { tools: { name: string }[] } };
 		expect(list.result.tools.map((t) => t.name)).toEqual([
-			"list_actors",
-			"get_actor",
+			"list_tools",
+			"get_tool",
 		]);
 		const call = (await (
 			await rpc(app, {
 				jsonrpc: "2.0",
 				id: 3,
 				method: "tools/call",
-				params: { name: "get_actor", arguments: { id: "repo-stats" } },
+				params: { name: "get_tool", arguments: { id: "repo-stats" } },
 			})
 		).json()) as { result: { content: { text: string }[]; isError: boolean } };
 		expect(call.result.isError).toBe(false);
@@ -187,7 +185,7 @@ describe("MCP", () => {
 				jsonrpc: "2.0",
 				id: 4,
 				method: "tools/call",
-				params: { name: "get_actor", arguments: { id: "nope" } },
+				params: { name: "get_tool", arguments: { id: "nope" } },
 			})
 		).json()) as { result: { isError: boolean } };
 		expect(missing.result.isError).toBe(true);

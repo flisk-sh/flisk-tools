@@ -1,7 +1,6 @@
-// Routes. The store is /actors/<id>; /console is the one page with a script, and /auth/* relays GitHub's device flow
+// Routes. The store is /tools/<id>; /console is the one page with a script, and /auth/* relays GitHub's device flow
 // for it. Everything else is the site around it: SEO files, icons, the catalog API and MCP.
 import { Hono } from "hono";
-import { ACTORS, findActor, RUNNER } from "./actors";
 import { ASSETS } from "./assets.generated";
 import { CONSOLE_JS } from "./console";
 import {
@@ -13,10 +12,10 @@ import {
 import { handleMcp } from "./mcp";
 import {
 	aboutPage,
-	actorPage,
 	consolePage,
 	homePage,
 	notFoundPage,
+	toolPage,
 } from "./pages";
 import {
 	ICONS,
@@ -27,6 +26,7 @@ import {
 	webManifest,
 } from "./seo";
 import { SITE } from "./site";
+import { findTool, RUNNER, TOOLS } from "./tools";
 
 export interface AppOptions {
 	/** The address people use, ending in a slash. Without it, each request's own address (see baseOf). */
@@ -38,7 +38,7 @@ export interface AppOptions {
 	builtAt?: Date;
 	/** The client id of a GitHub OAuth App with the device flow on. Public by design, not a secret; empty turns sign-in off. */
 	clientId?: string;
-	/** owner/name of the repository Actors run from; each person's fork of it is where they run. */
+	/** owner/name of the repository Tools run from; each person's fork of it is where they run. */
 	runnerRepo?: string;
 	/** Tests replace the network. */
 	fetcher?: typeof fetch;
@@ -109,10 +109,10 @@ export function createApp(options: AppOptions = {}) {
 	// Pages
 	app.get("/", (c) => c.html(homePage(baseOf(c))));
 	app.get("/about", (c) => c.html(aboutPage(baseOf(c))));
-	app.get("/actors/:id", (c) => {
-		const actor = findActor(c.req.param("id"));
-		if (!actor) return c.html(notFoundPage(baseOf(c)), 404);
-		return c.html(actorPage(baseOf(c), actor));
+	app.get("/tools/:id", (c) => {
+		const tool = findTool(c.req.param("id"));
+		if (!tool) return c.html(notFoundPage(baseOf(c)), 404);
+		return c.html(toolPage(baseOf(c), tool));
 	});
 	app.get("/console", (c) =>
 		c.html(consolePage(baseOf(c), { clientId, repo: runnerRepo, ...RUNNER })),
@@ -127,7 +127,7 @@ export function createApp(options: AppOptions = {}) {
 	// For search engines and AI assistants
 	app.get("/robots.txt", (c) => c.text(robotsTxt(baseOf(c))));
 	app.get("/sitemap.xml", (c) => {
-		const paths = ["", "about", ...ACTORS.map((a) => `actors/${a.id}`)];
+		const paths = ["", "about", ...TOOLS.map((a) => `tools/${a.id}`)];
 		return c.body(sitemapXml(baseOf(c), paths, lastmod), 200, {
 			"content-type": "application/xml; charset=utf-8",
 		});
@@ -136,19 +136,19 @@ export function createApp(options: AppOptions = {}) {
 		c.text(
 			llmsTxt(baseOf(c), [
 				{
-					name: "Actor store",
+					name: "Tool store",
 					path: "",
-					note: `${ACTORS.length} Actors that run in your own GitHub Actions`,
+					note: `${TOOLS.length} Tools that run in your own GitHub Actions`,
 				},
 				{
 					name: "Catalog API",
-					path: "api/actors",
-					note: "every Actor with its inputs, as JSON",
+					path: "api/tools",
+					note: "every Tool with its inputs, as JSON",
 				},
 				{
 					name: "MCP server",
 					path: "mcp",
-					note: "Streamable HTTP, tools list_actors and get_actor",
+					note: "Streamable HTTP, tools list_tools and get_tool",
 				},
 				{
 					name: "About and FAQ",
@@ -185,12 +185,12 @@ export function createApp(options: AppOptions = {}) {
 				})
 			: undefined;
 	};
-	app.get("/api/actors", (c) => tooMany(c) ?? c.json({ actors: ACTORS }));
-	app.get("/api/actors/:id", (c) => {
+	app.get("/api/tools", (c) => tooMany(c) ?? c.json({ tools: TOOLS }));
+	app.get("/api/tools/:id", (c) => {
 		const blocked = tooMany(c);
 		if (blocked) return blocked;
-		const actor = findActor(c.req.param("id"));
-		return actor ? c.json(actor) : c.json({ error: "No such Actor." }, 404);
+		const tool = findTool(c.req.param("id"));
+		return tool ? c.json(tool) : c.json({ error: "No such Tool." }, 404);
 	});
 
 	// Sign-in with GitHub's device flow. github.com sends no CORS headers, so the browser asks us to relay two form

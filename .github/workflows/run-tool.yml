@@ -1,17 +1,17 @@
-name: Run Actor
+name: Run Tool
 # Dispatched by the console with the signed-in person's own token, so it runs in their fork on their free Actions
 # minutes. The run name carries the ticket, which is how the console finds this run; the result goes to the `results`
 # branch of the same repository as <ticket>.json.
-run-name: ${{ inputs.actor }} ${{ inputs.ticket }}
+run-name: ${{ inputs.tool }} ${{ inputs.ticket }}
 
 on:
   workflow_dispatch:
     inputs:
-      actor:
-        description: Folder name under actors/
+      tool:
+        description: Folder name under tools/
         required: true
       input:
-        description: The Actor's input as JSON
+        description: The Tool's input as JSON
         required: false
         default: "{}"
       ticket:
@@ -28,10 +28,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
-      - name: Run the Actor
-        run: bun actors/run.ts
+      - name: Run the Tool
+        run: bun tools/run.ts
         env:
-          ACTOR: ${{ inputs.actor }}
+          TOOL: ${{ inputs.tool }}
           INPUT: ${{ inputs.input }}
           TICKET: ${{ inputs.ticket }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

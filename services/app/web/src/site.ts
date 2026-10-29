@@ -3,15 +3,15 @@
 // site.webmanifest and security.txt are all built from it.
 
 export const SITE = {
-	name: "Actors",
+	name: "Flisk Runs",
 	/** Under 60 characters: the <title> of the home page and the Product Hunt tagline. */
 	tagline: "Run small web tools on your own GitHub, free",
 	/** 140 to 160 characters: the meta description and the link preview text. */
 	description:
 		"A free store of small web and GitHub tools that run in your own GitHub Actions. Sign in with GitHub, click Run, get JSON. No server, no database, no keys.",
 	/** Where the site lives online, ending in a slash. PUBLIC_URL overrides it at run time. */
-	url: "https://flisk-actors.onrender.com/",
-	repo: "https://github.com/flisk-sh/flisk-actors",
+	url: "https://flisk-runs.onrender.com/",
+	repo: "https://github.com/flisk-sh/flisk-runs",
 	lang: "en",
 	locale: "en_US",
 	/** The organization or person behind it, for JSON-LD and the footer. */
@@ -22,12 +22,12 @@ export const SITE = {
 	themeColor: { light: "#fbfaf7", dark: "#141413" },
 	/** Where to report a security problem, for /.well-known/security.txt. */
 	securityContact:
-		"https://github.com/flisk-sh/flisk-actors/security/advisories/new",
+		"https://github.com/flisk-sh/flisk-runs/security/advisories/new",
 	/** Shown on /about and sent as FAQPage JSON-LD. Write the questions people type into search and AI assistants. */
 	faq: [
 		{
 			q: "Is this an Apify alternative?",
-			a: "It covers the small end of it: run a script, get structured output. Actors run on GitHub Actions in your own fork instead of on a platform you pay for, so there are no proxies, no browser farms and no schedules faster than every 5 minutes.",
+			a: "It covers the small end of it: run a script, get structured output. Tools run on GitHub Actions in your own fork instead of on a platform you pay for, so there are no proxies, no browser farms and no schedules faster than every 5 minutes.",
 		},
 		{
 			q: "Who pays for the compute?",
@@ -43,7 +43,7 @@ export const SITE = {
 		},
 		{
 			q: "Is there an API or an MCP server?",
-			a: "Yes: /api/actors lists the catalog as JSON, and /mcp is an MCP server with list_actors and get_actor, for Claude, ChatGPT, Cursor or Codex. Neither needs a key. Running an Actor needs your GitHub sign-in, so it happens in the console.",
+			a: "Yes: /api/tools lists the catalog as JSON, and /mcp is an MCP server with list_tools and get_tool, for Claude, ChatGPT, Cursor or Codex. Neither needs a key. Running a Tool needs your GitHub sign-in, so it happens in the console.",
 		},
 	],
 } as const;
