@@ -358,12 +358,12 @@ export function listingPage(base: string, e: Entry): string {
 		},
 		`<section class="detail" style="${color(e.group === "Agent skills" ? e.category : e.group)}"><span class="sym" aria-hidden="true">${esc(symbol(e))}</span><div><p class="eyebrow">${esc(kindLabel(e.kind))} · ${esc(e.category)}</p><h1>${esc(e.name)}</h1><p class="lede">${esc(e.tagline)}</p><p class="note">${esc(whatIs(e))}</p><p><a class="cta" href="${esc(e.url)}" rel="noopener">Open ${esc(e.name)}</a>${e.repo ? ` <a class="cta alt" href="https://github.com/${esc(e.repo)}" rel="noopener">GitHub</a>` : ""}</p></div></section>
 <p style="max-width:46rem">${esc(e.description)}</p>
+${e.kind === "skill" ? skillInstall(e) : ""}
 ${e.mcp ? mcpPanel(e) : ""}
 <dl class="facts"><dt>Type</dt><dd>${esc(kindLabel(e.kind))}</dd><dt>Group</dt><dd><a href="${esc(homeHref(root, { group: e.group }))}">${esc(e.group)}</a></dd><dt>Category</dt><dd><a href="${esc(homeHref(root, { category: e.category }))}">${esc(e.category)}</a></dd>${e.author ? `<dt>By</dt><dd><a href="https://github.com/${esc(e.author)}" rel="noopener">@${esc(e.author)}</a>${e.official ? " (Flisk)" : ""}</dd>` : ""}${e.stars ? `<dt>${e.kind === "skill" ? "GitHub stars (whole repo)" : "GitHub stars"}</dt><dd>${e.stars.toLocaleString("en-US")}</dd>` : ""}${e.license ? `<dt>License</dt><dd>${esc(e.license)}</dd>` : ""}</dl>
 ${glance(e)}
 ${similar.length >= 1 && e.ring ? `<p><a class="cta alt" href="${root}/ask?q=${encodeURIComponent([e.name, ...similar.map((s) => s.name)].join(" vs "))}">Compare with ${similar.map((s) => esc(s.name)).join(" and ")}</a></p>` : ""}
 ${related.length ? `<h2>More in ${esc(e.group)}</h2><ul class="grid">${related.map((x) => card(root, x)).join("")}</ul>` : ""}
-${e.kind === "skill" ? skillInstall(e) : ""}
 <h2>Read it from code</h2><pre>curl '${esc(base)}/api/tools/${e.id}'</pre>`,
 		"browse",
 	);

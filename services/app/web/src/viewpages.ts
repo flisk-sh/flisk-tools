@@ -202,15 +202,43 @@ export function journeysPage(
 	const track = TRACKS.find((t) => t.id === trackId) ?? TRACKS[0];
 	const typed = typedTools(know);
 	const knownIds = new Set(typed.flatMap((x) => (x.hit ? [x.hit.id] : [])));
-	const knownOf = (ids: string[]) =>
-		ids.filter((id) => knownIds.has(id)).length;
+	// Only an exact match counts as known. A tool of the same kind (npm for pnpm) is shown as a hint, once per tool you typed.
+	const matched = (ids: string[]) =>
+		ids.filter((id) => knownIds.has(id)).map((id) => toolById(id)?.name ?? id);
+	const knownOf = (ids: string[]) => matched(ids).length;
+	const similar = (ids: string[]) => {
+		const used = new Set<string>();
+		const out: string[] = [];
+		for (const id of ids) {
+			const t = toolById(id);
+			if (!t || knownIds.has(id)) continue;
+			const like = typed.find(
+				(x) =>
+					x.hit &&
+					!used.has(x.hit.id) &&
+					x.hit.id !== id &&
+					x.hit.category === t.category,
+			)?.hit;
+			if (like) {
+				used.add(like.id);
+				out.push(`${like.name} is the same kind as ${t.name}`);
+			}
+		}
+		return out;
+	};
+	const skim = knownIds.size
+		? LEVELS.filter((l) => {
+				const main = track.stops[l.id]?.main ?? [];
+				return main.length > 0 && knownOf(main) >= Math.ceil(main.length / 2);
+			}).map((l) => l.n)
+		: [];
 	const startAt = knownIds.size
 		? LEVELS.find((l) => {
 				const main = track.stops[l.id]?.main ?? [];
 				return main.length > 0 && knownOf(main) < Math.ceil(main.length / 2);
 			})
 		: undefined;
-	const knowForm = `<form class="search" role="search" action="${root}/journeys" method="get"><input type="hidden" name="track" value="${esc(track.id)}"><input type="search" name="know" value="${esc(know ?? "")}" placeholder="Tools you know: npm, vite, docker" aria-label="Tools you know"><button type="submit">Where do I start?</button></form>${knownIds.size ? `<p class="verdict-line">${startAt ? `Start at station ${startAt.n}: <b>${esc(startAt.name)}</b>. ${startAt.n > 1 ? `You already know the main tools of ${startAt.n === 2 ? "station 1" : `stations 1 to ${startAt.n - 1}`}.` : "Nothing on this route is behind you yet."}` : "You already know most of the main tools on this route. Look at the last stations for what is next."}</p>` : typed.length ? `<p class="note">No tools recognised in “${esc(know ?? "")}”.</p>` : ""}`;
+	const knowForm = `<form class="search" role="search" action="${root}/journeys" method="get"><input type="hidden" name="track" value="${esc(track.id)}"><input type="search" name="know" value="${esc(know ?? "")}" placeholder="Tools you know: npm, vite, docker" aria-label="Tools you know"><button type="submit">Where do I start?</button></form>${knownIds.size ? `<p class="verdict-line">${startAt ? `Start at station ${startAt.n}: <b>${esc(startAt.name)}</b>.${skim.length ? ` You can skim ${skim.length === 1 ? "station" : "stations"} ${skim.join(", ")}, where you already know most of the main tools.` : ""}` : "You already know most of the main tools on this route. Look at the last stations for what is next."}</p>` : typed.length ? `<p class="note">No tools recognised in “${esc(know ?? "")}”.</p>` : ""}`;
 	const chip = (id: string, main: boolean) => {
 		const t = toolById(id);
 		return t
@@ -236,7 +264,7 @@ ${knowForm}
 <p class="note">Showing the ${esc(track.name)} route. Each station lists tools to learn first (bold) and tools worth knowing.</p>
 <ol class="metro">${LEVELS.map((l) => {
 			const stop = track.stops[l.id];
-			return `<li id="${l.id}"><span class="station" aria-hidden="true">${l.n}</span><div class="stop"><h3>${esc(l.name)}</h3><p>${esc(l.goal)}</p>${stop?.tip ? `<p class="tip">${esc(stop.tip)}</p>` : ""}${knownIds.size && stop?.main?.length ? `<p class="note">You know ${knownOf(stop.main)} of ${stop.main.length} tools to learn first here.</p>` : ""}<p class="chiplist"><span class="flabel">Learn first</span>${(stop?.main ?? []).map((id) => chip(id, true)).join("")}</p><p class="chiplist"><span class="flabel">Also worth knowing</span>${(stop?.side ?? []).map((id) => chip(id, false)).join("")}</p><p class="note">You learn: ${l.skills.map(esc).join(" · ")}</p>${l.flisk && l.flisk.status !== "soon" ? `<p class="note">Flisk: ${esc(l.flisk.text)}</p>` : ""}</div></li>`;
+			return `<li id="${l.id}"><span class="station" aria-hidden="true">${l.n}</span><div class="stop"><h3>${esc(l.name)}</h3><p>${esc(l.goal)}</p>${stop?.tip ? `<p class="tip">${esc(stop.tip)}</p>` : ""}${knownIds.size && stop?.main?.length ? `<p class="note">You know ${knownOf(stop.main)} of ${stop.main.length} tools to learn first here${knownOf(stop.main) ? `: ${matched(stop.main).map(esc).join(", ")}` : ""}.${similar(stop.main).length ? ` ${similar(stop.main).map(esc).join("; ")}.` : ""}</p>` : ""}<p class="chiplist"><span class="flabel">Learn first</span>${(stop?.main ?? []).map((id) => chip(id, true)).join("")}</p><p class="chiplist"><span class="flabel">Also worth knowing</span>${(stop?.side ?? []).map((id) => chip(id, false)).join("")}</p><p class="note">You learn: ${l.skills.map(esc).join(" · ")}</p>${l.flisk && l.flisk.status !== "soon" ? `<p class="note">Flisk: ${esc(l.flisk.text)}</p>` : ""}</div></li>`;
 		}).join("")}</ol>
 <details class="legend-rings"><summary>Where Flisk helps on this line, and where not yet</summary><ul class="verdict">${LEVELS.filter(
 			(l) => l.flisk,

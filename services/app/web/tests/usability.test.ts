@@ -380,3 +380,35 @@ describe("loop 10 fixes", () => {
 		expect(await html("/")).not.toContain("Choosing?");
 	});
 });
+
+describe("loop 10 findings", () => {
+	it("shows a skill's install command near the top of its page, where it cannot be missed", async () => {
+		const page = await html("/listing/wshobson-javascript-testing-patterns");
+		const text = page
+			.replace(/<style[\s\S]*?<\/style>/g, "")
+			.replace(/<[^>]+>/g, " ");
+		expect(text.indexOf("Install it")).toBeGreaterThan(-1);
+		expect(text.indexOf("Install it")).toBeLessThan(text.indexOf("More in"));
+		expect(page).toContain(
+			"curl -fsSL https://raw.githubusercontent.com/wshobson/agents/HEAD/plugins/javascript-typescript/skills/javascript-testing-patterns/SKILL.md",
+		);
+	});
+
+	it("every skill in the catalog has a safe install command", async () => {
+		const { ENTRIES } = await import("../src/catalog");
+		for (const e of ENTRIES.filter((x) => x.kind === "skill")) {
+			expect(e.url, e.id).toMatch(/\/blob\/[^/]+\/[\w./-]+\/SKILL\.md$/);
+			expect(e.repo, e.id).toMatch(/^[\w.-]+\/[\w.-]+$/);
+		}
+	});
+
+	it("counts only exact matches toward skipping a station, and shows same-kind tools as a hint", async () => {
+		const page = await html("/journeys?track=platform&know=npm,+vite,+docker");
+		expect(page).toContain("Start at station 1");
+		expect(page).toContain("npm is the same kind as pnpm");
+		expect(page).toContain(
+			"You know 1 of 3 tools to learn first here: Docker Desktop.",
+		);
+		expect(page).not.toContain("npm, like");
+	});
+});

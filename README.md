@@ -51,6 +51,11 @@ bun run catalog                                   # rebuild src/catalog.generate
 bun scripts/import-roadmap.ts ../path/to/roadmap  # refresh catalog/roadmap.json from a flisk-sh/roadmap checkout
 ```
 
+## Testing usefulness
+
+`bun scripts/usability/tasks.ts` checks that visitors find what they look for. `/rate` collects real UMUX-Lite answers as
+GitHub issues and `bun scripts/umux.ts` scores them. Method and results: [docs/usability.md](docs/usability.md).
+
 ## Limits, said plainly
 
 - It lists and links; it does not run anything for you. Apify runs your code on its servers, which is the part that
