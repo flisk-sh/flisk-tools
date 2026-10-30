@@ -19,7 +19,7 @@ export const SITE = {
 	/** An X handle with the @, or empty. */
 	twitter: "",
 	/** Matches the background of the page in each color scheme. */
-	themeColor: { light: "#fbfaf7", dark: "#141413" },
+	themeColor: { light: "#f6f6f4", dark: "#08080c" },
 	/** Where to report a security problem, for /.well-known/security.txt. */
 	securityContact:
 		"https://github.com/flisk-sh/flisk-tools/security/advisories/new",

@@ -51,6 +51,14 @@ if (slot) {
     slot.append(a);
   }
 }
+try { const t = localStorage.getItem("theme"); if (t) document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+const tb = document.getElementById("theme-toggle");
+if (tb) tb.addEventListener("click", () => {
+  const dark = document.documentElement.getAttribute("data-theme") === "dark" || (!document.documentElement.getAttribute("data-theme") && !matchMedia("(prefers-color-scheme: light)").matches);
+  const next = dark ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  try { localStorage.setItem("theme", next); } catch (e) {}
+});
 document.dispatchEvent(new CustomEvent("tools-login", { detail: login }));
 })();
 `;

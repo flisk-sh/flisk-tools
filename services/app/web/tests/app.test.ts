@@ -122,7 +122,7 @@ describe("sign-in and publish scripts", () => {
 		expect(SIGNIN_JS).toContain("https://publish.flisk.si");
 		expect(SIGNIN_JS).toContain("sessionStorage");
 		expect(SIGNIN_JS).toContain("payload.exp > Date.now() / 1000");
-		expect(SIGNIN_JS).not.toContain("localStorage");
+		expect(SIGNIN_JS).not.toContain("localStorage.setItem(KEY");
 	});
 
 	it("both parse as JavaScript", () => {

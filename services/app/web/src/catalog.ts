@@ -119,3 +119,18 @@ export function problem(e: Partial<Entry>): string | undefined {
 		return "repo must look like owner/name";
 	return undefined;
 }
+
+/** The two-letter symbol on a tile, like an element: "claude-api" is Ca, "LangGraph" is La. */
+export function symbol(e: Pick<Entry, "name">): string {
+	const words = e.name.split(/[^A-Za-z0-9]+/).filter(Boolean);
+	const [a = "?", b = ""] = words;
+	const second = words.length > 1 ? b[0] : a[1];
+	return a[0].toUpperCase() + (second ?? "").toLowerCase();
+}
+
+/** A stable color for a group or category, as a hue. */
+export function hue(name: string): number {
+	let h = 7;
+	for (const ch of name) h = (h * 31 + ch.charCodeAt(0)) % 360;
+	return h;
+}

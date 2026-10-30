@@ -114,7 +114,8 @@ export function securityHeaders(): Record<string, string> {
 		"content-security-policy": [
 			"default-src 'none'",
 			"script-src 'self'",
-			"style-src 'unsafe-inline'",
+			"style-src 'unsafe-inline' https://api.fontshare.com https://fonts.googleapis.com",
+			"font-src https://cdn.fontshare.com https://fonts.gstatic.com",
 			"img-src 'self'",
 			"media-src 'self'",
 			"base-uri 'none'",

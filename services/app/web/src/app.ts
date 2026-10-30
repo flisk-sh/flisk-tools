@@ -14,6 +14,7 @@ import { handleMcp } from "./mcp";
 import {
 	aboutPage,
 	homePage,
+	labPage,
 	listingPage,
 	notFoundPage,
 	publishPage,
@@ -107,6 +108,7 @@ export function createApp(options: AppOptions = {}) {
 		),
 	);
 	app.get("/about", (c) => c.html(aboutPage(baseOf(c))));
+	app.get("/lab", (c) => c.html(labPage(baseOf(c), c.req.query("kind"))));
 	app.get("/publish", (c) => c.html(publishPage(baseOf(c))));
 	app.get("/listing/:id", (c) => {
 		const entry = findEntry(c.req.param("id"));
