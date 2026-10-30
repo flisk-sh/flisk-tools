@@ -17,17 +17,26 @@ import { esc, faqJsonLd, head, type PageMeta } from "./seo";
 import { SITE } from "./site";
 import { STYLE } from "./styles";
 
-type View = "browse" | "lab" | "";
+export type View =
+	| "browse"
+	| "compass"
+	| "radar"
+	| "lab"
+	| "journeys"
+	| "roles"
+	| "skills"
+	| "ask"
+	| "";
 
 const FONTS = `<link rel="preconnect" href="https://api.fontshare.com"><link rel="preconnect" href="https://cdn.fontshare.com" crossorigin><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">`;
 
-const rootOf = (base: string) =>
+export const rootOf = (base: string) =>
 	new URL(`${base}/`).pathname.replace(/\/$/, "");
-const color = (name: string) => `--c:hsl(${hue(name)} 70% 58%)`;
+export const color = (name: string) => `--c:hsl(${hue(name)} 70% 58%)`;
 
-function layout(
+export function layout(
 	base: string,
 	meta: PageMeta,
 	body: string,
@@ -44,7 +53,7 @@ ${FONTS}
 <header class="site-header"><div class="wrap bar"><a class="brand" href="${root}/"><img src="${root}/icon.svg" alt="" width="20" height="20"><span>${esc(SITE.name)}</span></a>
 <span class="hook">${ENTRIES.length} listings · ${counts("app")} apps · ${counts("tool")} dev tools · ${counts("skill")} agent skills · ${mcpCount()} with an MCP server · free, no signup to browse</span>
 <nav class="nav" aria-label="Primary"><a href="${root}/publish">Publish</a><a class="nav-extra" href="${root}/about">About</a><a class="nav-extra" href="${esc(SITE.repo)}" rel="noopener">GitHub</a><span id="gh-slot"></span><button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch theme">Theme</button></nav></div></header>
-<main id="main" class="wrap"><nav class="views" aria-label="Views">${tab("browse", `${root}/`, "Browse")}${tab("lab", `${root}/lab`, "Lab")}</nav>
+<main id="main" class="wrap"><nav class="views" aria-label="Views">${tab("browse", `${root}/`, "Browse")}${tab("compass", `${root}/compass`, "Compass")}${tab("radar", `${root}/radar`, "Radar")}${tab("lab", `${root}/lab`, "Lab")}${tab("journeys", `${root}/journeys`, "Journeys")}${tab("roles", `${root}/roles`, "Roles")}${tab("skills", `${root}/skills`, "Skills")}${tab("ask", `${root}/ask`, "Ask")}</nav>
 ${body}</main>
 <footer><div class="wrap">${esc(SITE.name)}: nothing stored here, no cookies. <a href="${esc(SITE.repo)}">Open source</a>, made by <a href="${esc(SITE.author.url)}">${esc(SITE.author.name)}</a>. Tools and skills come from the <a href="https://roadmap.flisk.si" rel="noopener">DevEx Roadmap</a>; wrong entry? <a href="${esc(SITE.repo)}/pulls" rel="noopener">Fix it on GitHub</a>.</div></footer>
 <script src="${root}/signin.js" defer></script>
@@ -73,7 +82,7 @@ function mcpPanel(e: Entry): string {
 ${m.tools?.length ? `<p class="note">Tools: ${m.tools.map((t) => `<code>${esc(t)}</code>`).join(" ")}</p>` : ""}`;
 }
 
-const card = (root: string, e: Entry) =>
+export const card = (root: string, e: Entry) =>
 	`<li class="card" style="${color(e.group === "Agent skills" ? e.category : e.group)}"><div class="top"><span class="sym" aria-hidden="true">${esc(symbol(e))}</span><h3><a href="${root}/listing/${e.id}">${esc(e.name)}</a></h3></div><p>${esc(e.tagline)}</p><div class="meta"><span class="g">${esc(kindLabel(e.kind))} · ${esc(e.category)}</span>${e.mcp ? `<span class="mcp">MCP</span>` : ""}${e.stars ? `<span>★ ${stars(e.stars)}</span>` : ""}${e.official ? `<span class="by">by Flisk</span>` : e.author ? `<span>@${esc(e.author)}</span>` : ""}</div></li>`;
 
 interface Browse {

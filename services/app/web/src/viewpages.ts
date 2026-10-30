@@ -1,0 +1,309 @@
+// The roadmap-style views: Compass, Radar, Journeys, Roles, Skills and Ask. All drawn on the server (SVG and HTML, no
+// script); every dot and chip is a link to the listing.
+import {
+	counts,
+	ENTRIES,
+	type Entry,
+	PAGE_SIZE,
+	search,
+	symbol,
+} from "./catalog";
+import { card, color, layout, rootOf } from "./pages";
+import { esc } from "./seo";
+import { SITE } from "./site";
+import {
+	compass,
+	DX,
+	FAMILIES,
+	LEVELS,
+	PARITY,
+	RINGS,
+	ROADMAP_TOOLS,
+	ROLE_GROUPS,
+	ROLES,
+	resolveNames,
+	SKILL_CATEGORIES,
+	TRACKS,
+	toolById,
+	unit,
+} from "./views";
+
+const sub = (href: string, label: string, n: number | undefined, on: boolean) =>
+	`<a class="subtab" href="${esc(href)}"${on ? ' aria-current="page"' : ""}>${esc(label)}${n === undefined ? "" : `<small>${n}</small>`}</a>`;
+
+const familyTabs = (root: string, path: string, current?: string) =>
+	`<nav class="subtabs" aria-label="Family">${sub(`${root}/${path}`, "All", ROADMAP_TOOLS.length, !current)}${FAMILIES.map((f) => sub(`${root}/${path}?family=${f.id}`, f.name, ROADMAP_TOOLS.filter((t) => t.family === f.id).length, current === f.id)).join("")}</nav>`;
+
+const hero = (eyebrow: string, title: string, lede: string) =>
+	`<section class="hero"><p class="eyebrow">${esc(eyebrow)}</p><h1>${title}</h1><p class="lede">${esc(lede)}</p></section>`;
+
+const familyColor = (id: string | undefined) =>
+	FAMILIES.find((f) => f.id === id)?.color ?? "#22c55e";
+
+const dot = (root: string, t: Entry, cx: number, cy: number, r: number) =>
+	`<a href="${root}/listing/${t.id}" class="dot"><circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${r}" fill="${familyColor(t.family)}"><title>${esc(`${t.name}: ${t.tagline}`)}</title></circle></a>`;
+
+/** The Compass: easy to use (left to right) against made for big, real systems (bottom to top). */
+export function compassPage(base: string, family?: string): string {
+	const root = rootOf(base);
+	const fam = FAMILIES.find((f) => f.id === family)?.id;
+	const tools = ROADMAP_TOOLS.filter((t) => !fam || t.family === fam);
+	const W = 760;
+	const H = 640;
+	const m = { l: 60, r: 20, t: 20, b: 60 };
+	const px = (v: number) => m.l + (v / 100) * (W - m.l - m.r);
+	const py = (v: number) => H - m.b - (v / 100) * (H - m.t - m.b);
+	const grid = [0, 20, 40, 60, 80, 100]
+		.map(
+			(v) =>
+				`<line x1="${px(v)}" y1="${py(0)}" x2="${px(v)}" y2="${py(100)}" class="gl"/><line x1="${px(0)}" y1="${py(v)}" x2="${px(100)}" y2="${py(v)}" class="gl"/><text x="${px(v)}" y="${H - m.b + 18}" class="at" text-anchor="middle">${v}</text><text x="${m.l - 10}" y="${py(v) + 4}" class="at" text-anchor="end">${v}</text>`,
+		)
+		.join("");
+	const dots = tools
+		.map((t) => {
+			const c = compass(t);
+			// Ten points per check puts many tools on the same spot, so each gets a small stable offset inside its cell.
+			const jx = (unit(t.id, "x") - 0.5) * 7;
+			const jy = (unit(t.id, "y") - 0.5) * 7;
+			return dot(
+				root,
+				t,
+				px(Math.min(100, Math.max(0, c.x + jx))),
+				py(Math.min(100, Math.max(0, c.y + jy))),
+				5,
+			);
+		})
+		.join("");
+	return layout(
+		base,
+		{
+			path: "compass",
+			title: "Compass: easy to use against built for big systems",
+			description:
+				`${tools.length} developer tools placed by a checklist: easy to use left to right, made for big real systems bottom to top. Click a dot to open it.`.slice(
+					0,
+					160,
+				),
+			noindex: Boolean(fam),
+			crumbs: [{ name: "Compass", path: "compass" }],
+		},
+		`${hero("Compass", "Easy to use, or <em>built for big systems</em>?", "No dot is placed by hand: a tool's position is 10 points for each check it meets. Hover a dot for the one-liner, click to open it.")}
+${familyTabs(root, "compass", fam)}
+<figure class="chart"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Compass of ${tools.length} tools">${grid}
+<text x="${(px(0) + px(100)) / 2}" y="${H - 14}" class="al" text-anchor="middle">${esc(DX.low)} ← ${esc(DX.short)} → ${esc(DX.high)}</text>
+<text transform="translate(16 ${(py(0) + py(100)) / 2}) rotate(-90)" class="al" text-anchor="middle">${esc(PARITY.low)} ← ${esc(PARITY.short)} → ${esc(PARITY.high)}</text>
+<text x="${px(3)}" y="${py(97)}" class="q">Hard but big</text><text x="${px(97)}" y="${py(97)}" class="q" text-anchor="end">Easy and big</text><text x="${px(3)}" y="${py(4)}" class="q">Hard and small</text><text x="${px(97)}" y="${py(4)}" class="q" text-anchor="end">Easy and small</text>
+${dots}</svg></figure>
+<ul class="legend2">${FAMILIES.map((f) => `<li><span class="sw" style="background:${f.color}"></span>${esc(f.name)}</li>`).join("")}</ul>
+<p class="note">${esc(DX.explain)}</p>`,
+		"compass",
+	);
+}
+
+/** The Adoption Radar: Adopt, Trial, Assess or Hold, one slice per family. */
+export function radarPage(base: string, family?: string): string {
+	const root = rootOf(base);
+	const fam = FAMILIES.find((f) => f.id === family)?.id;
+	const S = 760;
+	const c = S / 2;
+	const radii = [118, 200, 282, 356];
+	const inner = [14, ...radii.slice(0, 3)];
+	const n = FAMILIES.length;
+	const slice = (i: number) => (i / n) * Math.PI * 2 - Math.PI / 2;
+	const rings = RINGS.map(
+		(ring, i) =>
+			`<circle cx="${c}" cy="${c}" r="${radii[i]}" class="rg r-${ring.id}"/><text x="${c + 6}" y="${c - inner[i] - (radii[i] - inner[i]) / 2 + 4}" class="rl r-${ring.id}">${esc(ring.label)}</text>`,
+	).reverse();
+	const spokes = FAMILIES.map(
+		(_, i) =>
+			`<line x1="${c}" y1="${c}" x2="${(c + Math.cos(slice(i)) * radii[3]).toFixed(1)}" y2="${(c + Math.sin(slice(i)) * radii[3]).toFixed(1)}" class="gl"/>`,
+	).join("");
+	const names = FAMILIES.map((f, i) => {
+		const a = slice(i) + Math.PI / n;
+		return `<text x="${(c + Math.cos(a) * (radii[3] + 2)).toFixed(1)}" y="${(c + Math.sin(a) * (radii[3] + 2)).toFixed(1)}" class="fl" text-anchor="middle" fill="${f.color}">${esc(f.name)}</text>`;
+	}).join("");
+	const tools = ROADMAP_TOOLS.filter((t) => !fam || t.family === fam);
+	const dots = tools
+		.map((t) => {
+			const fi = FAMILIES.findIndex((f) => f.id === t.family);
+			const ri = RINGS.findIndex((r) => r.id === t.ring);
+			if (fi < 0 || ri < 0) return "";
+			const a =
+				slice(fi) + (0.08 + 0.84 * unit(t.id, "a")) * ((Math.PI * 2) / n);
+			const r = inner[ri] + 10 + unit(t.id, "r") * (radii[ri] - inner[ri] - 20);
+			return dot(root, t, c + Math.cos(a) * r, c + Math.sin(a) * r, 4.6);
+		})
+		.join("");
+	const byRing = RINGS.map((ring) => ({
+		ring,
+		list: tools.filter((t) => t.ring === ring.id),
+	}));
+	return layout(
+		base,
+		{
+			path: "radar",
+			title: "Adoption Radar: adopt, trial, assess or hold",
+			description:
+				`${tools.length} developer tools sorted into Adopt, Trial, Assess and Hold from release and maturity signals, one slice per family. Click a dot to open it.`.slice(
+					0,
+					160,
+				),
+			noindex: Boolean(fam),
+			crumbs: [{ name: "Radar", path: "radar" }],
+		},
+		`${hero("Adoption Radar", "Adopt, trial, assess or <em>hold</em>", "Each tool's ring follows rules about its release age, version and last update, with an evidence link on the roadmap. Hover a dot, click to open.")}
+${familyTabs(root, "radar", fam)}
+<figure class="chart"><svg viewBox="-90 -20 ${S + 180} ${S + 40}" role="img" aria-label="Adoption radar of ${tools.length} tools">${rings.join("")}${spokes}${names}${dots}</svg></figure>
+<div class="rings">${byRing.map(({ ring, list }) => `<section class="ringbox r-${ring.id}"><h3>${esc(ring.label)} <small>${list.length}</small></h3><p class="note">${esc(ring.help)}</p><p class="chiplist">${list.map((t) => `<a class="chip2" href="${root}/listing/${t.id}" style="--c:${familyColor(t.family)}">${esc(t.name)}</a>`).join("")}</p></section>`).join("")}</div>`,
+		"radar",
+	);
+}
+
+/** Journeys: seven levels from Package Wrangler to Platform Architect, as a metro line, with a route for each track. */
+export function journeysPage(base: string, trackId?: string): string {
+	const root = rootOf(base);
+	const track = TRACKS.find((t) => t.id === trackId) ?? TRACKS[0];
+	const chip = (id: string, main: boolean) => {
+		const t = toolById(id);
+		return t
+			? `<a class="chip2${main ? " main" : ""}" href="${root}/listing/${t.id}" style="--c:${familyColor(t.family)}">${esc(t.name)}</a>`
+			: "";
+	};
+	return layout(
+		base,
+		{
+			path: "journeys",
+			title: "Journeys: seven levels, three routes",
+			description:
+				`Seven levels from Package Wrangler to Platform Architect, with the tools to learn at each stop for the ${track.name} route.`.slice(
+					0,
+					160,
+				),
+			noindex: track.id !== TRACKS[0].id,
+			crumbs: [{ name: "Journeys", path: "journeys" }],
+		},
+		`${hero("Journeys", "Seven levels, <em>one line</em>", "A metro line from your first lockfile to platform architecture. Pick a route; each station lists the tools to learn and the ones worth knowing.")}
+<nav class="subtabs" aria-label="Route">${TRACKS.map((t) => sub(`${root}/journeys?track=${t.id}`, t.name, undefined, t.id === track.id)).join("")}</nav>
+<p class="note">${esc(track.blurb)}</p>
+<ol class="metro">${LEVELS.map((l) => {
+			const stop = track.stops[l.id];
+			return `<li><span class="station" aria-hidden="true">${l.n}</span><div class="stop"><h3>${esc(l.name)}</h3><p>${esc(l.goal)}</p>${stop?.tip ? `<p class="tip">${esc(stop.tip)}</p>` : ""}<p class="chiplist">${(stop?.main ?? []).map((id) => chip(id, true)).join("")}${(stop?.side ?? []).map((id) => chip(id, false)).join("")}</p><p class="note">You learn: ${l.skills.map(esc).join(" · ")}</p>${l.flisk ? `<p class="note flisk-${esc(l.flisk.status)}">Flisk: ${esc(l.flisk.text)}</p>` : ""}</div></li>`;
+		}).join("")}</ol>`,
+		"journeys",
+	);
+}
+
+/** Roles: jobs in software and the tools each one needs. */
+export function rolesPage(base: string, group?: string): string {
+	const root = rootOf(base);
+	const g = ROLE_GROUPS.find((x) => x.id === group) ?? ROLE_GROUPS[0];
+	const list = ROLES.filter((r) => r.group === g.id);
+	const tools = (ids: string[]) =>
+		ids
+			.map((id) => toolById(id))
+			.filter((t): t is Entry => Boolean(t))
+			.map(
+				(t) =>
+					`<a class="chip2" href="${root}/listing/${t.id}" style="--c:${familyColor(t.family)}">${esc(t.name)}</a>`,
+			)
+			.join("");
+	return layout(
+		base,
+		{
+			path: "roles",
+			title: "Roles: the tools each developer job needs",
+			description:
+				`${ROLES.length} jobs in software, from Backend Engineer to Platform Architect, and the tools each one needs: must have, every day, good to know.`.slice(
+					0,
+					160,
+				),
+			noindex: g.id !== ROLE_GROUPS[0].id,
+			crumbs: [{ name: "Roles", path: "roles" }],
+		},
+		`${hero("Roles", "What does <em>your job</em> need?", `${ROLES.length} jobs in software and the tools each one needs: must have, every day, good to know.`)}
+<nav class="subtabs" aria-label="Group">${ROLE_GROUPS.map((x) => sub(`${root}/roles?group=${x.id}`, x.name, ROLES.filter((r) => r.group === x.id).length, x.id === g.id)).join("")}</nav>
+<p class="note">${esc(g.blurb)}</p>
+<ul class="grid">${list.map((r) => `<li class="card" style="${color(r.group)}"><div class="top"><span class="sym" aria-hidden="true">${esc(symbol(r))}</span><h3>${esc(r.name)}</h3></div><p>${esc(r.what)}</p><details><summary>Tools for this job</summary><p class="note">Must have</p><p class="chiplist">${tools(r.core)}</p><p class="note">Every day</p><p class="chiplist">${tools(r.daily)}</p><p class="note">Good to know</p><p class="chiplist">${tools(r.nice)}</p><p class="note">A day: ${r.day.map(esc).join(" · ")}</p></details></li>`).join("")}</ul>`,
+		"roles",
+	);
+}
+
+/** Skills: the agent skills, by what they help with. */
+export function skillsPage(base: string, cat?: string, page = 1): string {
+	const root = rootOf(base);
+	const current = SKILL_CATEGORIES.find((c) => c.id === cat);
+	const r = search({ kind: "skill", category: current?.name, page });
+	const skillCount = counts("skill");
+	const link = (extra: { cat?: string; page?: number }) =>
+		esc(
+			`${root}/skills${extra.cat ? `?cat=${extra.cat}` : ""}${extra.page && extra.page > 1 ? `${extra.cat ? "&" : "?"}page=${extra.page}` : ""}`,
+		);
+	return layout(
+		base,
+		{
+			path: "skills",
+			title: "Skills: free AI agent skills from GitHub",
+			description:
+				`${skillCount} free AI agent skills from GitHub, by what they help with: plan, code, test, debug, review, ship. Sorted by stars.`.slice(
+					0,
+					160,
+				),
+			noindex: Boolean(current) || r.page > 1,
+			crumbs: [{ name: "Skills", path: "skills" }],
+		},
+		`${hero("Skills", `${skillCount} agent skills, <em>${current ? esc(current.name) : "by what they do"}</em>`, current?.blurb ?? "Free skills for AI coding agents, from public GitHub repositories, sorted by stars.")}
+<nav class="subtabs" aria-label="Category">${sub(`${root}/skills`, "All", skillCount, !current)}${SKILL_CATEGORIES.map((c) => sub(`${root}/skills?cat=${c.id}`, c.name, ENTRIES.filter((e) => e.kind === "skill" && e.category === c.name).length, current?.id === c.id)).join("")}</nav>
+<p class="count">${r.total} skills</p>
+<ul class="grid">${r.items.map((e) => card(root, e)).join("")}</ul>
+<p class="pager"><span>${r.page > 1 ? `<a rel="prev" href="${link({ cat: current?.id, page: r.page - 1 })}">← Previous</a>` : ""}</span><span>Page ${r.page} of ${r.pages} · ${PAGE_SIZE} per page</span><span>${r.page < r.pages ? `<a rel="next" href="${link({ cat: current?.id, page: r.page + 1 })}">Next →</a>` : ""}</span></p>`,
+		"skills",
+	);
+}
+
+/** Ask: "yarn vs npm vs bun" answered as a side-by-side table from the data, no AI call. */
+export function askPage(base: string, q = ""): string {
+	const root = rootOf(base);
+	const picks = resolveNames(q);
+	const examples = [
+		"yarn vs npm vs bun",
+		"docker compose vs tilt vs skaffold",
+		"langgraph vs crewai",
+		"flisk vs tilt",
+	];
+	const row = (label: string, cell: (t: Entry) => string) =>
+		`<tr><th scope="row">${esc(label)}</th>${picks.map((t) => `<td>${cell(t)}</td>`).join("")}</tr>`;
+	const ringLabel = (t: Entry) =>
+		RINGS.find((r) => r.id === t.ring)?.label ?? "-";
+	const check = (list: string[] | undefined, id: string) =>
+		list?.includes(id)
+			? '<span class="pass">✓</span>'
+			: '<span class="no">·</span>';
+	const table = picks.length
+		? `<div class="tablewrap"><table class="compare"><thead><tr><th></th>${picks.map((t) => `<th scope="col"><a href="${root}/listing/${t.id}">${esc(t.name)}</a></th>`).join("")}</tr></thead><tbody>
+${row("What it is", (t) => esc(t.tagline))}${row("Adoption ring", (t) => (t.ring ? `<span class="rk r-${t.ring}">${esc(ringLabel(t))}</span>` : "-"))}${row("Easy to use", (t) => (t.dx ? `${t.dx.length * 10} / 100` : "-"))}${row("Big, real systems", (t) => (t.parity ? `${t.parity.length * 10} / 100` : "-"))}${row("GitHub stars", (t) => (t.stars ? t.stars.toLocaleString("en-US") : "-"))}${row("License", (t) => esc(t.license ?? "-"))}${row("MCP server", (t) => (t.mcp ? "Yes" : "-"))}
+<tr class="sec"><th scope="row" colspan="${picks.length + 1}">${esc(DX.title)}</th></tr>${DX.criteria.map((c) => row(c.label, (t) => check(t.dx, c.id))).join("")}
+<tr class="sec"><th scope="row" colspan="${picks.length + 1}">${esc(PARITY.title)}</th></tr>${PARITY.criteria.map((c) => row(c.label, (t) => check(t.parity, c.id))).join("")}
+</tbody></table></div>`
+		: q
+			? `<p>No tool matched “${esc(q)}”. Try names like <code>yarn vs npm</code>.</p>`
+			: "";
+	return layout(
+		base,
+		{
+			path: "ask",
+			title: "Ask: compare tools side by side",
+			description:
+				`Type yarn vs npm vs bun and get a side-by-side answer from the ${SITE.name} data: adoption ring, ease of use, big-system fit, stars and license. No AI call.`.slice(
+					0,
+					160,
+				),
+			noindex: Boolean(q),
+			crumbs: [{ name: "Ask", path: "ask" }],
+		},
+		`${hero("Ask", "Compare tools, <em>side by side</em>", "Type two to five tools with vs, a comma or and. The answer comes from the data, every check with its meaning, and no AI is called.")}
+<form class="search" role="search" action="${root}/ask" method="get"><input type="search" name="q" value="${esc(q)}" placeholder="yarn vs npm vs bun" aria-label="Tools to compare"><button type="submit">Compare</button></form>
+<p class="chiplist" style="margin-top:.8rem">${examples.map((x) => `<a class="chip2" href="${root}/ask?q=${encodeURIComponent(x)}">${esc(x)}</a>`).join("")}</p>
+${table}`,
+		"ask",
+	);
+}

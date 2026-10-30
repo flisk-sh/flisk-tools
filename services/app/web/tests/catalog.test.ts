@@ -22,7 +22,8 @@ describe("catalog files", () => {
 	it("src/catalog.generated.json is up to date: run `bun run catalog`", () => {
 		const ids = new Set<string>();
 		for (const f of readdirSync(join(root, "catalog")).filter(
-			(x) => x.endsWith(".json") && x !== "overrides.json",
+			(x) =>
+				x.endsWith(".json") && x !== "overrides.json" && x !== "views.json",
 		))
 			for (const e of json(join(root, "catalog", f)) as Entry[]) ids.add(e.id);
 		for (const f of listings) ids.add(json(join(root, "listings", f)).id);

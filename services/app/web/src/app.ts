@@ -28,6 +28,14 @@ import {
 	webManifest,
 } from "./seo";
 import { SITE } from "./site";
+import {
+	askPage,
+	compassPage,
+	journeysPage,
+	radarPage,
+	rolesPage,
+	skillsPage,
+} from "./viewpages";
 
 export interface AppOptions {
 	/** The address people use, ending in a slash. Without it, each request's own address (see baseOf). */
@@ -110,6 +118,26 @@ export function createApp(options: AppOptions = {}) {
 	);
 	app.get("/about", (c) => c.html(aboutPage(baseOf(c))));
 	app.get("/lab", (c) => c.html(labPage(baseOf(c), c.req.query("kind"))));
+	app.get("/compass", (c) =>
+		c.html(compassPage(baseOf(c), c.req.query("family"))),
+	);
+	app.get("/radar", (c) => c.html(radarPage(baseOf(c), c.req.query("family"))));
+	app.get("/journeys", (c) =>
+		c.html(journeysPage(baseOf(c), c.req.query("track"))),
+	);
+	app.get("/roles", (c) => c.html(rolesPage(baseOf(c), c.req.query("group"))));
+	app.get("/skills", (c) =>
+		c.html(
+			skillsPage(
+				baseOf(c),
+				c.req.query("cat"),
+				Number(c.req.query("page")) || 1,
+			),
+		),
+	);
+	app.get("/ask", (c) =>
+		c.html(askPage(baseOf(c), (c.req.query("q") ?? "").slice(0, 200))),
+	);
 	app.get("/publish", (c) => c.html(publishPage(baseOf(c))));
 	app.get("/listing/:id", (c) => {
 		const entry = findEntry(c.req.param("id"));
@@ -134,6 +162,13 @@ export function createApp(options: AppOptions = {}) {
 			"",
 			"about",
 			"publish",
+			"lab",
+			"compass",
+			"radar",
+			"journeys",
+			"roles",
+			"skills",
+			"ask",
 			...ENTRIES.map((e) => `listing/${e.id}`),
 		];
 		return c.body(sitemapXml(baseOf(c), paths, lastmod), 200, {

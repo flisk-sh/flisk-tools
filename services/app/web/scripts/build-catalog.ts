@@ -15,7 +15,9 @@ const files = (dir: string) =>
 const entries: Entry[] = [];
 // catalog/ is read in name order, so flisk.json wins over the roadmap import when both list the same id.
 const taken = new Set<string>();
-for (const f of files("catalog").filter((x) => x !== "overrides.json"))
+for (const f of files("catalog").filter(
+	(x) => x !== "overrides.json" && x !== "views.json",
+))
 	for (const e of read(join(root, "catalog", f)) as Entry[]) {
 		if (taken.has(e.id)) continue;
 		taken.add(e.id);
@@ -55,5 +57,10 @@ entries.sort(order);
 writeFileSync(
 	join(import.meta.dir, "../src/catalog.generated.json"),
 	`${JSON.stringify(entries)}\n`,
+);
+// The views data (rubric, roles, journeys) is copied next to the code, because the image ships src/ only.
+writeFileSync(
+	join(import.meta.dir, "../src/views.generated.json"),
+	readFileSync(join(root, "catalog", "views.json"), "utf8"),
 );
 console.log(`Wrote ${entries.length} entries to src/catalog.generated.json`);

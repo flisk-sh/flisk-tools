@@ -38,6 +38,11 @@ export interface Entry {
 	official?: boolean;
 	/** Set when the listing also has an MCP server an AI can use. */
 	mcp?: Mcp;
+	/** Roadmap tools only: the family id, the Radar ring and the criteria behind the Compass position. */
+	family?: string;
+	ring?: "adopt" | "trial" | "assess" | "hold";
+	dx?: string[];
+	parity?: string[];
 }
 
 export const KINDS: { id: Kind; label: string; plural: string }[] = [
@@ -58,6 +63,7 @@ export interface Query {
 	q?: string;
 	kind?: string;
 	group?: string;
+	category?: string;
 	/** Only listings that have an MCP server. */
 	mcp?: boolean;
 	page?: number;
@@ -81,6 +87,7 @@ export function search(query: Query): Result {
 		(e) =>
 			(!query.kind || e.kind === query.kind) &&
 			(!query.group || e.group === query.group) &&
+			(!query.category || e.category === query.category) &&
 			(!query.mcp || e.mcp) &&
 			words.every((w) => HAY.get(e.id)?.includes(w)),
 	);

@@ -59,6 +59,10 @@ for (const file of readdirSync(join(dir, "_data/tools")).filter((f) =>
 			stars: github[String(t.id)]?.stars,
 			license: t.license ? String(t.license) : undefined,
 			author: String(t.repo ?? "").split("/")[0] || undefined,
+			family,
+			ring: t.ring as Entry["ring"],
+			dx: (t.dx as string[]) ?? [],
+			parity: (t.parity as string[]) ?? [],
 		});
 	}
 }
@@ -84,6 +88,32 @@ for (const file of readdirSync(join(dir, "_data/skills")).filter((f) =>
 		});
 	}
 }
+// The rubric, rings, families, roles, journeys and skill categories behind the Compass, Radar, Journeys, Roles and
+// Skills views.
+const parse = (file: string) =>
+	Bun.YAML.parse(readFileSync(join(dir, "_data", file), "utf8")) as Record<
+		string,
+		unknown
+	>;
+const rubric = parse("rubric.yml");
+const views = {
+	families: yaml("families.yml").map((f) => ({
+		id: f.id,
+		name: f.name,
+		color: f.color,
+		blurb: f.blurb,
+	})),
+	rings: rubric.rings,
+	dx: rubric.dx,
+	parity: rubric.parity,
+	skillCategories: yaml("skill_categories.yml"),
+	roles: parse("roles.yml"),
+	journeys: parse("journeys.yml"),
+};
+writeFileSync(
+	join(import.meta.dir, "../../../../catalog/views.json"),
+	`${JSON.stringify(views)}\n`,
+);
 writeFileSync(
 	join(import.meta.dir, "../../../../catalog/roadmap.json"),
 	`${JSON.stringify(entries, null, "\t")}\n`,

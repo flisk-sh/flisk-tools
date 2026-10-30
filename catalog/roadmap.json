@@ -11,7 +11,19 @@
 		"repo": "npm/cli",
 		"stars": 10224,
 		"license": "oss",
-		"author": "npm"
+		"author": "npm",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -25,7 +37,22 @@
 		"repo": "pnpm/pnpm",
 		"stars": 36939,
 		"license": "oss",
-		"author": "pnpm"
+		"author": "pnpm",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"prod-artifacts",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -39,7 +66,19 @@
 		"repo": "yarnpkg/berry",
 		"stars": 8119,
 		"license": "oss",
-		"author": "yarnpkg"
+		"author": "yarnpkg",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"prod-artifacts",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -53,7 +92,21 @@
 		"repo": "oven-sh/bun",
 		"stars": 96445,
 		"license": "oss",
-		"author": "oven-sh"
+		"author": "oven-sh",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -67,7 +120,21 @@
 		"repo": "denoland/deno",
 		"stars": 108788,
 		"license": "oss",
-		"author": "denoland"
+		"author": "denoland",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"clear-errors",
+			"docs",
+			"cross-platform",
+			"light"
+		],
+		"parity": [
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -81,7 +148,22 @@
 		"repo": "astral-sh/uv",
 		"stars": 91288,
 		"license": "oss",
-		"author": "astral-sh"
+		"author": "astral-sh",
+		"family": "foundations",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"clear-errors",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -95,7 +177,17 @@
 		"repo": "pypa/pip",
 		"stars": 10302,
 		"license": "oss",
-		"author": "pypa"
+		"author": "pypa",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"light",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -109,7 +201,18 @@
 		"repo": "python-poetry/poetry",
 		"stars": 34325,
 		"license": "oss",
-		"author": "python-poetry"
+		"author": "python-poetry",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -123,7 +226,19 @@
 		"repo": "pdm-project/pdm",
 		"stars": 8659,
 		"license": "oss",
-		"author": "pdm-project"
+		"author": "pdm-project",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -137,7 +252,16 @@
 		"repo": "pypa/hatch",
 		"stars": 7246,
 		"license": "oss",
-		"author": "pypa"
+		"author": "pypa",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -151,7 +275,18 @@
 		"repo": "pypa/pipenv",
 		"stars": 25021,
 		"license": "oss",
-		"author": "pypa"
+		"author": "pypa",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -165,7 +300,19 @@
 		"repo": "astral-sh/rye",
 		"stars": 14117,
 		"license": "oss",
-		"author": "astral-sh"
+		"author": "astral-sh",
+		"family": "foundations",
+		"ring": "hold",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -179,7 +326,17 @@
 		"repo": "conda/conda",
 		"stars": 7546,
 		"license": "oss",
-		"author": "conda"
+		"author": "conda",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -193,7 +350,21 @@
 		"repo": "prefix-dev/pixi",
 		"stars": 7916,
 		"license": "oss",
-		"author": "prefix-dev"
+		"author": "prefix-dev",
+		"family": "foundations",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -207,7 +378,22 @@
 		"repo": "rust-lang/cargo",
 		"stars": 15645,
 		"license": "oss",
-		"author": "rust-lang"
+		"author": "rust-lang",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"clear-errors",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"prod-artifacts",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -221,7 +407,24 @@
 		"repo": "golang/go",
 		"stars": 139483,
 		"license": "oss",
-		"author": "golang"
+		"author": "golang",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"clear-errors",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": [
+			"prod-artifacts",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -235,7 +438,18 @@
 		"repo": "apache/maven",
 		"stars": 5372,
 		"license": "oss",
-		"author": "apache"
+		"author": "apache",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"prod-artifacts",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -249,7 +463,19 @@
 		"repo": "gradle/gradle",
 		"stars": 18900,
 		"license": "oss",
-		"author": "gradle"
+		"author": "gradle",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"prod-artifacts",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -263,7 +489,20 @@
 		"repo": "composer/composer",
 		"stars": 29564,
 		"license": "oss",
-		"author": "composer"
+		"author": "composer",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -277,7 +516,20 @@
 		"repo": "rubygems/rubygems",
 		"stars": 3984,
 		"license": "oss",
-		"author": "rubygems"
+		"author": "rubygems",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -291,7 +543,19 @@
 		"repo": "NuGet/NuGet.Client",
 		"stars": 821,
 		"license": "oss",
-		"author": "NuGet"
+		"author": "NuGet",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"prod-artifacts",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -305,7 +569,16 @@
 		"repo": "Homebrew/brew",
 		"stars": 50131,
 		"license": "oss",
-		"author": "Homebrew"
+		"author": "Homebrew",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -319,7 +592,18 @@
 		"repo": "swiftlang/swift-package-manager",
 		"stars": 10243,
 		"license": "oss",
-		"author": "swiftlang"
+		"author": "swiftlang",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -333,7 +617,23 @@
 		"repo": "jdx/mise",
 		"stars": 35483,
 		"license": "oss",
-		"author": "jdx"
+		"author": "jdx",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"clear-errors",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"config-secrets",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -347,7 +647,17 @@
 		"repo": "asdf-vm/asdf",
 		"stars": 25610,
 		"license": "oss",
-		"author": "asdf-vm"
+		"author": "asdf-vm",
+		"family": "foundations",
+		"ring": "trial",
+		"dx": [
+			"docs",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -361,7 +671,15 @@
 		"repo": "nvm-sh/nvm",
 		"stars": 95689,
 		"license": "oss",
-		"author": "nvm-sh"
+		"author": "nvm-sh",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -375,7 +693,17 @@
 		"repo": "Schniz/fnm",
 		"stars": 27223,
 		"license": "oss",
-		"author": "Schniz"
+		"author": "Schniz",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -389,7 +717,19 @@
 		"repo": "volta-cli/volta",
 		"stars": 13053,
 		"license": "oss",
-		"author": "volta-cli"
+		"author": "volta-cli",
+		"family": "foundations",
+		"ring": "hold",
+		"dx": [
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -403,7 +743,15 @@
 		"repo": "pyenv/pyenv",
 		"stars": 45173,
 		"license": "oss",
-		"author": "pyenv"
+		"author": "pyenv",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -417,7 +765,15 @@
 		"repo": "rbenv/rbenv",
 		"stars": 16741,
 		"license": "oss",
-		"author": "rbenv"
+		"author": "rbenv",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -431,7 +787,20 @@
 		"repo": "rust-lang/rustup",
 		"stars": 7093,
 		"license": "oss",
-		"author": "rust-lang"
+		"author": "rust-lang",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -445,7 +814,18 @@
 		"repo": "sdkman/sdkman-cli",
 		"stars": 6875,
 		"license": "oss",
-		"author": "sdkman"
+		"author": "sdkman",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"docs",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -459,7 +839,19 @@
 		"repo": "moonrepo/proto",
 		"stars": 1445,
 		"license": "oss",
-		"author": "moonrepo"
+		"author": "moonrepo",
+		"family": "foundations",
+		"ring": "trial",
+		"dx": [
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -473,7 +865,22 @@
 		"repo": "vitejs/vite",
 		"stars": 83618,
 		"license": "oss",
-		"author": "vitejs"
+		"author": "vitejs",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"clear-errors",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -487,7 +894,21 @@
 		"repo": "evanw/esbuild",
 		"stars": 40113,
 		"license": "oss",
-		"author": "evanw"
+		"author": "evanw",
+		"family": "foundations",
+		"ring": "trial",
+		"dx": [
+			"zero-config",
+			"fast-feedback",
+			"clear-errors",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -501,7 +922,20 @@
 		"repo": "web-infra-dev/rspack",
 		"stars": 12960,
 		"license": "oss",
-		"author": "web-infra-dev"
+		"author": "web-infra-dev",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"prod-artifacts",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -515,7 +949,20 @@
 		"repo": "rolldown/rolldown",
 		"stars": 13987,
 		"license": "oss",
-		"author": "rolldown"
+		"author": "rolldown",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -529,7 +976,20 @@
 		"repo": "vercel/next.js",
 		"stars": 143177,
 		"license": "oss",
-		"author": "vercel"
+		"author": "vercel",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -543,7 +1003,18 @@
 		"repo": "webpack/webpack",
 		"stars": 65972,
 		"license": "oss",
-		"author": "webpack"
+		"author": "webpack",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"prod-artifacts",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -557,7 +1028,18 @@
 		"repo": "rollup/rollup",
 		"stars": 26305,
 		"license": "oss",
-		"author": "rollup"
+		"author": "rollup",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -571,7 +1053,20 @@
 		"repo": "parcel-bundler/parcel",
 		"stars": 44007,
 		"license": "oss",
-		"author": "parcel-bundler"
+		"author": "parcel-bundler",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -585,7 +1080,19 @@
 		"repo": "swc-project/swc",
 		"stars": 34203,
 		"license": "oss",
-		"author": "swc-project"
+		"author": "swc-project",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -599,7 +1106,21 @@
 		"repo": "rolldown/tsdown",
 		"stars": 4323,
 		"license": "oss",
-		"author": "rolldown"
+		"author": "rolldown",
+		"family": "foundations",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -613,7 +1134,19 @@
 		"repo": "bazelbuild/bazel",
 		"stars": 26007,
 		"license": "oss",
-		"author": "bazelbuild"
+		"author": "bazelbuild",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"fast-feedback",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -627,7 +1160,17 @@
 		"repo": "facebook/buck2",
 		"stars": 4502,
 		"license": "oss",
-		"author": "facebook"
+		"author": "facebook",
+		"family": "foundations",
+		"ring": "trial",
+		"dx": [
+			"fast-feedback",
+			"offline"
+		],
+		"parity": [
+			"prod-artifacts",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -641,7 +1184,19 @@
 		"repo": "pantsbuild/pants",
 		"stars": 3854,
 		"license": "oss",
-		"author": "pantsbuild"
+		"author": "pantsbuild",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"fast-feedback",
+			"docs",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -655,7 +1210,18 @@
 		"repo": "earthly/earthly",
 		"stars": 12054,
 		"license": "oss",
-		"author": "earthly"
+		"author": "earthly",
+		"family": "foundations",
+		"ring": "hold",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -669,7 +1235,22 @@
 		"repo": "dagger/dagger",
 		"stars": 16527,
 		"license": "oss",
-		"author": "dagger"
+		"author": "dagger",
+		"family": "foundations",
+		"ring": "trial",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"ui",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -680,7 +1261,14 @@
 		"group": "Package & build",
 		"category": "Task runners",
 		"url": "https://www.gnu.org/software/make/",
-		"license": "oss"
+		"license": "oss",
+		"family": "foundations",
+		"ring": "hold",
+		"dx": [
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -694,7 +1282,19 @@
 		"repo": "casey/just",
 		"stars": 36466,
 		"license": "oss",
-		"author": "casey"
+		"author": "casey",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"clear-errors",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -708,7 +1308,18 @@
 		"repo": "go-task/task",
 		"stars": 16310,
 		"license": "oss",
-		"author": "go-task"
+		"author": "go-task",
+		"family": "foundations",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -722,7 +1333,16 @@
 		"repo": "NixOS/nix",
 		"stars": 17922,
 		"license": "oss",
-		"author": "NixOS"
+		"author": "NixOS",
+		"family": "environments",
+		"ring": "adopt",
+		"dx": [
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -736,7 +1356,22 @@
 		"repo": "cachix/devenv",
 		"stars": 7782,
 		"license": "oss",
-		"author": "cachix"
+		"author": "cachix",
+		"family": "environments",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -750,7 +1385,21 @@
 		"repo": "jetify-com/devbox",
 		"stars": 12432,
 		"license": "oss",
-		"author": "jetify-com"
+		"author": "jetify-com",
+		"family": "environments",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"multi-service",
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -764,7 +1413,21 @@
 		"repo": "flox/flox",
 		"stars": 4188,
 		"license": "oss",
-		"author": "flox"
+		"author": "flox",
+		"family": "environments",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"multi-service",
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -778,7 +1441,17 @@
 		"repo": "direnv/direnv",
 		"stars": 15524,
 		"license": "oss",
-		"author": "direnv"
+		"author": "direnv",
+		"family": "environments",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -792,7 +1465,18 @@
 		"repo": "89luca89/distrobox",
 		"stars": 13092,
 		"license": "oss",
-		"author": "89luca89"
+		"author": "89luca89",
+		"family": "environments",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"docs",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers"
+		]
 	},
 	{
 		"kind": "tool",
@@ -806,7 +1490,17 @@
 		"repo": "containers/toolbox",
 		"stars": 3530,
 		"license": "oss",
-		"author": "containers"
+		"author": "containers",
+		"family": "environments",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers"
+		]
 	},
 	{
 		"kind": "tool",
@@ -820,7 +1514,21 @@
 		"repo": "devcontainers/spec",
 		"stars": 5790,
 		"license": "oss",
-		"author": "devcontainers"
+		"author": "devcontainers",
+		"family": "environments",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"state"
+		]
 	},
 	{
 		"kind": "tool",
@@ -834,7 +1542,22 @@
 		"repo": "loft-sh/devpod",
 		"stars": 15297,
 		"license": "oss",
-		"author": "loft-sh"
+		"author": "loft-sh",
+		"family": "environments",
+		"ring": "hold",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"state",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -848,7 +1571,20 @@
 		"repo": "hashicorp/vagrant",
 		"stars": 27215,
 		"license": "free",
-		"author": "hashicorp"
+		"author": "hashicorp",
+		"family": "environments",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"multi-service",
+			"networking",
+			"state"
+		]
 	},
 	{
 		"kind": "tool",
@@ -859,7 +1595,23 @@
 		"group": "Dev environments",
 		"category": "Cloud workspaces",
 		"url": "https://github.com/features/codespaces",
-		"license": "freemium"
+		"license": "freemium",
+		"family": "environments",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"state",
+			"config-secrets",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -870,7 +1622,24 @@
 		"group": "Dev environments",
 		"category": "Cloud workspaces",
 		"url": "https://ona.com",
-		"license": "freemium"
+		"license": "freemium",
+		"family": "environments",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"state",
+			"config-secrets",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -884,7 +1653,21 @@
 		"repo": "coder/coder",
 		"stars": 17210,
 		"license": "oss",
-		"author": "coder"
+		"author": "coder",
+		"family": "environments",
+		"ring": "adopt",
+		"dx": [
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"k8s",
+			"cloud-apis",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -898,7 +1681,20 @@
 		"repo": "eclipse-che/che",
 		"stars": 7170,
 		"license": "oss",
-		"author": "eclipse-che"
+		"author": "eclipse-che",
+		"family": "environments",
+		"ring": "adopt",
+		"dx": [
+			"ui",
+			"docs",
+			"cross-platform"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"k8s",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -912,7 +1708,18 @@
 		"repo": "coder/code-server",
 		"stars": 79721,
 		"license": "oss",
-		"author": "coder"
+		"author": "coder",
+		"family": "environments",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -926,7 +1733,18 @@
 		"repo": "daytonaio/daytona",
 		"stars": 71449,
 		"license": "oss",
-		"author": "daytonaio"
+		"author": "daytonaio",
+		"family": "environments",
+		"ring": "hold",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"containers"
+		]
 	},
 	{
 		"kind": "tool",
@@ -937,7 +1755,19 @@
 		"group": "Dev environments",
 		"category": "Cloud workspaces",
 		"url": "https://codesandbox.io",
-		"license": "freemium"
+		"license": "freemium",
+		"family": "environments",
+		"ring": "trial",
+		"dx": [
+			"zero-config",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform"
+		],
+		"parity": [
+			"containers"
+		]
 	},
 	{
 		"kind": "tool",
@@ -948,7 +1778,18 @@
 		"group": "Dev environments",
 		"category": "Cloud workspaces",
 		"url": "https://stackblitz.com",
-		"license": "freemium"
+		"license": "freemium",
+		"family": "environments",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -959,7 +1800,20 @@
 		"group": "Dev environments",
 		"category": "Cloud workspaces",
 		"url": "https://replit.com",
-		"license": "freemium"
+		"license": "freemium",
+		"family": "environments",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform"
+		],
+		"parity": [
+			"state",
+			"config-secrets"
+		]
 	},
 	{
 		"kind": "tool",
@@ -970,7 +1824,19 @@
 		"group": "Dev environments",
 		"category": "Cloud workspaces",
 		"url": "https://cloud.google.com/workstations",
-		"license": "paid"
+		"license": "paid",
+		"family": "environments",
+		"ring": "adopt",
+		"dx": [
+			"ui",
+			"docs",
+			"cross-platform"
+		],
+		"parity": [
+			"containers",
+			"cloud-apis",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -981,7 +1847,17 @@
 		"group": "Dev environments",
 		"category": "Cloud workspaces",
 		"url": "https://firebase.studio",
-		"license": "free"
+		"license": "free",
+		"family": "environments",
+		"ring": "hold",
+		"dx": [
+			"zero-config",
+			"ui",
+			"cross-platform"
+		],
+		"parity": [
+			"cloud-apis"
+		]
 	},
 	{
 		"kind": "tool",
@@ -992,7 +1868,16 @@
 		"group": "Dev environments",
 		"category": "Cloud workspaces",
 		"url": "https://aws.amazon.com/cloud9/",
-		"license": "paid"
+		"license": "paid",
+		"family": "environments",
+		"ring": "hold",
+		"dx": [
+			"ui",
+			"cross-platform"
+		],
+		"parity": [
+			"cloud-apis"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1003,7 +1888,17 @@
 		"group": "Dev environments",
 		"category": "Cloud workspaces",
 		"url": "https://azure.microsoft.com/en-us/products/dev-box",
-		"license": "paid"
+		"license": "paid",
+		"family": "environments",
+		"ring": "hold",
+		"dx": [
+			"ui",
+			"docs"
+		],
+		"parity": [
+			"cloud-apis",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1017,7 +1912,23 @@
 		"repo": "ddev/ddev",
 		"stars": 3933,
 		"license": "oss",
-		"author": "ddev"
+		"author": "ddev",
+		"family": "environments",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1031,7 +1942,22 @@
 		"repo": "lando/lando",
 		"stars": 4246,
 		"license": "oss",
-		"author": "lando"
+		"author": "lando",
+		"family": "environments",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1045,7 +1971,21 @@
 		"repo": "laravel/sail",
 		"stars": 1921,
 		"license": "oss",
-		"author": "laravel"
+		"author": "laravel",
+		"family": "environments",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"state"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1056,7 +1996,20 @@
 		"group": "Dev environments",
 		"category": "Local stacks",
 		"url": "https://herd.laravel.com",
-		"license": "freemium"
+		"license": "freemium",
+		"family": "environments",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"docs",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"state"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1067,7 +2020,20 @@
 		"group": "Dev environments",
 		"category": "Local stacks",
 		"url": "https://localwp.com",
-		"license": "free"
+		"license": "free",
+		"family": "environments",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"state"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1081,7 +2047,21 @@
 		"repo": "docksal/docksal",
 		"stars": 721,
 		"license": "oss",
-		"author": "docksal"
+		"author": "docksal",
+		"family": "environments",
+		"ring": "hold",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1095,7 +2075,26 @@
 		"repo": "flisk-sh/flisk",
 		"stars": 27,
 		"license": "oss",
-		"author": "flisk-sh"
+		"author": "flisk-sh",
+		"family": "inner-loop",
+		"ring": "assess",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"clear-errors",
+			"ui",
+			"docs",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1109,7 +2108,26 @@
 		"repo": "tilt-dev/tilt",
 		"stars": 10115,
 		"license": "oss",
-		"author": "tilt-dev"
+		"author": "tilt-dev",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"prod-artifacts",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1123,7 +2141,24 @@
 		"repo": "GoogleContainerTools/skaffold",
 		"stars": 15899,
 		"license": "oss",
-		"author": "GoogleContainerTools"
+		"author": "GoogleContainerTools",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"prod-artifacts",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1137,7 +2172,24 @@
 		"repo": "garden-io/garden",
 		"stars": 3617,
 		"license": "oss",
-		"author": "garden-io"
+		"author": "garden-io",
+		"family": "inner-loop",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"fast-feedback",
+			"docs",
+			"cross-platform"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"prod-artifacts",
+			"k8s",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1151,7 +2203,25 @@
 		"repo": "devspace-sh/devspace",
 		"stars": 5213,
 		"license": "oss",
-		"author": "devspace-sh"
+		"author": "devspace-sh",
+		"family": "inner-loop",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"prod-artifacts",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1165,7 +2235,25 @@
 		"repo": "okteto/okteto",
 		"stars": 3554,
 		"license": "freemium",
-		"author": "okteto"
+		"author": "okteto",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"prod-artifacts",
+			"k8s",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1179,7 +2267,18 @@
 		"repo": "dotnet/tye",
 		"stars": 5192,
 		"license": "oss",
-		"author": "dotnet"
+		"author": "dotnet",
+		"family": "inner-loop",
+		"ring": "hold",
+		"dx": [
+			"one-command",
+			"ui",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"multi-service"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1193,7 +2292,19 @@
 		"repo": "Azure/draft",
 		"stars": 646,
 		"license": "oss",
-		"author": "Azure"
+		"author": "Azure",
+		"family": "inner-loop",
+		"ring": "trial",
+		"dx": [
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1207,7 +2318,20 @@
 		"repo": "werf/werf",
 		"stars": 4738,
 		"license": "oss",
-		"author": "werf"
+		"author": "werf",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"prod-artifacts",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1221,7 +2345,19 @@
 		"repo": "helm/helm",
 		"stars": 30379,
 		"license": "oss",
-		"author": "helm"
+		"author": "helm",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"multi-service",
+			"prod-artifacts",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1235,7 +2371,20 @@
 		"repo": "kubernetes-sigs/kustomize",
 		"stars": 12191,
 		"license": "oss",
-		"author": "kubernetes-sigs"
+		"author": "kubernetes-sigs",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"prod-artifacts",
+			"k8s",
+			"config-secrets"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1249,7 +2398,17 @@
 		"repo": "stefanprodan/timoni",
 		"stars": 2022,
 		"license": "oss",
-		"author": "stefanprodan"
+		"author": "stefanprodan",
+		"family": "inner-loop",
+		"ring": "trial",
+		"dx": [
+			"docs",
+			"offline"
+		],
+		"parity": [
+			"prod-artifacts",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1263,7 +2422,18 @@
 		"repo": "carvel-dev/kapp",
 		"stars": 1098,
 		"license": "oss",
-		"author": "carvel-dev"
+		"author": "carvel-dev",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"prod-artifacts",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1277,7 +2447,18 @@
 		"repo": "kubernetes/kubectl",
 		"stars": 3365,
 		"license": "oss",
-		"author": "kubernetes"
+		"author": "kubernetes",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1291,7 +2472,20 @@
 		"repo": "helmfile/helmfile",
 		"stars": 5224,
 		"license": "oss",
-		"author": "helmfile"
+		"author": "helmfile",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"multi-service",
+			"prod-artifacts",
+			"k8s",
+			"config-secrets"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1305,7 +2499,17 @@
 		"repo": "grafana/tanka",
 		"stars": 2692,
 		"license": "oss",
-		"author": "grafana"
+		"author": "grafana",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"offline"
+		],
+		"parity": [
+			"prod-artifacts",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1319,7 +2523,18 @@
 		"repo": "cdk8s-team/cdk8s",
 		"stars": 4857,
 		"license": "oss",
-		"author": "cdk8s-team"
+		"author": "cdk8s-team",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"prod-artifacts",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1333,7 +2548,17 @@
 		"repo": "kubernetes-sigs/krew",
 		"stars": 7046,
 		"license": "oss",
-		"author": "kubernetes-sigs"
+		"author": "kubernetes-sigs",
+		"family": "inner-loop",
+		"ring": "trial",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"light"
+		],
+		"parity": [
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1347,7 +2572,19 @@
 		"repo": "stern/stern",
 		"stars": 4912,
 		"license": "oss",
-		"author": "stern"
+		"author": "stern",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"cross-platform",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": [
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1361,7 +2598,18 @@
 		"repo": "ahmetb/kubectx",
 		"stars": 20064,
 		"license": "oss",
-		"author": "ahmetb"
+		"author": "ahmetb",
+		"family": "inner-loop",
+		"ring": "trial",
+		"dx": [
+			"zero-config",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1375,7 +2623,17 @@
 		"repo": "kubie-org/kubie",
 		"stars": 2654,
 		"license": "oss",
-		"author": "kubie-org"
+		"author": "kubie-org",
+		"family": "inner-loop",
+		"ring": "trial",
+		"dx": [
+			"zero-config",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1389,7 +2647,20 @@
 		"repo": "telepresenceio/telepresence",
 		"stars": 7323,
 		"license": "oss",
-		"author": "telepresenceio"
+		"author": "telepresenceio",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"fast-feedback",
+			"docs",
+			"cross-platform"
+		],
+		"parity": [
+			"networking",
+			"state",
+			"k8s",
+			"config-secrets"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1403,7 +2674,22 @@
 		"repo": "metalbear-co/mirrord",
 		"stars": 5389,
 		"license": "oss",
-		"author": "metalbear-co"
+		"author": "metalbear-co",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform"
+		],
+		"parity": [
+			"networking",
+			"state",
+			"k8s",
+			"config-secrets"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1417,7 +2703,20 @@
 		"repo": "gefyrahq/gefyra",
 		"stars": 801,
 		"license": "oss",
-		"author": "gefyrahq"
+		"author": "gefyrahq",
+		"family": "inner-loop",
+		"ring": "trial",
+		"dx": [
+			"ui",
+			"docs",
+			"cross-platform"
+		],
+		"parity": [
+			"containers",
+			"networking",
+			"state",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1431,7 +2730,22 @@
 		"repo": "signadot/cli",
 		"stars": 8,
 		"license": "freemium",
-		"author": "signadot"
+		"author": "signadot",
+		"family": "inner-loop",
+		"ring": "trial",
+		"dx": [
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"multi-service",
+			"networking",
+			"state",
+			"k8s",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1445,7 +2759,18 @@
 		"repo": "txn2/kubefwd",
 		"stars": 4177,
 		"license": "oss",
-		"author": "txn2"
+		"author": "txn2",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"light"
+		],
+		"parity": [
+			"networking",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1459,7 +2784,17 @@
 		"repo": "Azure/Bridge-To-Kubernetes",
 		"stars": 220,
 		"license": "oss",
-		"author": "Azure"
+		"author": "Azure",
+		"family": "inner-loop",
+		"ring": "hold",
+		"dx": [
+			"fast-feedback",
+			"cross-platform"
+		],
+		"parity": [
+			"networking",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1473,7 +2808,20 @@
 		"repo": "derailed/k9s",
 		"stars": 34889,
 		"license": "oss",
-		"author": "derailed"
+		"author": "derailed",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1484,7 +2832,19 @@
 		"group": "Inner loop",
 		"category": "Cluster UIs",
 		"url": "https://k8slens.dev",
-		"license": "freemium"
+		"license": "freemium",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform"
+		],
+		"parity": [
+			"k8s",
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1498,7 +2858,19 @@
 		"repo": "kubernetes-sigs/headlamp",
 		"stars": 7528,
 		"license": "oss",
-		"author": "kubernetes-sigs"
+		"author": "kubernetes-sigs",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1512,7 +2884,19 @@
 		"repo": "freelensapp/freelens",
 		"stars": 5755,
 		"license": "oss",
-		"author": "freelensapp"
+		"author": "freelensapp",
+		"family": "inner-loop",
+		"ring": "trial",
+		"dx": [
+			"zero-config",
+			"ui",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"k8s",
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1526,7 +2910,19 @@
 		"repo": "kubetail-org/kubetail",
 		"stars": 1795,
 		"license": "oss",
-		"author": "kubetail-org"
+		"author": "kubetail-org",
+		"family": "inner-loop",
+		"ring": "trial",
+		"dx": [
+			"zero-config",
+			"ui",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1540,7 +2936,19 @@
 		"repo": "aptakube/aptakube",
 		"stars": 876,
 		"license": "paid",
-		"author": "aptakube"
+		"author": "aptakube",
+		"family": "inner-loop",
+		"ring": "trial",
+		"dx": [
+			"zero-config",
+			"ui",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1554,7 +2962,19 @@
 		"repo": "kdash-rs/kdash",
 		"stars": 2558,
 		"license": "oss",
-		"author": "kdash-rs"
+		"author": "kdash-rs",
+		"family": "inner-loop",
+		"ring": "trial",
+		"dx": [
+			"zero-config",
+			"ui",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1568,7 +2988,15 @@
 		"repo": "kubernetes/dashboard",
 		"stars": 15405,
 		"license": "oss",
-		"author": "kubernetes"
+		"author": "kubernetes",
+		"family": "inner-loop",
+		"ring": "hold",
+		"dx": [
+			"ui"
+		],
+		"parity": [
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1582,7 +3010,21 @@
 		"repo": "Unitech/pm2",
 		"stars": 43324,
 		"license": "oss",
-		"author": "Unitech"
+		"author": "Unitech",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": [
+			"multi-service"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1596,7 +3038,21 @@
 		"repo": "F1bonacc1/process-compose",
 		"stars": 2904,
 		"license": "oss",
-		"author": "F1bonacc1"
+		"author": "F1bonacc1",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": [
+			"multi-service"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1610,7 +3066,17 @@
 		"repo": "DarthSim/overmind",
 		"stars": 3757,
 		"license": "oss",
-		"author": "DarthSim"
+		"author": "DarthSim",
+		"family": "inner-loop",
+		"ring": "hold",
+		"dx": [
+			"one-command",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"multi-service"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1624,7 +3090,18 @@
 		"repo": "ddollar/foreman",
 		"stars": 6164,
 		"license": "oss",
-		"author": "ddollar"
+		"author": "ddollar",
+		"family": "inner-loop",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"multi-service"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1638,7 +3115,17 @@
 		"repo": "DarthSim/hivemind",
 		"stars": 1159,
 		"license": "oss",
-		"author": "DarthSim"
+		"author": "DarthSim",
+		"family": "inner-loop",
+		"ring": "hold",
+		"dx": [
+			"one-command",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"multi-service"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1652,7 +3139,19 @@
 		"repo": "nickstenning/honcho",
 		"stars": 1717,
 		"license": "oss",
-		"author": "nickstenning"
+		"author": "nickstenning",
+		"family": "inner-loop",
+		"ring": "hold",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"multi-service"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1666,7 +3165,19 @@
 		"repo": "mattn/goreman",
 		"stars": 2650,
 		"license": "oss",
-		"author": "mattn"
+		"author": "mattn",
+		"family": "inner-loop",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"multi-service"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1680,7 +3191,20 @@
 		"repo": "open-cli-tools/concurrently",
 		"stars": 7865,
 		"license": "oss",
-		"author": "open-cli-tools"
+		"author": "open-cli-tools",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"multi-service"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1694,7 +3218,20 @@
 		"repo": "pvolok/mprocs",
 		"stars": 2779,
 		"license": "oss",
-		"author": "pvolok"
+		"author": "pvolok",
+		"family": "inner-loop",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"multi-service"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1708,7 +3245,18 @@
 		"repo": "remy/nodemon",
 		"stars": 26656,
 		"license": "oss",
-		"author": "remy"
+		"author": "remy",
+		"family": "inner-loop",
+		"ring": "trial",
+		"dx": [
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -1722,7 +3270,18 @@
 		"repo": "air-verse/air",
 		"stars": 24098,
 		"license": "oss",
-		"author": "air-verse"
+		"author": "air-verse",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -1736,7 +3295,18 @@
 		"repo": "watchexec/watchexec",
 		"stars": 7259,
 		"license": "oss",
-		"author": "watchexec"
+		"author": "watchexec",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -1750,7 +3320,19 @@
 		"repo": "Canop/bacon",
 		"stars": 3458,
 		"license": "oss",
-		"author": "Canop"
+		"author": "Canop",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -1764,7 +3346,17 @@
 		"repo": "watchexec/cargo-watch",
 		"stars": 2852,
 		"license": "oss",
-		"author": "watchexec"
+		"author": "watchexec",
+		"family": "inner-loop",
+		"ring": "hold",
+		"dx": [
+			"zero-config",
+			"fast-feedback",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -1778,7 +3370,16 @@
 		"repo": "facebook/watchman",
 		"stars": 13756,
 		"license": "oss",
-		"author": "facebook"
+		"author": "facebook",
+		"family": "inner-loop",
+		"ring": "adopt",
+		"dx": [
+			"fast-feedback",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -1792,7 +3393,16 @@
 		"repo": "cespare/reflex",
 		"stars": 3550,
 		"license": "oss",
-		"author": "cespare"
+		"author": "cespare",
+		"family": "inner-loop",
+		"ring": "trial",
+		"dx": [
+			"zero-config",
+			"fast-feedback",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -1806,7 +3416,22 @@
 		"repo": "moby/moby",
 		"stars": 72219,
 		"license": "oss",
-		"author": "moby"
+		"author": "moby",
+		"family": "containers",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"docs",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"networking",
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1817,7 +3442,26 @@
 		"group": "Containers & clusters",
 		"category": "Container runtimes",
 		"url": "https://www.docker.com/products/docker-desktop/",
-		"license": "freemium"
+		"license": "freemium",
+		"family": "containers",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"clear-errors",
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"prod-artifacts",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1831,7 +3475,23 @@
 		"repo": "containers/podman",
 		"stars": 33141,
 		"license": "oss",
-		"author": "containers"
+		"author": "containers",
+		"family": "containers",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"networking",
+			"state",
+			"prod-artifacts",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1845,7 +3505,25 @@
 		"repo": "podman-desktop/podman-desktop",
 		"stars": 8116,
 		"license": "oss",
-		"author": "podman-desktop"
+		"author": "podman-desktop",
+		"family": "containers",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"prod-artifacts",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1859,7 +3537,25 @@
 		"repo": "rancher-sandbox/rancher-desktop",
 		"stars": 7402,
 		"license": "oss",
-		"author": "rancher-sandbox"
+		"author": "rancher-sandbox",
+		"family": "containers",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"prod-artifacts",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1870,7 +3566,26 @@
 		"group": "Containers & clusters",
 		"category": "Container runtimes",
 		"url": "https://orbstack.dev",
-		"license": "freemium"
+		"license": "freemium",
+		"family": "containers",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"prod-artifacts",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1884,7 +3599,23 @@
 		"repo": "abiosoft/colima",
 		"stars": 31428,
 		"license": "oss",
-		"author": "abiosoft"
+		"author": "abiosoft",
+		"family": "containers",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers",
+			"networking",
+			"state",
+			"prod-artifacts",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1898,7 +3629,20 @@
 		"repo": "lima-vm/lima",
 		"stars": 22193,
 		"license": "oss",
-		"author": "lima-vm"
+		"author": "lima-vm",
+		"family": "containers",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"networking",
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1912,7 +3656,19 @@
 		"repo": "containerd/containerd",
 		"stars": 21446,
 		"license": "oss",
-		"author": "containerd"
+		"author": "containerd",
+		"family": "containers",
+		"ring": "adopt",
+		"dx": [
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1926,7 +3682,21 @@
 		"repo": "containerd/nerdctl",
 		"stars": 10458,
 		"license": "oss",
-		"author": "containerd"
+		"author": "containerd",
+		"family": "containers",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1940,7 +3710,23 @@
 		"repo": "runfinch/finch",
 		"stars": 4077,
 		"license": "oss",
-		"author": "runfinch"
+		"author": "runfinch",
+		"family": "containers",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1954,7 +3740,17 @@
 		"repo": "apple/container",
 		"stars": 50944,
 		"license": "oss",
-		"author": "apple"
+		"author": "apple",
+		"family": "containers",
+		"ring": "trial",
+		"dx": [
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1968,7 +3764,25 @@
 		"repo": "docker/compose",
 		"stars": 38517,
 		"license": "oss",
-		"author": "docker"
+		"author": "docker",
+		"family": "containers",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"prod-artifacts",
+			"config-secrets"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1982,7 +3796,23 @@
 		"repo": "docker/compose",
 		"stars": 38517,
 		"license": "oss",
-		"author": "docker"
+		"author": "docker",
+		"family": "containers",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -1996,7 +3826,21 @@
 		"repo": "containers/podman-compose",
 		"stars": 6251,
 		"license": "oss",
-		"author": "containers"
+		"author": "containers",
+		"family": "containers",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2010,7 +3854,21 @@
 		"repo": "kubernetes/kompose",
 		"stars": 10644,
 		"license": "oss",
-		"author": "kubernetes"
+		"author": "kubernetes",
+		"family": "containers",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2024,7 +3882,23 @@
 		"repo": "kubernetes-sigs/kind",
 		"stars": 15579,
 		"license": "oss",
-		"author": "kubernetes-sigs"
+		"author": "kubernetes-sigs",
+		"family": "containers",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2038,7 +3912,24 @@
 		"repo": "k3d-io/k3d",
 		"stars": 6605,
 		"license": "oss",
-		"author": "k3d-io"
+		"author": "k3d-io",
+		"family": "containers",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2052,7 +3943,24 @@
 		"repo": "k3s-io/k3s",
 		"stars": 34270,
 		"license": "oss",
-		"author": "k3s-io"
+		"author": "k3s-io",
+		"family": "containers",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"prod-artifacts",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2066,7 +3974,25 @@
 		"repo": "kubernetes/minikube",
 		"stars": 32217,
 		"license": "oss",
-		"author": "kubernetes"
+		"author": "kubernetes",
+		"family": "containers",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"clear-errors",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2080,7 +4006,24 @@
 		"repo": "canonical/microk8s",
 		"stars": 9377,
 		"license": "oss",
-		"author": "canonical"
+		"author": "canonical",
+		"family": "containers",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"prod-artifacts",
+			"k8s",
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2094,7 +4037,24 @@
 		"repo": "k0sproject/k0s",
 		"stars": 6554,
 		"license": "oss",
-		"author": "k0sproject"
+		"author": "k0sproject",
+		"family": "containers",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"prod-artifacts",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2108,7 +4068,23 @@
 		"repo": "loft-sh/vcluster",
 		"stars": 11366,
 		"license": "oss",
-		"author": "loft-sh"
+		"author": "loft-sh",
+		"family": "containers",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"prod-artifacts",
+			"k8s",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2122,7 +4098,25 @@
 		"repo": "kubernetes/kubernetes",
 		"stars": 128584,
 		"license": "oss",
-		"author": "kubernetes"
+		"author": "kubernetes",
+		"family": "containers",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"prod-artifacts",
+			"k8s",
+			"config-secrets",
+			"observability",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2136,7 +4130,20 @@
 		"repo": "moby/buildkit",
 		"stars": 10345,
 		"license": "oss",
-		"author": "moby"
+		"author": "moby",
+		"family": "containers",
+		"ring": "adopt",
+		"dx": [
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts",
+			"config-secrets"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2150,7 +4157,20 @@
 		"repo": "buildpacks/pack",
 		"stars": 3016,
 		"license": "oss",
-		"author": "buildpacks"
+		"author": "buildpacks",
+		"family": "containers",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2164,7 +4184,22 @@
 		"repo": "ko-build/ko",
 		"stars": 8578,
 		"license": "oss",
-		"author": "ko-build"
+		"author": "ko-build",
+		"family": "containers",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"light"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2178,7 +4213,19 @@
 		"repo": "GoogleContainerTools/jib",
 		"stars": 14451,
 		"license": "oss",
-		"author": "GoogleContainerTools"
+		"author": "GoogleContainerTools",
+		"family": "containers",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2192,7 +4239,17 @@
 		"repo": "GoogleContainerTools/kaniko",
 		"stars": 15751,
 		"license": "oss",
-		"author": "GoogleContainerTools"
+		"author": "GoogleContainerTools",
+		"family": "containers",
+		"ring": "hold",
+		"dx": [
+			"cross-platform"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2206,7 +4263,19 @@
 		"repo": "containers/buildah",
 		"stars": 9158,
 		"license": "oss",
-		"author": "containers"
+		"author": "containers",
+		"family": "containers",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2220,7 +4289,18 @@
 		"repo": "railwayapp/nixpacks",
 		"stars": 3554,
 		"license": "oss",
-		"author": "railwayapp"
+		"author": "railwayapp",
+		"family": "containers",
+		"ring": "hold",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2234,7 +4314,18 @@
 		"repo": "railwayapp/railpack",
 		"stars": 1245,
 		"license": "oss",
-		"author": "railwayapp"
+		"author": "railwayapp",
+		"family": "containers",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2248,7 +4339,20 @@
 		"repo": "depot/cli",
 		"stars": 212,
 		"license": "paid",
-		"author": "depot"
+		"author": "depot",
+		"family": "containers",
+		"ring": "adopt",
+		"dx": [
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2262,7 +4366,22 @@
 		"repo": "portainer/portainer",
 		"stars": 38735,
 		"license": "freemium",
-		"author": "portainer"
+		"author": "portainer",
+		"family": "containers",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2276,7 +4395,21 @@
 		"repo": "jesseduffield/lazydocker",
 		"stars": 53215,
 		"license": "oss",
-		"author": "jesseduffield"
+		"author": "jesseduffield",
+		"family": "containers",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers",
+			"multi-service"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2290,7 +4423,21 @@
 		"repo": "wagoodman/dive",
 		"stars": 54673,
 		"license": "oss",
-		"author": "wagoodman"
+		"author": "wagoodman",
+		"family": "containers",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2301,7 +4448,22 @@
 		"group": "Local services & data",
 		"category": "Cloud emulators",
 		"url": "https://www.localstack.cloud",
-		"license": "freemium"
+		"license": "freemium",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"cloud-apis"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2315,7 +4477,19 @@
 		"repo": "getmoto/moto",
 		"stars": 8727,
 		"license": "oss",
-		"author": "getmoto"
+		"author": "getmoto",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"cloud-apis"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2329,7 +4503,21 @@
 		"repo": "minio/minio",
 		"stars": 61298,
 		"license": "oss",
-		"author": "minio"
+		"author": "minio",
+		"family": "services",
+		"ring": "hold",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"state",
+			"cloud-apis"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2343,7 +4531,21 @@
 		"repo": "Azure/Azurite",
 		"stars": 2283,
 		"license": "oss",
-		"author": "Azure"
+		"author": "Azure",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"state",
+			"cloud-apis"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2357,7 +4559,23 @@
 		"repo": "firebase/firebase-tools",
 		"stars": 4484,
 		"license": "oss",
-		"author": "firebase"
+		"author": "firebase",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"multi-service",
+			"state",
+			"cloud-apis"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2368,7 +4586,18 @@
 		"group": "Local services & data",
 		"category": "Cloud emulators",
 		"url": "https://cloud.google.com/sdk/gcloud/reference/beta/emulators",
-		"license": "free"
+		"license": "free",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"cloud-apis"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2382,7 +4611,22 @@
 		"repo": "cloudflare/workers-sdk",
 		"stars": 4674,
 		"license": "oss",
-		"author": "cloudflare"
+		"author": "cloudflare",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"state",
+			"prod-artifacts",
+			"cloud-apis"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2396,7 +4640,20 @@
 		"repo": "fsouza/fake-gcs-server",
 		"stars": 1491,
 		"license": "oss",
-		"author": "fsouza"
+		"author": "fsouza",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"state",
+			"cloud-apis"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2410,7 +4667,23 @@
 		"repo": "supabase/cli",
 		"stars": 2445,
 		"license": "oss",
-		"author": "supabase"
+		"author": "supabase",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2424,7 +4697,23 @@
 		"repo": "appwrite/appwrite",
 		"stars": 57786,
 		"license": "oss",
-		"author": "appwrite"
+		"author": "appwrite",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2435,7 +4724,21 @@
 		"group": "Local services & data",
 		"category": "Local backends",
 		"url": "https://pocketbase.io",
-		"license": "oss"
+		"license": "oss",
+		"family": "services",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"state"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2449,7 +4752,21 @@
 		"repo": "get-convex/convex-backend",
 		"stars": 12765,
 		"license": "freemium",
-		"author": "get-convex"
+		"author": "get-convex",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"state"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2463,7 +4780,22 @@
 		"repo": "nhost/nhost",
 		"stars": 9370,
 		"license": "oss",
-		"author": "nhost"
+		"author": "nhost",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2477,7 +4809,18 @@
 		"repo": "neondatabase/neon",
 		"stars": 23270,
 		"license": "freemium",
-		"author": "neondatabase"
+		"author": "neondatabase",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"state"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2491,7 +4834,17 @@
 		"repo": "wiremock/wiremock",
 		"stars": 7413,
 		"license": "oss",
-		"author": "wiremock"
+		"author": "wiremock",
+		"family": "services",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -2505,7 +4858,19 @@
 		"repo": "mockoon/mockoon",
 		"stars": 8463,
 		"license": "oss",
-		"author": "mockoon"
+		"author": "mockoon",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -2519,7 +4884,19 @@
 		"repo": "stoplightio/prism",
 		"stars": 5061,
 		"license": "oss",
-		"author": "stoplightio"
+		"author": "stoplightio",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"clear-errors",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -2533,7 +4910,16 @@
 		"repo": "mswjs/msw",
 		"stars": 18316,
 		"license": "oss",
-		"author": "mswjs"
+		"author": "mswjs",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -2547,7 +4933,20 @@
 		"repo": "axllent/mailpit",
 		"stars": 10779,
 		"license": "oss",
-		"author": "axllent"
+		"author": "axllent",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -2561,7 +4960,18 @@
 		"repo": "mailhog/MailHog",
 		"stars": 16197,
 		"license": "oss",
-		"author": "mailhog"
+		"author": "mailhog",
+		"family": "services",
+		"ring": "hold",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -2572,7 +4982,20 @@
 		"group": "Local services & data",
 		"category": "Mocks and tunnels",
 		"url": "https://ngrok.com",
-		"license": "freemium"
+		"license": "freemium",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"light",
+			"agent-ready"
+		],
+		"parity": [
+			"networking"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2586,7 +5009,18 @@
 		"repo": "cloudflare/cloudflared",
 		"stars": 16322,
 		"license": "freemium",
-		"author": "cloudflare"
+		"author": "cloudflare",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"light"
+		],
+		"parity": [
+			"networking"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2600,7 +5034,18 @@
 		"repo": "localtunnel/localtunnel",
 		"stars": 22497,
 		"license": "oss",
-		"author": "localtunnel"
+		"author": "localtunnel",
+		"family": "services",
+		"ring": "hold",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"cross-platform",
+			"light"
+		],
+		"parity": [
+			"networking"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2614,7 +5059,18 @@
 		"repo": "tailscale/tailscale",
 		"stars": 38215,
 		"license": "freemium",
-		"author": "tailscale"
+		"author": "tailscale",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"light"
+		],
+		"parity": [
+			"networking"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2628,7 +5084,21 @@
 		"repo": "microcks/microcks",
 		"stars": 2071,
 		"license": "oss",
-		"author": "microcks"
+		"author": "microcks",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2642,7 +5112,22 @@
 		"repo": "testcontainers/testcontainers-java",
 		"stars": 8758,
 		"license": "oss",
-		"author": "testcontainers"
+		"author": "testcontainers",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2656,7 +5141,19 @@
 		"repo": "Shopify/toxiproxy",
 		"stars": 12472,
 		"license": "oss",
-		"author": "Shopify"
+		"author": "Shopify",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"cross-platform",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": [
+			"networking"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2670,7 +5167,18 @@
 		"repo": "pact-foundation/pact-js",
 		"stars": 1825,
 		"license": "oss",
-		"author": "pact-foundation"
+		"author": "pact-foundation",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2683,7 +5191,20 @@
 		"url": "https://vitest.dev",
 		"repo": "vitest-dev/vitest",
 		"license": "oss",
-		"author": "vitest-dev"
+		"author": "vitest-dev",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -2697,7 +5218,22 @@
 		"repo": "prisma/prisma",
 		"stars": 47669,
 		"license": "oss",
-		"author": "prisma"
+		"author": "prisma",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"clear-errors",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2711,7 +5247,21 @@
 		"repo": "drizzle-team/drizzle-orm",
 		"stars": 36171,
 		"license": "oss",
-		"author": "drizzle-team"
+		"author": "drizzle-team",
+		"family": "services",
+		"ring": "trial",
+		"dx": [
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2725,7 +5275,21 @@
 		"repo": "ariga/atlas",
 		"stars": 8802,
 		"license": "freemium",
-		"author": "ariga"
+		"author": "ariga",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"clear-errors",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"state",
+			"prod-artifacts",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2739,7 +5303,21 @@
 		"repo": "amacneil/dbmate",
 		"stars": 7497,
 		"license": "oss",
-		"author": "amacneil"
+		"author": "amacneil",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2753,7 +5331,20 @@
 		"repo": "flyway/flyway",
 		"stars": 10175,
 		"license": "freemium",
-		"author": "flyway"
+		"author": "flyway",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"state",
+			"prod-artifacts",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2767,7 +5358,20 @@
 		"repo": "liquibase/liquibase",
 		"stars": 5637,
 		"license": "freemium",
-		"author": "liquibase"
+		"author": "liquibase",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"state",
+			"prod-artifacts",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2781,7 +5385,20 @@
 		"repo": "golang-migrate/migrate",
 		"stars": 18994,
 		"license": "oss",
-		"author": "golang-migrate"
+		"author": "golang-migrate",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2795,7 +5412,18 @@
 		"repo": "sqitchers/sqitch",
 		"stars": 3179,
 		"license": "oss",
-		"author": "sqitchers"
+		"author": "sqitchers",
+		"family": "services",
+		"ring": "trial",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2809,7 +5437,20 @@
 		"repo": "sqlalchemy/alembic",
 		"stars": 4458,
 		"license": "oss",
-		"author": "sqlalchemy"
+		"author": "sqlalchemy",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2823,7 +5464,19 @@
 		"repo": "kysely-org/kysely",
 		"stars": 14311,
 		"license": "oss",
-		"author": "kysely-org"
+		"author": "kysely-org",
+		"family": "services",
+		"ring": "trial",
+		"dx": [
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"state"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2837,7 +5490,18 @@
 		"repo": "typeorm/typeorm",
 		"stars": 36663,
 		"license": "oss",
-		"author": "typeorm"
+		"author": "typeorm",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2851,7 +5515,18 @@
 		"repo": "sequelize/sequelize",
 		"stars": 30348,
 		"license": "oss",
-		"author": "sequelize"
+		"author": "sequelize",
+		"family": "services",
+		"ring": "trial",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2865,7 +5540,18 @@
 		"repo": "sqlalchemy/sqlalchemy",
 		"stars": 12269,
 		"license": "oss",
-		"author": "sqlalchemy"
+		"author": "sqlalchemy",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"state"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2879,7 +5565,19 @@
 		"repo": "dotnet/efcore",
 		"stars": 14812,
 		"license": "oss",
-		"author": "dotnet"
+		"author": "dotnet",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2893,7 +5591,18 @@
 		"repo": "sqlc-dev/sqlc",
 		"stars": 18418,
 		"license": "oss",
-		"author": "sqlc-dev"
+		"author": "sqlc-dev",
+		"family": "services",
+		"ring": "trial",
+		"dx": [
+			"zero-config",
+			"clear-errors",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -2907,7 +5616,18 @@
 		"repo": "mikro-orm/mikro-orm",
 		"stars": 9264,
 		"license": "oss",
-		"author": "mikro-orm"
+		"author": "mikro-orm",
+		"family": "services",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2921,7 +5641,19 @@
 		"repo": "launchbadge/sqlx",
 		"stars": 17607,
 		"license": "oss",
-		"author": "launchbadge"
+		"author": "launchbadge",
+		"family": "services",
+		"ring": "trial",
+		"dx": [
+			"clear-errors",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"state",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2935,7 +5667,22 @@
 		"repo": "nrwl/nx",
 		"stars": 29435,
 		"license": "oss",
-		"author": "nrwl"
+		"author": "nrwl",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"multi-service",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2949,7 +5696,24 @@
 		"repo": "vercel/turborepo",
 		"stars": 31267,
 		"license": "oss",
-		"author": "vercel"
+		"author": "vercel",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": [
+			"multi-service",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2963,7 +5727,19 @@
 		"repo": "lerna/lerna",
 		"stars": 36039,
 		"license": "oss",
-		"author": "lerna"
+		"author": "lerna",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2977,7 +5753,18 @@
 		"repo": "microsoft/rushstack",
 		"stars": 6503,
 		"license": "oss",
-		"author": "microsoft"
+		"author": "microsoft",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"fast-feedback",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -2991,7 +5778,22 @@
 		"repo": "moonrepo/moon",
 		"stars": 4169,
 		"license": "oss",
-		"author": "moonrepo"
+		"author": "moonrepo",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": [
+			"multi-service",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3005,7 +5807,18 @@
 		"repo": "microsoft/lage",
 		"stars": 817,
 		"license": "oss",
-		"author": "microsoft"
+		"author": "microsoft",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"fast-feedback",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3019,7 +5832,17 @@
 		"repo": "changesets/changesets",
 		"stars": 12536,
 		"license": "oss",
-		"author": "changesets"
+		"author": "changesets",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -3033,7 +5856,26 @@
 		"repo": "dotnet/aspire",
 		"stars": 6388,
 		"license": "oss",
-		"author": "dotnet"
+		"author": "dotnet",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"cloud-apis",
+			"config-secrets",
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3047,7 +5889,26 @@
 		"repo": "encoredev/encore",
 		"stars": 12644,
 		"license": "oss",
-		"author": "encoredev"
+		"author": "encoredev",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"clear-errors",
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"state",
+			"config-secrets",
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3061,7 +5922,27 @@
 		"repo": "dapr/dapr",
 		"stars": 26165,
 		"license": "oss",
-		"author": "dapr"
+		"author": "dapr",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"networking",
+			"state",
+			"k8s",
+			"cloud-apis",
+			"config-secrets",
+			"observability",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3075,7 +5956,21 @@
 		"repo": "wasp-lang/wasp",
 		"stars": 18792,
 		"license": "oss",
-		"author": "wasp-lang"
+		"author": "wasp-lang",
+		"family": "frameworks",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"state"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3089,7 +5984,19 @@
 		"repo": "redwoodjs/redwood",
 		"stars": 17590,
 		"license": "oss",
-		"author": "redwoodjs"
+		"author": "redwoodjs",
+		"family": "frameworks",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"state"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3103,7 +6010,23 @@
 		"repo": "nitrictech/nitric",
 		"stars": 2019,
 		"license": "oss",
-		"author": "nitrictech"
+		"author": "nitrictech",
+		"family": "frameworks",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"cloud-apis"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3117,7 +6040,26 @@
 		"repo": "quarkusio/quarkus",
 		"stars": 15969,
 		"license": "oss",
-		"author": "quarkusio"
+		"author": "quarkusio",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"state",
+			"config-secrets",
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3131,7 +6073,25 @@
 		"repo": "spring-projects/spring-boot",
 		"stars": 81774,
 		"license": "oss",
-		"author": "spring-projects"
+		"author": "spring-projects",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"state",
+			"prod-artifacts",
+			"config-secrets",
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3145,7 +6105,22 @@
 		"repo": "micronaut-projects/micronaut-core",
 		"stars": 6436,
 		"license": "oss",
-		"author": "micronaut-projects"
+		"author": "micronaut-projects",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"state",
+			"config-secrets",
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3159,7 +6134,24 @@
 		"repo": "rails/rails",
 		"stars": 58857,
 		"license": "oss",
-		"author": "rails"
+		"author": "rails",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"clear-errors",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"state",
+			"prod-artifacts",
+			"config-secrets"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3173,7 +6165,24 @@
 		"repo": "laravel/framework",
 		"stars": 34984,
 		"license": "oss",
-		"author": "laravel"
+		"author": "laravel",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"clear-errors",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"state"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3187,7 +6196,21 @@
 		"repo": "django/django",
 		"stars": 91531,
 		"license": "oss",
-		"author": "django"
+		"author": "django",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"fast-feedback",
+			"clear-errors",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"state"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3201,7 +6224,20 @@
 		"repo": "vercel/next.js",
 		"stars": 143177,
 		"license": "oss",
-		"author": "vercel"
+		"author": "vercel",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"clear-errors",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -3215,7 +6251,19 @@
 		"repo": "remix-run/react-router",
 		"stars": 56628,
 		"license": "oss",
-		"author": "remix-run"
+		"author": "remix-run",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -3229,7 +6277,21 @@
 		"repo": "withastro/astro",
 		"stars": 63547,
 		"license": "oss",
-		"author": "withastro"
+		"author": "withastro",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"clear-errors",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -3243,7 +6305,17 @@
 		"repo": "nestjs/nest",
 		"stars": 76932,
 		"license": "oss",
-		"author": "nestjs"
+		"author": "nestjs",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -3257,7 +6329,18 @@
 		"repo": "honojs/hono",
 		"stars": 32736,
 		"license": "oss",
-		"author": "honojs"
+		"author": "honojs",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -3271,7 +6354,19 @@
 		"repo": "fastapi/fastapi",
 		"stars": 104237,
 		"license": "oss",
-		"author": "fastapi"
+		"author": "fastapi",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -3284,7 +6379,23 @@
 		"url": "https://expo.dev",
 		"repo": "expo/expo",
 		"license": "oss",
-		"author": "expo"
+		"author": "expo",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"clear-errors",
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"prod-artifacts",
+			"config-secrets"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3298,7 +6409,23 @@
 		"repo": "sst/sst",
 		"stars": 26384,
 		"license": "oss",
-		"author": "sst"
+		"author": "sst",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform"
+		],
+		"parity": [
+			"multi-service",
+			"state",
+			"prod-artifacts",
+			"cloud-apis",
+			"config-secrets"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3312,7 +6439,20 @@
 		"repo": "serverless/serverless",
 		"stars": 46924,
 		"license": "freemium",
-		"author": "serverless"
+		"author": "serverless",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"fast-feedback",
+			"docs",
+			"cross-platform"
+		],
+		"parity": [
+			"prod-artifacts",
+			"cloud-apis",
+			"config-secrets"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3326,7 +6466,21 @@
 		"repo": "aws/aws-sam-cli",
 		"stars": 6739,
 		"license": "oss",
-		"author": "aws"
+		"author": "aws",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts",
+			"cloud-apis"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3340,7 +6494,22 @@
 		"repo": "architect/architect",
 		"stars": 2627,
 		"license": "oss",
-		"author": "architect"
+		"author": "architect",
+		"family": "frameworks",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"prod-artifacts",
+			"cloud-apis"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3354,7 +6523,23 @@
 		"repo": "cloudflare/workers-sdk",
 		"stars": 4674,
 		"license": "oss",
-		"author": "cloudflare"
+		"author": "cloudflare",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"state",
+			"prod-artifacts",
+			"cloud-apis"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3368,7 +6553,19 @@
 		"repo": "vercel/vercel",
 		"stars": 16462,
 		"license": "freemium",
-		"author": "vercel"
+		"author": "vercel",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform"
+		],
+		"parity": [
+			"prod-artifacts",
+			"cloud-apis",
+			"config-secrets"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3382,7 +6579,19 @@
 		"repo": "netlify/cli",
 		"stars": 1934,
 		"license": "freemium",
-		"author": "netlify"
+		"author": "netlify",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"fast-feedback",
+			"docs",
+			"cross-platform"
+		],
+		"parity": [
+			"cloud-apis",
+			"config-secrets"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3396,7 +6605,19 @@
 		"repo": "Azure/azure-functions-core-tools",
 		"stars": 1465,
 		"license": "oss",
-		"author": "Azure"
+		"author": "Azure",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"prod-artifacts",
+			"cloud-apis"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3410,7 +6631,17 @@
 		"repo": "t3-oss/create-t3-app",
 		"stars": 29191,
 		"license": "oss",
-		"author": "t3-oss"
+		"author": "t3-oss",
+		"family": "frameworks",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -3424,7 +6655,18 @@
 		"repo": "vitejs/vite",
 		"stars": 83618,
 		"license": "oss",
-		"author": "vitejs"
+		"author": "vitejs",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -3438,7 +6680,16 @@
 		"repo": "yeoman/yo",
 		"stars": 3965,
 		"license": "oss",
-		"author": "yeoman"
+		"author": "yeoman",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -3452,7 +6703,23 @@
 		"repo": "jhipster/generator-jhipster",
 		"stars": 22461,
 		"license": "oss",
-		"author": "jhipster"
+		"author": "jhipster",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"state",
+			"prod-artifacts",
+			"k8s",
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3466,7 +6733,16 @@
 		"repo": "cookiecutter/cookiecutter",
 		"stars": 25171,
 		"license": "oss",
-		"author": "cookiecutter"
+		"author": "cookiecutter",
+		"family": "frameworks",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -3480,7 +6756,16 @@
 		"repo": "copier-org/copier",
 		"stars": 3661,
 		"license": "oss",
-		"author": "copier-org"
+		"author": "copier-org",
+		"family": "frameworks",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -3494,7 +6779,17 @@
 		"repo": "plopjs/plop",
 		"stars": 7688,
 		"license": "oss",
-		"author": "plopjs"
+		"author": "plopjs",
+		"family": "frameworks",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -3508,7 +6803,24 @@
 		"repo": "hashicorp/terraform",
 		"stars": 50082,
 		"license": "freemium",
-		"author": "hashicorp"
+		"author": "hashicorp",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"clear-errors",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": [
+			"prod-artifacts",
+			"k8s",
+			"cloud-apis",
+			"config-secrets",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3522,7 +6834,24 @@
 		"repo": "opentofu/opentofu",
 		"stars": 30649,
 		"license": "oss",
-		"author": "opentofu"
+		"author": "opentofu",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"clear-errors",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": [
+			"prod-artifacts",
+			"k8s",
+			"cloud-apis",
+			"config-secrets",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3536,7 +6865,24 @@
 		"repo": "pulumi/pulumi",
 		"stars": 25825,
 		"license": "oss",
-		"author": "pulumi"
+		"author": "pulumi",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"clear-errors",
+			"docs",
+			"cross-platform",
+			"light",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts",
+			"k8s",
+			"cloud-apis",
+			"config-secrets",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3550,7 +6896,21 @@
 		"repo": "aws/aws-cdk",
 		"stars": 12956,
 		"license": "oss",
-		"author": "aws"
+		"author": "aws",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts",
+			"cloud-apis",
+			"config-secrets",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3561,7 +6921,20 @@
 		"group": "Platform",
 		"category": "Infrastructure as code",
 		"url": "https://aws.amazon.com/cloudformation/",
-		"license": "free"
+		"license": "free",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"prod-artifacts",
+			"cloud-apis",
+			"config-secrets",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3575,7 +6948,20 @@
 		"repo": "Azure/bicep",
 		"stars": 3660,
 		"license": "oss",
-		"author": "Azure"
+		"author": "Azure",
+		"family": "platform",
+		"ring": "trial",
+		"dx": [
+			"clear-errors",
+			"docs",
+			"cross-platform",
+			"light"
+		],
+		"parity": [
+			"prod-artifacts",
+			"cloud-apis",
+			"config-secrets"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3589,7 +6975,22 @@
 		"repo": "crossplane/crossplane",
 		"stars": 12201,
 		"license": "oss",
-		"author": "crossplane"
+		"author": "crossplane",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"k8s",
+			"cloud-apis",
+			"config-secrets",
+			"observability",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3603,7 +7004,21 @@
 		"repo": "gruntwork-io/terragrunt",
 		"stars": 9902,
 		"license": "oss",
-		"author": "gruntwork-io"
+		"author": "gruntwork-io",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"prod-artifacts",
+			"cloud-apis",
+			"config-secrets",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3617,7 +7032,22 @@
 		"repo": "ansible/ansible",
 		"stars": 71159,
 		"license": "oss",
-		"author": "ansible"
+		"author": "ansible",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts",
+			"k8s",
+			"cloud-apis",
+			"config-secrets",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3631,7 +7061,18 @@
 		"repo": "hashicorp/terraform-cdk",
 		"stars": 5066,
 		"license": "oss",
-		"author": "hashicorp"
+		"author": "hashicorp",
+		"family": "platform",
+		"ring": "hold",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"prod-artifacts",
+			"cloud-apis"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3645,7 +7086,19 @@
 		"repo": "backstage/backstage",
 		"stars": 34731,
 		"license": "oss",
-		"author": "backstage"
+		"author": "backstage",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"k8s",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3659,7 +7112,19 @@
 		"repo": "port-labs/ocean",
 		"stars": 194,
 		"license": "freemium",
-		"author": "port-labs"
+		"author": "port-labs",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"ui",
+			"docs",
+			"agent-ready"
+		],
+		"parity": [
+			"k8s",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3673,7 +7138,17 @@
 		"repo": "cortexapps/cli",
 		"stars": 20,
 		"license": "paid",
-		"author": "cortexapps"
+		"author": "cortexapps",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"ui",
+			"docs",
+			"agent-ready"
+		],
+		"parity": [
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3687,7 +7162,18 @@
 		"repo": "OpsLevel/cli",
 		"stars": 6,
 		"license": "paid",
-		"author": "OpsLevel"
+		"author": "OpsLevel",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3701,7 +7187,22 @@
 		"repo": "humanitec/cli",
 		"stars": 3,
 		"license": "paid",
-		"author": "humanitec"
+		"author": "humanitec",
+		"family": "platform",
+		"ring": "trial",
+		"dx": [
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"k8s",
+			"cloud-apis",
+			"config-secrets",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3715,7 +7216,18 @@
 		"repo": "syntasso/kratix",
 		"stars": 785,
 		"license": "oss",
-		"author": "syntasso"
+		"author": "syntasso",
+		"family": "platform",
+		"ring": "trial",
+		"dx": [
+			"docs"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"k8s",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3729,7 +7241,18 @@
 		"repo": "RoadieHQ/roadie-backstage-plugins",
 		"stars": 345,
 		"license": "paid",
-		"author": "RoadieHQ"
+		"author": "RoadieHQ",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"ui",
+			"docs"
+		],
+		"parity": [
+			"k8s",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3743,7 +7266,24 @@
 		"repo": "actions/runner",
 		"stars": 6364,
 		"license": "freemium",
-		"author": "actions"
+		"author": "actions",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"prod-artifacts",
+			"cloud-apis",
+			"config-secrets",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3754,7 +7294,25 @@
 		"group": "Platform",
 		"category": "CI/CD",
 		"url": "https://docs.gitlab.com/ci/",
-		"license": "freemium"
+		"license": "freemium",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"prod-artifacts",
+			"k8s",
+			"cloud-apis",
+			"config-secrets",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3768,7 +7326,23 @@
 		"repo": "jenkinsci/jenkins",
 		"stars": 26703,
 		"license": "oss",
-		"author": "jenkinsci"
+		"author": "jenkinsci",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"prod-artifacts",
+			"k8s",
+			"config-secrets",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3779,7 +7353,22 @@
 		"group": "Platform",
 		"category": "CI/CD",
 		"url": "https://circleci.com",
-		"license": "freemium"
+		"license": "freemium",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"prod-artifacts",
+			"config-secrets",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3793,7 +7382,23 @@
 		"repo": "buildkite/agent",
 		"stars": 1101,
 		"license": "freemium",
-		"author": "buildkite"
+		"author": "buildkite",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"prod-artifacts",
+			"k8s",
+			"config-secrets",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3807,7 +7412,20 @@
 		"repo": "nektos/act",
 		"stars": 72472,
 		"license": "oss",
-		"author": "nektos"
+		"author": "nektos",
+		"family": "platform",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"multi-service"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3821,7 +7439,21 @@
 		"repo": "tektoncd/pipeline",
 		"stars": 9094,
 		"license": "oss",
-		"author": "tektoncd"
+		"author": "tektoncd",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"docs"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"prod-artifacts",
+			"k8s",
+			"config-secrets",
+			"observability",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3835,7 +7467,23 @@
 		"repo": "argoproj/argo-cd",
 		"stars": 24495,
 		"license": "oss",
-		"author": "argoproj"
+		"author": "argoproj",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"ui",
+			"docs",
+			"cross-platform"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"prod-artifacts",
+			"k8s",
+			"config-secrets",
+			"observability",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3849,7 +7497,23 @@
 		"repo": "fluxcd/flux2",
 		"stars": 8480,
 		"license": "oss",
-		"author": "fluxcd"
+		"author": "fluxcd",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"clear-errors",
+			"docs",
+			"cross-platform"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"prod-artifacts",
+			"k8s",
+			"config-secrets",
+			"observability",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3863,7 +7527,21 @@
 		"repo": "akuity/kargo",
 		"stars": 3744,
 		"license": "oss",
-		"author": "akuity"
+		"author": "akuity",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"ui",
+			"docs",
+			"cross-platform"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"prod-artifacts",
+			"k8s",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3877,7 +7555,22 @@
 		"repo": "open-telemetry/opentelemetry-collector",
 		"stars": 7714,
 		"license": "oss",
-		"author": "open-telemetry"
+		"author": "open-telemetry",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts",
+			"k8s",
+			"observability",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3891,7 +7584,24 @@
 		"repo": "grafana/grafana",
 		"stars": 77566,
 		"license": "oss",
-		"author": "grafana"
+		"author": "grafana",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"k8s",
+			"observability",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3905,7 +7615,24 @@
 		"repo": "prometheus/prometheus",
 		"stars": 66826,
 		"license": "oss",
-		"author": "prometheus"
+		"author": "prometheus",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers",
+			"k8s",
+			"state",
+			"observability",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3919,7 +7646,23 @@
 		"repo": "jaegertracing/jaeger",
 		"stars": 23349,
 		"license": "oss",
-		"author": "jaegertracing"
+		"author": "jaegertracing",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers",
+			"k8s",
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3933,7 +7676,22 @@
 		"repo": "grafana/docker-otel-lgtm",
 		"stars": 2074,
 		"license": "oss",
-		"author": "grafana"
+		"author": "grafana",
+		"family": "platform",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers",
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3947,7 +7705,23 @@
 		"repo": "SigNoz/signoz",
 		"stars": 32472,
 		"license": "oss",
-		"author": "SigNoz"
+		"author": "SigNoz",
+		"family": "platform",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"state",
+			"k8s",
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3961,7 +7735,20 @@
 		"repo": "getsentry/sentry",
 		"stars": 45665,
 		"license": "freemium",
-		"author": "getsentry"
+		"author": "getsentry",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"observability",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3975,7 +7762,21 @@
 		"repo": "grafana/loki",
 		"stars": 29085,
 		"license": "oss",
-		"author": "grafana"
+		"author": "grafana",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"containers",
+			"k8s",
+			"state",
+			"observability",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -3989,7 +7790,23 @@
 		"repo": "DataDog/datadog-agent",
 		"stars": 3770,
 		"license": "paid",
-		"author": "DataDog"
+		"author": "DataDog",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"k8s",
+			"cloud-apis",
+			"observability",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4003,7 +7820,24 @@
 		"repo": "hashicorp/vault",
 		"stars": 36448,
 		"license": "freemium",
-		"author": "hashicorp"
+		"author": "hashicorp",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers",
+			"k8s",
+			"cloud-apis",
+			"config-secrets",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4017,7 +7851,24 @@
 		"repo": "openbao/openbao",
 		"stars": 8745,
 		"license": "oss",
-		"author": "openbao"
+		"author": "openbao",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers",
+			"k8s",
+			"cloud-apis",
+			"config-secrets",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4031,7 +7882,23 @@
 		"repo": "DopplerHQ/cli",
 		"stars": 400,
 		"license": "freemium",
-		"author": "DopplerHQ"
+		"author": "DopplerHQ",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"light"
+		],
+		"parity": [
+			"k8s",
+			"cloud-apis",
+			"config-secrets",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4045,7 +7912,23 @@
 		"repo": "Infisical/infisical",
 		"stars": 30070,
 		"license": "oss",
-		"author": "Infisical"
+		"author": "Infisical",
+		"family": "platform",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"k8s",
+			"cloud-apis",
+			"config-secrets",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4056,7 +7939,19 @@
 		"group": "Platform",
 		"category": "Secrets and supply chain",
 		"url": "https://www.1password.dev/cli",
-		"license": "paid"
+		"license": "paid",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"light"
+		],
+		"parity": [
+			"config-secrets",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4070,7 +7965,20 @@
 		"repo": "getsops/sops",
 		"stars": 23541,
 		"license": "oss",
-		"author": "getsops"
+		"author": "getsops",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"prod-artifacts",
+			"cloud-apis",
+			"config-secrets"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4084,7 +7992,18 @@
 		"repo": "external-secrets/external-secrets",
 		"stars": 6927,
 		"license": "oss",
-		"author": "external-secrets"
+		"author": "external-secrets",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"docs"
+		],
+		"parity": [
+			"k8s",
+			"cloud-apis",
+			"config-secrets",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4098,7 +8017,17 @@
 		"repo": "renovatebot/renovate",
 		"stars": 22937,
 		"license": "oss",
-		"author": "renovatebot"
+		"author": "renovatebot",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform"
+		],
+		"parity": [
+			"prod-artifacts",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4112,7 +8041,17 @@
 		"repo": "dependabot/dependabot-core",
 		"stars": 5818,
 		"license": "free",
-		"author": "dependabot"
+		"author": "dependabot",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"docs"
+		],
+		"parity": [
+			"prod-artifacts",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4126,7 +8065,22 @@
 		"repo": "aquasecurity/trivy",
 		"stars": 38806,
 		"license": "oss",
-		"author": "aquasecurity"
+		"author": "aquasecurity",
+		"family": "platform",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"light",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4140,7 +8094,22 @@
 		"repo": "anchore/syft",
 		"stars": 9779,
 		"license": "oss",
-		"author": "anchore"
+		"author": "anchore",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4154,7 +8123,21 @@
 		"repo": "anchore/grype",
 		"stars": 13128,
 		"license": "oss",
-		"author": "anchore"
+		"author": "anchore",
+		"family": "platform",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"light",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4168,7 +8151,19 @@
 		"repo": "sigstore/cosign",
 		"stars": 6395,
 		"license": "oss",
-		"author": "sigstore"
+		"author": "sigstore",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"light"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4182,7 +8177,18 @@
 		"repo": "gitleaks/gitleaks",
 		"stars": 30430,
 		"license": "oss",
-		"author": "gitleaks"
+		"author": "gitleaks",
+		"family": "platform",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4196,7 +8202,22 @@
 		"repo": "snyk/cli",
 		"stars": 5689,
 		"license": "freemium",
-		"author": "snyk"
+		"author": "snyk",
+		"family": "platform",
+		"ring": "adopt",
+		"dx": [
+			"clear-errors",
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts",
+			"k8s",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4210,7 +8231,19 @@
 		"repo": "langchain-ai/langgraph",
 		"stars": 44043,
 		"license": "oss",
-		"author": "langchain-ai"
+		"author": "langchain-ai",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"state",
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4224,7 +8257,16 @@
 		"repo": "langchain-ai/langchain",
 		"stars": 148609,
 		"license": "oss",
-		"author": "langchain-ai"
+		"author": "langchain-ai",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4238,7 +8280,18 @@
 		"repo": "crewAIInc/crewAI",
 		"stars": 60208,
 		"license": "oss",
-		"author": "crewAIInc"
+		"author": "crewAIInc",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4252,7 +8305,18 @@
 		"repo": "microsoft/autogen",
 		"stars": 61603,
 		"license": "oss",
-		"author": "microsoft"
+		"author": "microsoft",
+		"family": "agents",
+		"ring": "hold",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline",
+			"ui"
+		],
+		"parity": [
+			"containers"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4266,7 +8330,18 @@
 		"repo": "ag2ai/ag2",
 		"stars": 5025,
 		"license": "oss",
-		"author": "ag2ai"
+		"author": "ag2ai",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4280,7 +8355,20 @@
 		"repo": "microsoft/agent-framework",
 		"stars": 14354,
 		"license": "oss",
-		"author": "microsoft"
+		"author": "microsoft",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline",
+			"ui",
+			"agent-ready"
+		],
+		"parity": [
+			"state",
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4294,7 +8382,18 @@
 		"repo": "microsoft/semantic-kernel",
 		"stars": 28710,
 		"license": "oss",
-		"author": "microsoft"
+		"author": "microsoft",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4308,7 +8407,24 @@
 		"repo": "mastra-ai/mastra",
 		"stars": 29145,
 		"license": "oss",
-		"author": "mastra-ai"
+		"author": "mastra-ai",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": [
+			"state",
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4322,7 +8438,18 @@
 		"repo": "openai/openai-agents-python",
 		"stars": 30352,
 		"license": "oss",
-		"author": "openai"
+		"author": "openai",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"light"
+		],
+		"parity": [
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4336,7 +8463,17 @@
 		"repo": "anthropics/claude-agent-sdk-python",
 		"stars": 8372,
 		"license": "oss",
-		"author": "anthropics"
+		"author": "anthropics",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"light",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4350,7 +8487,20 @@
 		"repo": "google/adk-python",
 		"stars": 22027,
 		"license": "oss",
-		"author": "google"
+		"author": "google",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"light"
+		],
+		"parity": [
+			"state",
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4364,7 +8514,20 @@
 		"repo": "pydantic/pydantic-ai",
 		"stars": 20925,
 		"license": "oss",
-		"author": "pydantic"
+		"author": "pydantic",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"clear-errors",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4378,7 +8541,17 @@
 		"repo": "run-llama/llama_index",
 		"stars": 52706,
 		"license": "oss",
-		"author": "run-llama"
+		"author": "run-llama",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": [
+			"state"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4392,7 +8565,19 @@
 		"repo": "deepset-ai/haystack",
 		"stars": 26867,
 		"license": "oss",
-		"author": "deepset-ai"
+		"author": "deepset-ai",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"state",
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4406,7 +8591,16 @@
 		"repo": "stanfordnlp/dspy",
 		"stars": 38828,
 		"license": "oss",
-		"author": "stanfordnlp"
+		"author": "stanfordnlp",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4420,7 +8614,20 @@
 		"repo": "vercel/ai",
 		"stars": 27562,
 		"license": "oss",
-		"author": "vercel"
+		"author": "vercel",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4434,7 +8641,19 @@
 		"repo": "huggingface/smolagents",
 		"stars": 30118,
 		"license": "oss",
-		"author": "huggingface"
+		"author": "huggingface",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4448,7 +8667,20 @@
 		"repo": "agno-agi/agno",
 		"stars": 42932,
 		"license": "oss",
-		"author": "agno-agi"
+		"author": "agno-agi",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"light",
+			"agent-ready"
+		],
+		"parity": [
+			"state",
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4462,7 +8694,20 @@
 		"repo": "letta-ai/letta",
 		"stars": 25271,
 		"license": "oss",
-		"author": "letta-ai"
+		"author": "letta-ai",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"state"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4476,7 +8721,26 @@
 		"repo": "temporalio/temporal",
 		"stars": 24037,
 		"license": "oss",
-		"author": "temporalio"
+		"author": "temporalio",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"state",
+			"prod-artifacts",
+			"k8s",
+			"observability",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4490,7 +8754,23 @@
 		"repo": "inngest/inngest",
 		"stars": 5997,
 		"license": "freemium",
-		"author": "inngest"
+		"author": "inngest",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"state",
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4504,7 +8784,24 @@
 		"repo": "restatedev/restate",
 		"stars": 4616,
 		"license": "oss",
-		"author": "restatedev"
+		"author": "restatedev",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"state",
+			"k8s",
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4518,7 +8815,17 @@
 		"repo": "modelcontextprotocol/modelcontextprotocol",
 		"stars": 9552,
 		"license": "oss",
-		"author": "modelcontextprotocol"
+		"author": "modelcontextprotocol",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"docs",
+			"cross-platform",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4532,7 +8839,21 @@
 		"repo": "modelcontextprotocol/inspector",
 		"stars": 11177,
 		"license": "oss",
-		"author": "modelcontextprotocol"
+		"author": "modelcontextprotocol",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"clear-errors",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4546,7 +8867,21 @@
 		"repo": "docker/mcp-gateway",
 		"stars": 1616,
 		"license": "freemium",
-		"author": "docker"
+		"author": "docker",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"config-secrets"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4560,7 +8895,16 @@
 		"repo": "arcadeai-labs/smithery-cli",
 		"stars": 849,
 		"license": "freemium",
-		"author": "arcadeai-labs"
+		"author": "arcadeai-labs",
+		"family": "agents",
+		"ring": "hold",
+		"dx": [
+			"one-command",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4574,7 +8918,14 @@
 		"repo": "modelcontextprotocol/registry",
 		"stars": 7415,
 		"license": "oss",
-		"author": "modelcontextprotocol"
+		"author": "modelcontextprotocol",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"docs",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4588,7 +8939,20 @@
 		"repo": "PrefectHQ/fastmcp",
 		"stars": 28222,
 		"license": "oss",
-		"author": "PrefectHQ"
+		"author": "PrefectHQ",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4602,7 +8966,18 @@
 		"repo": "ComposioHQ/composio",
 		"stars": 30783,
 		"license": "freemium",
-		"author": "ComposioHQ"
+		"author": "ComposioHQ",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"cloud-apis"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4616,7 +8991,17 @@
 		"repo": "vercel-labs/skills",
 		"stars": 36956,
 		"license": "oss",
-		"author": "vercel-labs"
+		"author": "vercel-labs",
+		"family": "agents",
+		"ring": "assess",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4630,7 +9015,17 @@
 		"repo": "browserbase/stagehand",
 		"stars": 25848,
 		"license": "oss",
-		"author": "browserbase"
+		"author": "browserbase",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4644,7 +9039,18 @@
 		"repo": "microsoft/playwright-mcp",
 		"stars": 38751,
 		"license": "oss",
-		"author": "microsoft"
+		"author": "microsoft",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4658,7 +9064,20 @@
 		"repo": "e2b-dev/E2B",
 		"stars": 14588,
 		"license": "freemium",
-		"author": "e2b-dev"
+		"author": "e2b-dev",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"fast-feedback",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"state"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4672,7 +9091,21 @@
 		"repo": "anthropics/claude-code",
 		"stars": 153680,
 		"license": "paid",
-		"author": "anthropics"
+		"author": "anthropics",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"clear-errors",
+			"ui",
+			"docs",
+			"cross-platform",
+			"light",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4686,7 +9119,20 @@
 		"repo": "openai/codex",
 		"stars": 131387,
 		"license": "oss",
-		"author": "openai"
+		"author": "openai",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform",
+			"light",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4697,7 +9143,18 @@
 		"group": "AI & agents",
 		"category": "Coding agents",
 		"url": "https://cursor.com",
-		"license": "freemium"
+		"license": "freemium",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4711,7 +9168,20 @@
 		"repo": "google-gemini/gemini-cli",
 		"stars": 108592,
 		"license": "oss",
-		"author": "google-gemini"
+		"author": "google-gemini",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform",
+			"light",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4722,7 +9192,18 @@
 		"group": "AI & agents",
 		"category": "Coding agents",
 		"url": "https://github.com/features/copilot",
-		"license": "freemium"
+		"license": "freemium",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4733,7 +9214,18 @@
 		"group": "AI & agents",
 		"category": "Coding agents",
 		"url": "https://devin.ai/desktop",
-		"license": "freemium"
+		"license": "freemium",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"zero-config",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4747,7 +9239,19 @@
 		"repo": "cline/cline",
 		"stars": 70970,
 		"license": "oss",
-		"author": "cline"
+		"author": "cline",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4761,7 +9265,17 @@
 		"repo": "RooCodeInc/Roo-Code",
 		"stars": 24255,
 		"license": "oss",
-		"author": "RooCodeInc"
+		"author": "RooCodeInc",
+		"family": "agents",
+		"ring": "hold",
+		"dx": [
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4775,7 +9289,18 @@
 		"repo": "Aider-AI/aider",
 		"stars": 49791,
 		"license": "oss",
-		"author": "Aider-AI"
+		"author": "Aider-AI",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4789,7 +9314,18 @@
 		"repo": "continuedev/continue",
 		"stars": 36354,
 		"license": "oss",
-		"author": "continuedev"
+		"author": "continuedev",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4803,7 +9339,20 @@
 		"repo": "zed-industries/zed",
 		"stars": 92334,
 		"license": "oss",
-		"author": "zed-industries"
+		"author": "zed-industries",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4817,7 +9366,17 @@
 		"repo": "warpdotdev/warp",
 		"stars": 65733,
 		"license": "freemium",
-		"author": "warpdotdev"
+		"author": "warpdotdev",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4828,7 +9387,17 @@
 		"group": "AI & agents",
 		"category": "Coding agents",
 		"url": "https://ampcode.com",
-		"license": "freemium"
+		"license": "freemium",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4842,7 +9411,21 @@
 		"repo": "anomalyco/opencode",
 		"stars": 222592,
 		"license": "oss",
-		"author": "anomalyco"
+		"author": "anomalyco",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"fast-feedback",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4856,7 +9439,18 @@
 		"repo": "aaif-goose/goose",
 		"stars": 55852,
 		"license": "oss",
-		"author": "aaif-goose"
+		"author": "aaif-goose",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4867,7 +9461,17 @@
 		"group": "AI & agents",
 		"category": "Coding agents",
 		"url": "https://kiro.dev",
-		"license": "freemium"
+		"license": "freemium",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4878,7 +9482,17 @@
 		"group": "AI & agents",
 		"category": "Coding agents",
 		"url": "https://jules.google",
-		"license": "freemium"
+		"license": "freemium",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"zero-config",
+			"ui",
+			"docs"
+		],
+		"parity": [
+			"containers"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4889,7 +9503,19 @@
 		"group": "AI & agents",
 		"category": "Coding agents",
 		"url": "https://devin.ai",
-		"license": "paid"
+		"license": "paid",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"ui",
+			"docs",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4903,7 +9529,16 @@
 		"repo": "ParadevAI/Paradev",
 		"stars": 15665,
 		"license": "freemium",
-		"author": "ParadevAI"
+		"author": "ParadevAI",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"offline"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4914,7 +9549,16 @@
 		"group": "AI & agents",
 		"category": "Coding agents",
 		"url": "https://www.conductor.build",
-		"license": "free"
+		"license": "free",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"docs"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4927,7 +9571,17 @@
 		"url": "https://t3.codes",
 		"repo": "pingdotgg/t3code",
 		"license": "oss",
-		"author": "pingdotgg"
+		"author": "pingdotgg",
+		"family": "agents",
+		"ring": "assess",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"cross-platform",
+			"offline"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4940,7 +9594,17 @@
 		"url": "https://fx.sh",
 		"repo": "vercel-labs/fx",
 		"license": "oss",
-		"author": "vercel-labs"
+		"author": "vercel-labs",
+		"family": "agents",
+		"ring": "assess",
+		"dx": [
+			"one-command",
+			"docs",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4954,7 +9618,21 @@
 		"repo": "ollama/ollama",
 		"stars": 185090,
 		"license": "oss",
-		"author": "ollama"
+		"author": "ollama",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"containers"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4965,7 +9643,19 @@
 		"group": "AI & agents",
 		"category": "Local models",
 		"url": "https://lmstudio.ai",
-		"license": "free"
+		"license": "free",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -4979,7 +9669,19 @@
 		"repo": "ggml-org/llama.cpp",
 		"stars": 132615,
 		"license": "oss",
-		"author": "ggml-org"
+		"author": "ggml-org",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"ui",
+			"cross-platform",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": [
+			"containers"
+		]
 	},
 	{
 		"kind": "tool",
@@ -4993,7 +9695,20 @@
 		"repo": "vllm-project/vllm",
 		"stars": 95755,
 		"license": "oss",
-		"author": "vllm-project"
+		"author": "vllm-project",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"docs",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"prod-artifacts",
+			"k8s",
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -5007,7 +9722,21 @@
 		"repo": "mudler/LocalAI",
 		"stars": 50022,
 		"license": "oss",
-		"author": "mudler"
+		"author": "mudler",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"k8s"
+		]
 	},
 	{
 		"kind": "tool",
@@ -5021,7 +9750,22 @@
 		"repo": "docker/model-runner",
 		"stars": 658,
 		"license": "oss",
-		"author": "docker"
+		"author": "docker",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"prod-artifacts"
+		]
 	},
 	{
 		"kind": "tool",
@@ -5035,7 +9779,19 @@
 		"repo": "janhq/jan",
 		"stars": 45125,
 		"license": "oss",
-		"author": "janhq"
+		"author": "janhq",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -5049,7 +9805,16 @@
 		"repo": "ml-explore/mlx-lm",
 		"stars": 7493,
 		"license": "oss",
-		"author": "ml-explore"
+		"author": "ml-explore",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -5063,7 +9828,25 @@
 		"repo": "langfuse/langfuse",
 		"stars": 36635,
 		"license": "oss",
-		"author": "langfuse"
+		"author": "langfuse",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"state",
+			"k8s",
+			"observability",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -5074,7 +9857,20 @@
 		"group": "AI & agents",
 		"category": "LLM observability",
 		"url": "https://www.langchain.com/langsmith/observability",
-		"license": "freemium"
+		"license": "freemium",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"observability",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -5088,7 +9884,24 @@
 		"repo": "Arize-ai/phoenix",
 		"stars": 12042,
 		"license": "oss",
-		"author": "Arize-ai"
+		"author": "Arize-ai",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"state",
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -5102,7 +9915,17 @@
 		"repo": "Helicone/helicone",
 		"stars": 6242,
 		"license": "oss",
-		"author": "Helicone"
+		"author": "Helicone",
+		"family": "agents",
+		"ring": "hold",
+		"dx": [
+			"zero-config",
+			"ui",
+			"docs"
+		],
+		"parity": [
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -5116,7 +9939,19 @@
 		"repo": "traceloop/openllmetry",
 		"stars": 7513,
 		"license": "oss",
-		"author": "traceloop"
+		"author": "traceloop",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"zero-config",
+			"docs",
+			"cross-platform",
+			"offline",
+			"light"
+		],
+		"parity": [
+			"observability"
+		]
 	},
 	{
 		"kind": "tool",
@@ -5130,7 +9965,19 @@
 		"repo": "braintrustdata/braintrust-sdk-javascript",
 		"stars": 29,
 		"license": "freemium",
-		"author": "braintrustdata"
+		"author": "braintrustdata",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"ui",
+			"docs",
+			"cross-platform",
+			"agent-ready"
+		],
+		"parity": [
+			"observability",
+			"team-scale"
+		]
 	},
 	{
 		"kind": "tool",
@@ -5144,7 +9991,19 @@
 		"repo": "promptfoo/promptfoo",
 		"stars": 26545,
 		"license": "oss",
-		"author": "promptfoo"
+		"author": "promptfoo",
+		"family": "agents",
+		"ring": "trial",
+		"dx": [
+			"one-command",
+			"zero-config",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": []
 	},
 	{
 		"kind": "tool",
@@ -5158,7 +10017,24 @@
 		"repo": "comet-ml/opik",
 		"stars": 22985,
 		"license": "oss",
-		"author": "comet-ml"
+		"author": "comet-ml",
+		"family": "agents",
+		"ring": "adopt",
+		"dx": [
+			"one-command",
+			"ui",
+			"docs",
+			"cross-platform",
+			"offline",
+			"agent-ready"
+		],
+		"parity": [
+			"containers",
+			"multi-service",
+			"state",
+			"k8s",
+			"observability"
+		]
 	},
 	{
 		"kind": "skill",
