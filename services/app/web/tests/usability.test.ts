@@ -330,7 +330,7 @@ describe("loop 8 fixes", () => {
 
 	it("says what 'docker' was read as, and why the top role matched", async () => {
 		const page = await html("/roles?know=npm,+vite,+docker");
-		expect(page).toContain("docker → Docker Desktop");
+		expect(page).toContain("docker (read as Docker Desktop)");
 		expect(page).toContain("It matches because you know");
 	});
 });
@@ -550,5 +550,33 @@ describe("run 11 findings", () => {
 		expect(
 			await html("/journeys?track=platform&know=npm,+vite,+docker"),
 		).toContain("You already know some tools at station");
+	});
+});
+
+describe("run 12 findings", () => {
+	it("shows the number on screen on an active check chip, not what clearing it would find", async () => {
+		const page = await html("/?check=offline");
+		const shown = search({ check: "offline", sort: "easy" }).total;
+		expect(page).toContain(
+			`aria-current="page">Runs offline, no account<small>${shown}</small>`,
+		);
+	});
+
+	it("keeps the narrowing box open once there is a query, so the categories are in view", async () => {
+		expect(await html("/?q=monorepo")).toContain(
+			'<details class="facetbox" open>',
+		);
+		expect(await html("/")).not.toContain('<details class="facetbox" open>');
+	});
+
+	it("carries the tools you typed when you switch journey route", async () => {
+		const page = await html("/journeys?track=backend&know=npm,+docker");
+		expect(page).toContain("/journeys?track=platform&amp;know=npm%2C%20docker");
+	});
+
+	it("says 'read as' when a typed word became another tool", async () => {
+		expect(await html("/roles?know=npm,+docker")).toContain(
+			"docker (read as Docker Desktop)",
+		);
 	});
 });

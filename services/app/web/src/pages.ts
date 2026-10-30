@@ -234,8 +234,13 @@ export function homePage(base: string, query: Browse = {}): string {
 			? checks.filter((k) => k !== id)
 			: [...checks, id]
 		).join(",") || undefined;
+	// An active chip shows what is on screen; an inactive one shows what clicking it would find.
 	const checkCount = (id: string) =>
-		query.q ? undefined : facets({ ...base0, check: toggled(id) }).total;
+		query.q
+			? undefined
+			: checks.includes(id)
+				? f.total
+				: facets({ ...base0, check: toggled(id) }).total;
 	const filterRow = `<nav class="subtabs filters" aria-label="Filters"><span class="flabel">Maturity</span>${RING_FILTERS.map((x) => sub(link({ ring: ring === x.id ? undefined : x.id }), esc(x.label), ringCount(x.id), ring === x.id)).join("")}<span class="flabel">Works</span>${FILTER_CHECKS.map((c) => sub(link({ check: toggled(c.id) }), esc(c.label), checkCount(c.id), checks.includes(c.id))).join("")}</nav>`;
 	const none = `<div class="empty"><p><b>Nothing matches${query.q ? ` “${esc(query.q)}”` : " these filters"}.</b></p><ul><li>Try fewer or different words, like <a href="${root}/?q=docker">docker</a> or <a href="${root}/?q=k8s">k8s</a>.</li><li>Clear the filters and <a href="${root}/">browse everything</a>.</li><li>Looking for a path or a job? See <a href="${root}/journeys">Journeys</a> and <a href="${root}/roles">Roles</a>.</li><li>Missing from the store? <a href="${root}/publish">Add it.</a></li></ul></div>`;
 	return layout(
@@ -252,7 +257,7 @@ export function homePage(base: string, query: Browse = {}): string {
 <div class="callout"><b>Use this store from your AI</b><code>claude mcp add --transport http flisk-tools ${esc(base)}/mcp</code><small>Claude Code. Tools: search_store, get_listing. No key needed. <a href="${root}/listing/flisk-tools">More</a></small></div></section>
 ${filtered ? "" : `<section class="start" aria-label="Start here"><a href="${root}/?q=docker"><b>Find a tool</b><small>Search ${counts("tool")} dev tools by what they do</small></a><a href="${root}/roles"><b>Which role fits me?</b><small>Type the tools you know</small></a><a href="${root}/journeys"><b>Learn a path</b><small>Seven levels, three routes</small></a><a href="${root}/ask?q=yarn+vs+pnpm+vs+bun"><b>Compare tools</b><small>Side by side, from the data</small></a></section>`}
 <nav class="subtabs" aria-label="Type">${sub(link({ kind: undefined }), "All", f.total, !kind)}${KINDS.map((k) => sub(link({ kind: k.id }), esc(k.plural), f.kinds[k.id] ?? 0, kind === k.id)).join("")}${sub(link({ mcp: !query.mcp, kind: undefined }), "With MCP", facets({ ...base0, mcp: true }).total, Boolean(query.mcp))}</nav>
-<details class="facetbox"${query.group || ring || check || category ? " open" : ""}><summary>Narrow it down: group, maturity, what it works with</summary><nav class="subtabs" aria-label="Group">${f.groups.map((g) => sub(link({ group: g.name }), esc(g.name), g.count, query.group === g.name)).join("")}</nav>
+<details class="facetbox"${query.q || query.group || ring || check || category ? " open" : ""}><summary>Narrow it down: group, maturity, what it works with</summary><nav class="subtabs" aria-label="Group">${f.groups.map((g) => sub(link({ group: g.name }), esc(g.name), g.count, query.group === g.name)).join("")}</nav>
 ${
 	f.categories.length > 1
 		? `<nav class="subtabs" aria-label="Category"><span class="flabel">Category</span>${f.categories

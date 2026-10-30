@@ -280,7 +280,7 @@ export function journeysPage(
 			crumbs: [{ name: "Journeys", path: "journeys" }],
 		},
 		`${hero("Journeys", "Seven levels, <em>one line</em>", "A metro line from your first lockfile to platform architecture. Pick a route; each station lists the tools to learn and the ones worth knowing.")}
-<nav class="start" aria-label="Route">${TRACKS.map((t) => `<a href="${root}/journeys?track=${t.id}"${t.id === track.id ? ' aria-current="page" class="on"' : ""}><b>${esc(ROUTE_NAMES[t.id] ?? `${t.name} route`)}</b><small>${esc(t.blurb)}</small></a>`).join("")}</nav>
+<nav class="start" aria-label="Route">${TRACKS.map((t) => `<a href="${root}/journeys?track=${t.id}${know ? `&amp;know=${encodeURIComponent(know)}` : ""}"${t.id === track.id ? ' aria-current="page" class="on"' : ""}><b>${esc(ROUTE_NAMES[t.id] ?? `${t.name} route`)}</b><small>${esc(t.blurb)}</small></a>`).join("")}</nav>
 ${knowForm}
 <p class="note">Showing the ${esc(track.name)} route. Each station lists tools to learn first (bold) and tools worth knowing.</p>
 <ol class="metro">${LEVELS.map((l) => {
@@ -325,7 +325,7 @@ export function rolesPage(base: string, group?: string, know?: string): string {
 						.filter((x) => x.hit)
 						.map((x) =>
 							x.hit && x.hit.name.toLowerCase() !== x.n.toLowerCase()
-								? `${esc(x.n)} → ${esc(x.hit.name)}`
+								? `${esc(x.n)} (read as ${esc(x.hit.name)})`
 								: esc(x.hit?.name ?? ""),
 						)
 						.join(", ") || "nothing"

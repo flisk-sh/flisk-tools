@@ -37,6 +37,8 @@ a stronger one. One participant per loop in loops 4 to 10, so a single score mov
 | 9 | full single-word results, category chips | Maya 75 | 4 of 4 | 9 |
 | 10 | MCP pill, one-line skill install, compare top 3 | Jon 58 | 2 of 4 | 10 |
 | final | must-have counts, auto journey route, same-name skills (all three personas) | Maya 75, Jon 58, Priya 58 (mean 64) | 12 of 12 | 25 |
+| run 11 | repository age and archived status, install commands, everyday-tools role answer | Maya 67, Jon 67, Priya 58 (mean 64) | 12 of 12 | 23 |
+| run 12 | beginner-aware search, combinable checks, per-tool evidence | Maya 67, Jon 67, Priya 58 (mean 64) | 12 of 12 | 21 |
 
 Honest reading: the objective numbers improved a lot, page views per task fell by more than half, and Maya's scores rose to
 75. Jon's and Priya's stayed between 50 and 67, with the lower scores coming from trust and guidance, not from not finding
@@ -44,6 +46,11 @@ things. Loop 10's two failures were bugs, now fixed: the skill install block sat
 start-station logic double-counted tools of the same kind. The final run, with all three personas on the final build,
 succeeded at all 12 tasks. It also found two more bugs, fixed afterwards without a further run: the type and group
 counts ignored a chosen category, and a listing said "No account needed" where the filter said "Runs offline".
+
+Runs 11 and 12 did not raise the simulated scores: they stayed at a mean of 64 (5 and 5 for most participants, Priya at
+4 and 5) while page views per run kept falling (25, 23, 21). The remaining complaints are about trust in data the store
+does not own, so more interface work on this method was not moving the number. Real visitors, through `/rate`, are the
+next measurement that can.
 
 Still open, because they come from the roadmap's data or need real users: the ring and the offline check are checklist
 answers, not tests; the ease scores come from a container-and-services checklist; dev tool pages have no install
