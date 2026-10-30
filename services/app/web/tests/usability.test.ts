@@ -455,3 +455,23 @@ describe("remaining gaps", () => {
 		);
 	});
 });
+
+describe("final loop findings", () => {
+	it("counts the types and groups within the chosen category", () => {
+		const f = facets({ category: "Monorepo tools", ring: "adopt" });
+		const listed = search({ category: "Monorepo tools", ring: "adopt" }).total;
+		expect(f.total).toBe(listed);
+		expect(f.groups.reduce((a, g) => a + g.count, 0)).toBe(listed);
+	});
+
+	it("marks the active category chip so it is clear that clicking it clears it", async () => {
+		expect(await html("/?category=Monorepo+tools&ring=adopt")).toContain(
+			"Monorepo tools ×",
+		);
+	});
+
+	it("says 'runs offline' on a listing in the same words as the filter", async () => {
+		const page = await html("/listing/turborepo");
+		expect(page).toMatch(/Runs offline, no account \(runs on your machine/);
+	});
+});

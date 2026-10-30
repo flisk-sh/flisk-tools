@@ -382,7 +382,6 @@ export function facets(query: Query): {
 	for (const e of rank({
 		...query,
 		kind: undefined,
-		category: undefined,
 		page: undefined,
 	}))
 		kinds[e.kind] = (kinds[e.kind] ?? 0) + 1;
@@ -390,7 +389,6 @@ export function facets(query: Query): {
 	const forGroups = rank({
 		...query,
 		group: undefined,
-		category: undefined,
 		page: undefined,
 	});
 	for (const e of forGroups)

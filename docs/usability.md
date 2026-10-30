@@ -36,11 +36,18 @@ a stronger one. One participant per loop in loops 4 to 10, so a single score mov
 | 8 | where-do-I-start, easiest sort | Priya 50 | 4 of 4 | 9 |
 | 9 | full single-word results, category chips | Maya 75 | 4 of 4 | 9 |
 | 10 | MCP pill, one-line skill install, compare top 3 | Jon 58 | 2 of 4 | 10 |
+| final | must-have counts, auto journey route, same-name skills (all three personas) | Maya 75, Jon 58, Priya 58 (mean 64) | 12 of 12 | 25 |
 
 Honest reading: the objective numbers improved a lot, page views per task fell by more than half, and Maya's scores rose to
 75. Jon's and Priya's stayed between 50 and 67, with the lower scores coming from trust and guidance, not from not finding
 things. Loop 10's two failures were bugs, now fixed: the skill install block sat below the fold, and the journey
-start-station logic double-counted tools of the same kind.
+start-station logic double-counted tools of the same kind. The final run, with all three personas on the final build,
+succeeded at all 12 tasks. It also found two more bugs, fixed afterwards without a further run: the type and group
+counts ignored a chosen category, and a listing said "No account needed" where the filter said "Runs offline".
+
+Still open, because they come from the roadmap's data or need real users: the ring and the offline check are checklist
+answers, not tests; the ease scores come from a container-and-services checklist; dev tool pages have no install
+command; community listings get no ring; a few figures, like npm's 10k stars (the `npm/cli` repository), read oddly.
 
 ## 3. Real UMUX-Lite from real visitors
 

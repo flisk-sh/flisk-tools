@@ -254,7 +254,7 @@ ${
 				.map((c) =>
 					sub(
 						link({ category: category === c.name ? undefined : c.name }),
-						esc(c.name),
+						`${esc(c.name)}${category === c.name ? " ×" : ""}`,
 						c.count,
 						category === c.name,
 					),
@@ -341,7 +341,7 @@ function glance(e: Entry): string {
 		.map((id) => PARITY.criteria.find((c) => c.id === id))
 		.filter(Boolean);
 	return `<h2>At a glance</h2><dl class="facts"><dt>Maturity</dt><dd><span class="rk r-${e.ring}">${esc(ring?.label ?? e.ring)}</span>: ${esc(ring?.help ?? "")}</dd><dt>Easy to use</dt><dd>${(e.dx?.length ?? 0) * 10} / 100</dd><dt>Big, real systems</dt><dd>${(e.parity?.length ?? 0) * 10} / 100</dd>${e.version ? `<dt>Latest release</dt><dd>${esc(e.version.replace(/^.*\//, ""))}${e.release ? `, ${esc(e.release)}` : ""}</dd>` : ""}${e.pushed ? `<dt>Last push</dt><dd>${esc(e.pushed)}</dd>` : ""}</dl>
-${met.length ? `<p class="note">Easy to use because it: ${met.map((c) => esc(c?.label ?? "")).join(" · ")}</p>` : ""}${big.length ? `<p class="note">Fits big systems because it: ${big.map((c) => esc(c?.label ?? "")).join(" · ")}</p>` : ""}<p class="note">The ring and these checks are the <a href="https://roadmap.flisk.si" rel="noopener">DevEx Roadmap</a>'s checklist answers, not a test run here${DATA_FETCHED ? `; GitHub numbers fetched ${esc(DATA_FETCHED)}` : ""}.${e.evidence ? ` <a href="${esc(e.evidence)}" rel="noopener">Evidence for the ring</a>.` : ""}</p>`;
+${met.length ? `<p class="note">Easy to use because it: ${met.map((c) => (c?.id === "offline" ? `Runs offline, no account (${esc((c.help ?? "").replace(/\.$/, "").toLowerCase())})` : esc(c?.label ?? ""))).join(" · ")}</p>` : ""}${big.length ? `<p class="note">Fits big systems because it: ${big.map((c) => esc(c?.label ?? "")).join(" · ")}</p>` : ""}<p class="note">The ring and these checks are the <a href="https://roadmap.flisk.si" rel="noopener">DevEx Roadmap</a>'s checklist answers, not a test run here${DATA_FETCHED ? `; GitHub numbers fetched ${esc(DATA_FETCHED)}` : ""}.${e.evidence ? ` <a href="${esc(e.evidence)}" rel="noopener">Evidence for the ring</a>.` : ""}</p>`;
 }
 
 export function listingPage(base: string, e: Entry): string {
