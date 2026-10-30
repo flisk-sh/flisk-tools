@@ -103,6 +103,7 @@ export function createApp(options: AppOptions = {}) {
 				q: (c.req.query("q") ?? "").slice(0, 100),
 				kind: c.req.query("kind"),
 				group: c.req.query("group"),
+				mcp: c.req.query("mcp") === "1",
 				page: Number(c.req.query("page")) || 1,
 			}),
 		),
@@ -150,7 +151,7 @@ export function createApp(options: AppOptions = {}) {
 				{
 					name: "Catalog API",
 					path: "api/tools",
-					note: "search the catalog as JSON: ?q=, kind=, group=, page=",
+					note: "search the catalog as JSON: ?q=, kind=, group=, mcp=1, page=",
 				},
 				{
 					name: "MCP server",
@@ -199,6 +200,7 @@ export function createApp(options: AppOptions = {}) {
 			q: c.req.query("q"),
 			kind: c.req.query("kind"),
 			group: c.req.query("group"),
+			mcp: c.req.query("mcp") === "1",
 			page: Number(c.req.query("page")) || 1,
 		});
 		return c.json(r);

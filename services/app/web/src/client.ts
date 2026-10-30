@@ -86,6 +86,10 @@ form.addEventListener("submit", (ev) => {
     const v = String(f.get(k) || "").trim();
     if (v) entry[k] = v;
   }
+  const mcpUrl = String(f.get("mcp_url") || "").trim();
+  const mcpCmd = String(f.get("mcp_command") || "").trim();
+  if (mcpUrl) entry.mcp = { transport: "http", url: mcpUrl };
+  else if (mcpCmd) entry.mcp = { transport: "stdio", command: mcpCmd };
   const json = JSON.stringify(entry, null, 2) + "\\n";
   const target = form.dataset.repo + "/new/main/listings?filename=" + encodeURIComponent("listings/" + login + "--" + entry.id + ".json") + "&value=" + encodeURIComponent(json);
   location.href = target;

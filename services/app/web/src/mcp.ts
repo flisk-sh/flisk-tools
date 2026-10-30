@@ -37,6 +37,10 @@ const MCP_TOOLS: McpTool[] = [
 						enum: KINDS.map((k) => k.id),
 						description: "Only this type",
 					},
+					mcp: {
+						type: "boolean",
+						description: "Only listings that have an MCP server",
+					},
 					page: { type: "number", description: "Page number, from 1" },
 				},
 			},
@@ -46,6 +50,7 @@ const MCP_TOOLS: McpTool[] = [
 			const r = search({
 				q: String(args.query ?? ""),
 				kind: args.kind ? String(args.kind) : undefined,
+				mcp: args.mcp === true,
 				page: Number(args.page) || 1,
 			});
 			return `${r.total} results, page ${r.page} of ${r.pages}\n\n${r.items.map(describeEntry).join("\n\n")}`;

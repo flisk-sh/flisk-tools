@@ -8,6 +8,8 @@ import {
 	hue,
 	KINDS,
 	kindLabel,
+	mcpCommand,
+	mcpCount,
 	search,
 	symbol,
 } from "./catalog";
@@ -40,7 +42,7 @@ ${FONTS}
 <style>${STYLE}</style></head><body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header"><div class="wrap bar"><a class="brand" href="${root}/"><img src="${root}/icon.svg" alt="" width="20" height="20"><span>${esc(SITE.name)}</span></a>
-<span class="hook">${ENTRIES.length} listings · ${counts("app")} apps · ${counts("tool")} dev tools · ${counts("skill")} agent skills · free, no signup to browse</span>
+<span class="hook">${ENTRIES.length} listings · ${counts("app")} apps · ${counts("tool")} dev tools · ${counts("skill")} agent skills · ${mcpCount()} with an MCP server · free, no signup to browse</span>
 <nav class="nav" aria-label="Primary"><a href="${root}/publish">Publish</a><a class="nav-extra" href="${root}/about">About</a><a class="nav-extra" href="${esc(SITE.repo)}" rel="noopener">GitHub</a><span id="gh-slot"></span><button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch theme">Theme</button></nav></div></header>
 <main id="main" class="wrap"><nav class="views" aria-label="Views">${tab("browse", `${root}/`, "Browse")}${tab("lab", `${root}/lab`, "Lab")}</nav>
 ${body}</main>
@@ -52,13 +54,33 @@ ${body}</main>
 const stars = (n: number) =>
 	n >= 1000 ? `${(n / 1000).toFixed(n >= 10000 ? 0 : 1)}k` : String(n);
 
+/** The listing's MCP server: how to add it to Claude Code or any MCP client, and what it offers. */
+function mcpPanel(e: Entry): string {
+	const m = e.mcp;
+	if (!m) return "";
+	const where =
+		m.transport === "http"
+			? `Remote server, no key: <code>${esc(m.url ?? "")}</code>`
+			: `Local server, runs on your machine: <code>${esc(m.command ?? "")}</code>`;
+	const json =
+		m.transport === "http"
+			? `{ "mcpServers": { "${e.id}": { "type": "http", "url": "${m.url}" } } }`
+			: `{ "mcpServers": { "${e.id}": { "command": "${(m.command ?? "").split(" ")[0]}", "args": ${JSON.stringify((m.command ?? "").split(" ").slice(1))} } } }`;
+	return `<h2>Use it from your AI <span class="tag mcp">MCP</span></h2>
+<p>${where}${m.registry ? `. In the official MCP Registry as <code>${esc(m.registry)}</code>` : ""}.</p>
+<pre>${esc(mcpCommand(e))}</pre>
+<p class="note">Or in any MCP client's config:</p><pre>${esc(json)}</pre>
+${m.tools?.length ? `<p class="note">Tools: ${m.tools.map((t) => `<code>${esc(t)}</code>`).join(" ")}</p>` : ""}`;
+}
+
 const card = (root: string, e: Entry) =>
-	`<li class="card" style="${color(e.group === "Agent skills" ? e.category : e.group)}"><div class="top"><span class="sym" aria-hidden="true">${esc(symbol(e))}</span><h3><a href="${root}/listing/${e.id}">${esc(e.name)}</a></h3></div><p>${esc(e.tagline)}</p><div class="meta"><span class="g">${esc(kindLabel(e.kind))} · ${esc(e.category)}</span>${e.stars ? `<span>★ ${stars(e.stars)}</span>` : ""}${e.official ? `<span class="by">by Flisk</span>` : e.author ? `<span>@${esc(e.author)}</span>` : ""}</div></li>`;
+	`<li class="card" style="${color(e.group === "Agent skills" ? e.category : e.group)}"><div class="top"><span class="sym" aria-hidden="true">${esc(symbol(e))}</span><h3><a href="${root}/listing/${e.id}">${esc(e.name)}</a></h3></div><p>${esc(e.tagline)}</p><div class="meta"><span class="g">${esc(kindLabel(e.kind))} · ${esc(e.category)}</span>${e.mcp ? `<span class="mcp">MCP</span>` : ""}${e.stars ? `<span>★ ${stars(e.stars)}</span>` : ""}${e.official ? `<span class="by">by Flisk</span>` : e.author ? `<span>@${esc(e.author)}</span>` : ""}</div></li>`;
 
 interface Browse {
 	q?: string;
 	kind?: string;
 	group?: string;
+	mcp?: boolean;
 	page?: number;
 }
 
@@ -68,6 +90,7 @@ export function homeHref(root: string, q: Browse): string {
 	if (q.q) p.set("q", q.q);
 	if (q.kind) p.set("kind", q.kind);
 	if (q.group) p.set("group", q.group);
+	if (q.mcp) p.set("mcp", "1");
 	if (q.page && q.page > 1) p.set("page", String(q.page));
 	const s = p.toString();
 	return `${root}/${s ? `?${s}` : ""}`;
@@ -77,11 +100,11 @@ export function homePage(base: string, query: Browse = {}): string {
 	const root = rootOf(base);
 	const kind = KINDS.some((k) => k.id === query.kind) ? query.kind : undefined;
 	const filtered = Boolean(
-		query.q || kind || query.group || (query.page ?? 1) > 1,
+		query.q || kind || query.group || query.mcp || (query.page ?? 1) > 1,
 	);
 	const r = search({ ...query, kind });
 	const link = (extra: Browse) =>
-		esc(homeHref(root, { q: query.q, kind, ...extra }));
+		esc(homeHref(root, { q: query.q, kind, mcp: query.mcp, ...extra }));
 	const sub = (href: string, label: string, n: number, on: boolean) =>
 		`<a class="subtab" href="${href}"${on ? ' aria-current="page"' : ""}>${label}<small>${n}</small></a>`;
 	return layout(
@@ -95,7 +118,7 @@ export function homePage(base: string, query: Browse = {}): string {
 		`<section class="hero"><p class="eyebrow">Free · open source · no server, no database</p><h1>Every dev tool, agent skill and app, <em>in one free store</em></h1>
 <p class="lede">${esc(SITE.description)}</p>
 <form class="search" role="search" action="${root}/" method="get"><input type="search" name="q" value="${esc(query.q ?? "")}" placeholder="Search ${ENTRIES.length} tools, skills and apps" aria-label="Search the store">${kind ? `<input type="hidden" name="kind" value="${kind}">` : ""}<button type="submit">Search</button></form></section>
-<nav class="subtabs" aria-label="Type">${sub(link({ kind: undefined }), "All", ENTRIES.length, !kind)}${KINDS.map((k) => sub(link({ kind: k.id }), esc(k.plural), counts(k.id), kind === k.id)).join("")}</nav>
+<nav class="subtabs" aria-label="Type">${sub(link({ kind: undefined }), "All", ENTRIES.length, !kind)}${KINDS.map((k) => sub(link({ kind: k.id }), esc(k.plural), counts(k.id), kind === k.id)).join("")}${sub(link({ mcp: !query.mcp, kind: undefined }), "With MCP", mcpCount(), Boolean(query.mcp))}</nav>
 <nav class="subtabs" aria-label="Group">${groups(kind)
 			.map((g) =>
 				sub(
@@ -175,6 +198,7 @@ export function listingPage(base: string, e: Entry): string {
 <p style="max-width:46rem">${esc(e.description)}</p>
 <dl class="facts"><dt>Type</dt><dd>${esc(kindLabel(e.kind))}</dd><dt>Group</dt><dd><a href="${esc(homeHref(root, { group: e.group }))}">${esc(e.group)}</a></dd><dt>Category</dt><dd>${esc(e.category)}</dd>${e.author ? `<dt>By</dt><dd><a href="https://github.com/${esc(e.author)}" rel="noopener">@${esc(e.author)}</a>${e.official ? " (Flisk)" : ""}</dd>` : ""}${e.stars ? `<dt>GitHub stars</dt><dd>${e.stars.toLocaleString("en-US")}</dd>` : ""}${e.license ? `<dt>License</dt><dd>${esc(e.license)}</dd>` : ""}</dl>
 ${related.length ? `<h2>More in ${esc(e.group)}</h2><ul class="grid">${related.map((x) => card(root, x)).join("")}</ul>` : ""}
+${e.mcp ? mcpPanel(e) : ""}
 <h2>Read it from code</h2><pre>curl '${esc(base)}/api/tools/${e.id}'</pre>`,
 		"browse",
 	);
@@ -209,6 +233,8 @@ export function publishPage(base: string): string {
 <label>Category <input name="category" maxlength="40" required placeholder="Quality"></label>
 <label>Address, https <input name="url" type="url" required placeholder="https://example.com"></label>
 <label>GitHub repo, owner/name (needed for skills) <input name="repo" placeholder="you/link-checker"></label>
+<label>MCP server address, https (if it has one) <input name="mcp_url" type="url" placeholder="https://example.com/mcp"></label>
+<label>Or the command of a local MCP server <input name="mcp_command" maxlength="120" placeholder="npx -y @you/your-mcp"></label>
 <button type="submit">Open the pull request</button></form>
 <p id="need" class="note">Sign in with GitHub to see the form.</p></div>
 <script src="${root}/publish.js" defer></script>`,

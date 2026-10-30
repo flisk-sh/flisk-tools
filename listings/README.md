@@ -17,6 +17,13 @@ One file per listing, named `<your GitHub login>--<id>.json`. The easiest way to
 }
 ```
 
+If it has an MCP server, add one of these (the store then shows an MCP badge and the command to add it):
+
+```json
+"mcp": { "transport": "http", "url": "https://example.com/mcp", "tools": ["search"] }
+"mcp": { "transport": "stdio", "command": "npx -y @you/your-mcp" }
+```
+
 `kind` is `app`, `tool` or `skill` (a skill needs `repo`). A check on the pull request confirms that the file name
 starts with the author's login and that the catalog still builds. The author shown in the store comes from the file
 name, never from the file.

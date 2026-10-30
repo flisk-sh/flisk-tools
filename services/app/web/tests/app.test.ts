@@ -1,6 +1,14 @@
 import { describe, expect, it } from "bun:test";
 import { createApp } from "../src/app";
-import { ENTRIES, findEntry, groups, PAGE_SIZE, search } from "../src/catalog";
+import {
+	ENTRIES,
+	findEntry,
+	groups,
+	mcpCommand,
+	PAGE_SIZE,
+	problem,
+	search,
+} from "../src/catalog";
 import { PUBLISH_JS, SIGNIN_JS } from "../src/client";
 import { RateLimiter, TtlCache } from "../src/guard";
 
@@ -107,6 +115,75 @@ describe("pages", () => {
 			})
 		).text();
 		expect(evil).not.toContain("evil.example");
+	});
+});
+
+describe("MCP listings", () => {
+	it("shows how to add a remote server on the listing, and a badge on the card", async () => {
+		const html = await (await app.request("/listing/citable")).text();
+		expect(html).toContain(
+			"claude mcp add --transport http citable https://citable.flisk.si/mcp",
+		);
+		expect(html).toContain("<code>check_site</code>");
+		const home = await (await app.request("/?q=citable")).text();
+		expect(home).toContain('<span class="mcp">MCP</span>');
+	});
+
+	it("shows a local server as a command, with its registry name", async () => {
+		const html = await (await app.request("/listing/flisk")).text();
+		expect(html).toContain("claude mcp add flisk -- flisk mcp");
+		expect(html).toContain("io.github.flisk-sh/flisk");
+		expect(mcpCommand({ id: "x" })).toBe("");
+	});
+
+	it("filters to listings with an MCP server, in the page, the API and the MCP tool", async () => {
+		expect(search({ mcp: true }).items.every((e) => e.mcp)).toBe(true);
+		expect(search({ mcp: true }).total).toBeGreaterThanOrEqual(5);
+		const page = await (await app.request("/?mcp=1")).text();
+		expect(page).toContain('<meta name="robots" content="noindex">');
+		expect(page).toContain("Citable");
+		expect(page).not.toContain("LangGraph");
+		const api = (await (await app.request("/api/tools?mcp=1")).json()) as {
+			total: number;
+		};
+		expect(api.total).toBe(search({ mcp: true }).total);
+		const r = (await (
+			await rpc(app, {
+				jsonrpc: "2.0",
+				id: 9,
+				method: "tools/call",
+				params: { name: "search_store", arguments: { mcp: true } },
+			})
+		).json()) as { result: { content: { text: string }[] } };
+		expect(r.result.content[0].text).toContain("MCP server:");
+	});
+
+	it("checks the MCP fields of a listing", () => {
+		const ok = {
+			kind: "app",
+			id: "x",
+			name: "X",
+			tagline: "t",
+			description: "d",
+			group: "g",
+			category: "c",
+			url: "https://x.test",
+		} as const;
+		expect(
+			problem({ ...ok, mcp: { transport: "http", url: "https://x.test/mcp" } }),
+		).toBeUndefined();
+		expect(
+			problem({ ...ok, mcp: { transport: "http", url: "http://x.test/mcp" } }),
+		).toContain("mcp.url");
+		expect(
+			problem({ ...ok, mcp: { transport: "stdio", command: "npx -y @x/mcp" } }),
+		).toBeUndefined();
+		expect(
+			problem({
+				...ok,
+				mcp: { transport: "stdio", command: "rm -rf /; $(x)" },
+			}),
+		).toContain("mcp.command");
 	});
 });
 

@@ -11,7 +11,34 @@
 		"repo": "flisk-sh/flisk",
 		"author": "flisk-sh",
 		"official": true,
-		"license": "MIT"
+		"license": "MIT",
+		"mcp": {
+			"transport": "stdio",
+			"command": "flisk mcp",
+			"registry": "io.github.flisk-sh/flisk",
+			"tools": [
+				"up",
+				"down",
+				"status",
+				"doctor",
+				"logs",
+				"resource_create",
+				"resource_list",
+				"resource_restart",
+				"config_verify",
+				"config_regenerate",
+				"config_explain",
+				"project_init",
+				"project_import",
+				"project_eject",
+				"stack_list",
+				"stack_assign",
+				"network_list",
+				"agent_list",
+				"agent_sessions",
+				"runtime_check"
+			]
+		}
 	},
 	{
 		"kind": "app",
@@ -24,7 +51,14 @@
 		"url": "https://readme.flisk.si",
 		"repo": "flisk-sh/readme-score",
 		"author": "flisk-sh",
-		"official": true
+		"official": true,
+		"mcp": {
+			"transport": "http",
+			"url": "https://readme.flisk.si/mcp",
+			"tools": [
+				"score_readme"
+			]
+		}
 	},
 	{
 		"kind": "app",
@@ -37,7 +71,14 @@
 		"url": "https://citable.flisk.si",
 		"repo": "flisk-sh/citable",
 		"author": "flisk-sh",
-		"official": true
+		"official": true,
+		"mcp": {
+			"transport": "http",
+			"url": "https://citable.flisk.si/mcp",
+			"tools": [
+				"check_site"
+			]
+		}
 	},
 	{
 		"kind": "app",
@@ -50,7 +91,15 @@
 		"url": "https://helpdock.flisk.sh",
 		"repo": "flisk-sh/helpdock",
 		"author": "flisk-sh",
-		"official": true
+		"official": true,
+		"mcp": {
+			"transport": "http",
+			"url": "https://helpdock.flisk.sh/mcp",
+			"tools": [
+				"search_docs",
+				"ask_help_center"
+			]
+		}
 	},
 	{
 		"kind": "app",
@@ -155,5 +204,27 @@
 		"repo": "flisk-sh/flisk-service-definitions",
 		"author": "flisk-sh",
 		"official": true
+	},
+	{
+		"kind": "app",
+		"id": "flisk-tools",
+		"name": "Flisk Tools",
+		"tagline": "This store: every dev tool, agent skill and app, searchable and open source",
+		"description": "A free marketplace of developer tools, AI agent skills and apps. Search it, add yours with a pull request after signing in with GitHub, or let your AI search it over MCP.",
+		"group": "Flisk apps",
+		"category": "Marketplace",
+		"url": "https://tools.flisk.si",
+		"repo": "flisk-sh/flisk-tools",
+		"author": "flisk-sh",
+		"official": true,
+		"license": "MIT",
+		"mcp": {
+			"transport": "http",
+			"url": "https://tools.flisk.si/mcp",
+			"tools": [
+				"search_store",
+				"get_listing"
+			]
+		}
 	}
 ]

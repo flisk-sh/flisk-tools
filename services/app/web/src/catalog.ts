@@ -5,6 +5,19 @@ import data from "./catalog.generated.json";
 
 export type Kind = "app" | "tool" | "skill";
 
+/** How to reach a listing's MCP server: a remote one by address, or a local one by command. */
+export interface Mcp {
+	transport: "http" | "stdio";
+	/** https address of a remote (Streamable HTTP) server. */
+	url?: string;
+	/** What to run for a local (stdio) server, like "flisk mcp". */
+	command?: string;
+	/** Tool names the server offers. */
+	tools?: string[];
+	/** Name in the official MCP Registry, when it is listed there. */
+	registry?: string;
+}
+
 export interface Entry {
 	kind: Kind;
 	id: string;
@@ -23,6 +36,8 @@ export interface Entry {
 	author?: string;
 	/** Listed by Flisk itself. */
 	official?: boolean;
+	/** Set when the listing also has an MCP server an AI can use. */
+	mcp?: Mcp;
 }
 
 export const KINDS: { id: Kind; label: string; plural: string }[] = [
@@ -43,6 +58,8 @@ export interface Query {
 	q?: string;
 	kind?: string;
 	group?: string;
+	/** Only listings that have an MCP server. */
+	mcp?: boolean;
 	page?: number;
 }
 
@@ -64,6 +81,7 @@ export function search(query: Query): Result {
 		(e) =>
 			(!query.kind || e.kind === query.kind) &&
 			(!query.group || e.group === query.group) &&
+			(!query.mcp || e.mcp) &&
 			words.every((w) => HAY.get(e.id)?.includes(w)),
 	);
 	const pages = Math.max(1, Math.ceil(matches.length / PAGE_SIZE));
@@ -87,6 +105,17 @@ export function groups(kind?: string): { name: string; count: number }[] {
 		.sort((a, b) => b.count - a.count);
 }
 
+export const mcpCount = () => ENTRIES.filter((e) => e.mcp).length;
+
+/** The Claude Code command that adds a listing's MCP server. */
+export function mcpCommand(e: Pick<Entry, "id" | "mcp">): string {
+	const m = e.mcp;
+	if (!m) return "";
+	return m.transport === "http"
+		? `claude mcp add --transport http ${e.id} ${m.url}`
+		: `claude mcp add ${e.id} -- ${m.command}`;
+}
+
 export const counts = (kind: Kind) =>
 	ENTRIES.filter((e) => e.kind === kind).length;
 
@@ -97,7 +126,10 @@ export const order = (a: Entry, b: Entry) =>
 
 /** The text for MCP and llms.txt. */
 export function describeEntry(e: Entry): string {
-	return `${e.name} (${e.id}, ${kindLabel(e.kind)}): ${e.tagline}. ${e.description} ${e.url}${e.stars ? ` · ${e.stars} stars` : ""}`;
+	const mcp = e.mcp
+		? ` MCP server: ${e.mcp.transport === "http" ? e.mcp.url : `local, run \`${e.mcp.command}\``}${e.mcp.tools?.length ? ` (tools: ${e.mcp.tools.join(", ")})` : ""}.`
+		: "";
+	return `${e.name} (${e.id}, ${kindLabel(e.kind)}): ${e.tagline}. ${e.description} ${e.url}${e.stars ? ` · ${e.stars} stars` : ""}.${mcp}`;
 }
 
 /** What is wrong with a catalog entry, or undefined. Used by `bun run catalog` and the tests. */
@@ -117,6 +149,25 @@ export function problem(e: Partial<Entry>): string | undefined {
 		return "url must be an https address";
 	if (e.repo && !/^[\w.-]+\/[\w.-]+$/.test(e.repo))
 		return "repo must look like owner/name";
+	const m = e.mcp;
+	if (m) {
+		if (m.transport !== "http" && m.transport !== "stdio")
+			return "mcp.transport must be http or stdio";
+		if (m.transport === "http" && !/^https:\/\/[^\s"'<>]+$/.test(m.url ?? ""))
+			return "mcp.url must be an https address";
+		if (
+			m.transport === "stdio" &&
+			!/^[\w@./:= -]{1,120}$/.test(m.command ?? "")
+		)
+			return "mcp.command may use letters, digits and @ . / : = - only";
+		if (
+			m.tools &&
+			(m.tools.length > 40 || m.tools.some((t) => !/^[\w.-]{1,60}$/.test(t)))
+		)
+			return "mcp.tools must be up to 40 plain names";
+		if (m.registry && !/^[\w.-]+\/[\w.-]+$/.test(m.registry))
+			return "mcp.registry must look like io.github.you/name";
+	}
 	return undefined;
 }
 
