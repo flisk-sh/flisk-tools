@@ -256,3 +256,45 @@ describe("loop 6 fixes", () => {
 		expect(page).toContain("add the tool there with a source");
 	});
 });
+
+describe("loop 7 fixes", () => {
+	it("sorts by stars when asked, on the page and in the API", async () => {
+		const r = search({ q: "kubernetes", sort: "stars" }).items;
+		for (let i = 1; i < r.length; i++)
+			expect(r[i - 1].stars ?? 0).toBeGreaterThanOrEqual(r[i].stars ?? 0);
+		const page = await html("/?q=kubernetes&sort=stars");
+		expect(page).toContain("<b>Most starred</b>");
+		expect(page).toContain("Best match</a>");
+		const api = (await (
+			await app.request("/api/tools?q=kubernetes&sort=stars")
+		).json()) as { items: { stars?: number }[] };
+		expect(api.items[0].stars ?? 0).toBeGreaterThanOrEqual(
+			api.items[1].stars ?? 0,
+		);
+	});
+
+	it("keeps the sort when another filter is clicked", async () => {
+		expect(await html("/?q=docker&sort=stars")).toContain(
+			"kind=app&amp;sort=stars",
+		);
+	});
+
+	it("says a skill's stars are the whole repository's", async () => {
+		expect(await html("/?q=code+review&kind=skill")).toContain(
+			"Stars of the whole repository",
+		);
+		expect(await html("/listing/mattpocock-code-review")).toContain(
+			"GitHub stars (whole repo)",
+		);
+	});
+
+	it("shows how to install a skill, with the folder from its address", async () => {
+		const page = await html("/listing/mattpocock-code-review");
+		expect(page).toContain("Install it");
+		expect(page).toContain(
+			"git clone --depth 1 https://github.com/mattpocock/skills",
+		);
+		expect(page).toContain("~/.claude/skills/");
+		expect(await html("/listing/citable")).not.toContain("Install it");
+	});
+});

@@ -75,6 +75,8 @@ export interface Query {
 	ring?: string;
 	/** Only tools that meet this "easy to use" check, like "offline" or "agent-ready". */
 	check?: string;
+	/** "stars" lists the most-starred first, instead of the best match. */
+	sort?: "stars";
 	/** Only listings that have an MCP server. */
 	mcp?: boolean;
 	page?: number;
@@ -339,6 +341,10 @@ export function rank(query: Query): Entry[] {
 		const kept = scored.filter((x, i) => i < 3 || x.s >= best * 0.25);
 		matches = kept.map((x) => x.e);
 	}
+	if (query.sort === "stars")
+		matches = [...matches].sort(
+			(a, b) => (b.stars ?? 0) - (a.stars ?? 0) || a.name.localeCompare(b.name),
+		);
 	return matches;
 }
 

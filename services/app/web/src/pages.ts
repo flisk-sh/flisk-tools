@@ -67,6 +67,16 @@ const stars = (n: number) =>
 	n >= 1000 ? `${(n / 1000).toFixed(n >= 10000 ? 0 : 1)}k` : String(n);
 
 /** The listing's MCP server: how to add it to Claude Code or any MCP client, and what it offers. */
+/** How to use an agent skill: it is a folder with a SKILL.md that the agent reads. */
+function skillInstall(e: Entry): string {
+	const m = /\/blob\/[^/]+\/(.+)\/SKILL\.md$/.exec(e.url);
+	const folder = m?.[1] ?? "";
+	const safe =
+		/^[\w./-]+$/.test(folder) && /^[\w.-]+\/[\w.-]+$/.test(e.repo ?? "");
+	const name = folder.split("/").pop() ?? e.id;
+	return `<h2>Install it</h2><p class="note">A skill is a folder your AI agent reads. Copy it into the agent's skills folder: for Claude Code, <code>~/.claude/skills/</code> for every project, or <code>.claude/skills/</code> for one.</p>${safe ? `<pre>${esc(`git clone --depth 1 https://github.com/${e.repo} /tmp/skill-src && mkdir -p ~/.claude/skills && cp -r /tmp/skill-src/${folder} ~/.claude/skills/${name}`)}</pre>` : ""}`;
+}
+
 /** One plain sentence on what kind of thing a listing is and how a visitor uses it. */
 function whatIs(e: Entry): string {
 	let host = "";
@@ -106,7 +116,7 @@ ${m.tools?.length ? `<p class="note">Tools: ${m.tools.map((t) => `<code>${esc(t)
 }
 
 export const card = (root: string, e: Entry, proof?: string) =>
-	`<li class="card" style="${color(e.group === "Agent skills" ? e.category : e.group)}"><div class="top"><span class="sym" aria-hidden="true">${esc(symbol(e))}</span><h3><a href="${root}/listing/${e.id}">${esc(e.name)}</a>${e.kind === "skill" && e.repo ? `<small class="src">${esc(e.repo)}</small>` : ""}</h3></div><p>${esc(e.tagline)}</p>${proof ? `<p class="proof">✓ ${esc(proof)}</p>` : ""}<div class="meta"><span class="g">${esc(kindLabel(e.kind))} · ${esc(e.category)}</span>${e.ring ? `<span class="rk r-${e.ring}" title="Maturity: ${e.ring}">${e.ring === "adopt" ? "Adopt" : e.ring === "trial" ? "Trial" : e.ring === "assess" ? "Assess" : "Hold"}</span>` : ""}${e.mcp ? `<span class="mcp">MCP</span>` : ""}${e.stars ? `<span>★ ${stars(e.stars)}</span>` : ""}${e.official ? `<span class="by">by Flisk</span>` : e.kind === "skill" && e.repo ? `<span title="Source repository">${esc(e.repo)}</span>` : e.author ? `<span>@${esc(e.author)}</span>` : ""}</div></li>`;
+	`<li class="card" style="${color(e.group === "Agent skills" ? e.category : e.group)}"><div class="top"><span class="sym" aria-hidden="true">${esc(symbol(e))}</span><h3><a href="${root}/listing/${e.id}">${esc(e.name)}</a>${e.kind === "skill" && e.repo ? `<small class="src">${esc(e.repo)}</small>` : ""}</h3></div><p>${esc(e.tagline)}</p>${proof ? `<p class="proof">✓ ${esc(proof)}</p>` : ""}<div class="meta"><span class="g">${esc(kindLabel(e.kind))} · ${esc(e.category)}</span>${e.ring ? `<span class="rk r-${e.ring}" title="Maturity: ${e.ring}">${e.ring === "adopt" ? "Adopt" : e.ring === "trial" ? "Trial" : e.ring === "assess" ? "Assess" : "Hold"}</span>` : ""}${e.mcp ? `<span class="mcp">MCP</span>` : ""}${e.stars ? `<span title="${e.kind === "skill" ? "Stars of the whole repository" : "GitHub stars"}">★ ${stars(e.stars)}${e.kind === "skill" ? " repo" : ""}</span>` : ""}${e.official ? `<span class="by">by Flisk</span>` : e.kind === "skill" && e.repo ? `<span title="Source repository">${esc(e.repo)}</span>` : e.author ? `<span>@${esc(e.author)}</span>` : ""}</div></li>`;
 
 const RING_IDS = ["adopt", "trial", "assess", "hold"];
 const RING_FILTERS = [
@@ -131,6 +141,7 @@ interface Browse {
 	ring?: string;
 	check?: string;
 	category?: string;
+	sort?: string;
 	page?: number;
 }
 
@@ -144,6 +155,7 @@ export function homeHref(root: string, q: Browse): string {
 	if (q.ring) p.set("ring", q.ring);
 	if (q.check) p.set("check", q.check);
 	if (q.category) p.set("category", q.category);
+	if (q.sort === "stars") p.set("sort", "stars");
 	if (q.page && q.page > 1) p.set("page", String(q.page));
 	const s = p.toString();
 	return `${root}/${s ? `?${s}` : ""}`;
@@ -169,7 +181,14 @@ export function homePage(base: string, query: Browse = {}): string {
 			category ||
 			(query.page ?? 1) > 1,
 	);
-	const base0 = { ...query, kind, ring, check, category };
+	const base0 = {
+		...query,
+		kind,
+		ring,
+		check,
+		category,
+		sort: query.sort === "stars" ? ("stars" as const) : undefined,
+	};
 	const r = search(base0);
 	const f = facets(base0);
 	const link = (extra: Browse) =>
@@ -182,6 +201,7 @@ export function homePage(base: string, query: Browse = {}): string {
 				ring,
 				check,
 				category,
+				sort: query.sort === "stars" ? "stars" : undefined,
 				...extra,
 			}),
 		);
@@ -218,7 +238,7 @@ ${filterRow}</details>
 ${category ? `<p class="jumps"><span class="flabel">Category</span><a class="chip2" href="${link({ category: undefined })}">${esc(category)} ×</a></p>` : ""}
 ${check ? `<p class="note">${esc(DX.criteria.find((c) => c.id === check)?.help ?? "")} This is the roadmap's checklist answer, not a test run here: check the tool's own page before relying on it. Many tools meet it, so combine it with a search.</p>` : ""}
 ${jumps.length ? `<p class="jumps"><span class="flabel">Jump to</span>${jumps.map((j) => `<a class="chip2 jump-${j.kind}" href="${esc(j.href)}">${esc(j.label)}</a>`).join("")}</p>` : ""}
-<p class="count">${r.total} ${r.total === 1 ? "result" : "results"}${query.q ? ` for “${esc(query.q)}”` : ""}</p>
+<p class="count">${r.total} ${r.total === 1 ? "result" : "results"}${query.q ? ` for “${esc(query.q)}”` : ""} · Sort: ${query.sort === "stars" ? `<a href="${link({ sort: undefined })}">Best match</a> · <b>Most starred</b>` : `<b>${query.q ? "Best match" : "Official first"}</b> · <a href="${link({ sort: "stars" })}">Most starred</a>`}</p>
 ${r.items.length ? `<ul class="grid">${r.items.map((e) => card(root, e, check ? FILTER_CHECKS.find((c) => c.id === check)?.label : undefined)).join("")}</ul>` : none}
 <p class="pager"><span>${r.page > 1 ? `<a rel="prev" href="${link({ group: query.group, page: r.page - 1 })}">← Previous</a>` : ""}</span><span>Page ${r.page} of ${r.pages}</span><span>${r.page < r.pages ? `<a rel="next" href="${link({ group: query.group, page: r.page + 1 })}">Next →</a>` : ""}</span></p>`,
 		"browse",
@@ -303,10 +323,11 @@ export function listingPage(base: string, e: Entry): string {
 		`<section class="detail" style="${color(e.group === "Agent skills" ? e.category : e.group)}"><span class="sym" aria-hidden="true">${esc(symbol(e))}</span><div><p class="eyebrow">${esc(kindLabel(e.kind))} · ${esc(e.category)}</p><h1>${esc(e.name)}</h1><p class="lede">${esc(e.tagline)}</p><p class="note">${esc(whatIs(e))}</p><p><a class="cta" href="${esc(e.url)}" rel="noopener">Open ${esc(e.name)}</a>${e.repo ? ` <a class="cta alt" href="https://github.com/${esc(e.repo)}" rel="noopener">GitHub</a>` : ""}</p></div></section>
 <p style="max-width:46rem">${esc(e.description)}</p>
 ${e.mcp ? mcpPanel(e) : ""}
-<dl class="facts"><dt>Type</dt><dd>${esc(kindLabel(e.kind))}</dd><dt>Group</dt><dd><a href="${esc(homeHref(root, { group: e.group }))}">${esc(e.group)}</a></dd><dt>Category</dt><dd><a href="${esc(homeHref(root, { category: e.category }))}">${esc(e.category)}</a></dd>${e.author ? `<dt>By</dt><dd><a href="https://github.com/${esc(e.author)}" rel="noopener">@${esc(e.author)}</a>${e.official ? " (Flisk)" : ""}</dd>` : ""}${e.stars ? `<dt>GitHub stars</dt><dd>${e.stars.toLocaleString("en-US")}</dd>` : ""}${e.license ? `<dt>License</dt><dd>${esc(e.license)}</dd>` : ""}</dl>
+<dl class="facts"><dt>Type</dt><dd>${esc(kindLabel(e.kind))}</dd><dt>Group</dt><dd><a href="${esc(homeHref(root, { group: e.group }))}">${esc(e.group)}</a></dd><dt>Category</dt><dd><a href="${esc(homeHref(root, { category: e.category }))}">${esc(e.category)}</a></dd>${e.author ? `<dt>By</dt><dd><a href="https://github.com/${esc(e.author)}" rel="noopener">@${esc(e.author)}</a>${e.official ? " (Flisk)" : ""}</dd>` : ""}${e.stars ? `<dt>${e.kind === "skill" ? "GitHub stars (whole repo)" : "GitHub stars"}</dt><dd>${e.stars.toLocaleString("en-US")}</dd>` : ""}${e.license ? `<dt>License</dt><dd>${esc(e.license)}</dd>` : ""}</dl>
 ${glance(e)}
 ${similar.length >= 1 && e.ring ? `<p><a class="cta alt" href="${root}/ask?q=${encodeURIComponent([e.name, ...similar.map((s) => s.name)].join(" vs "))}">Compare with ${similar.map((s) => esc(s.name)).join(" and ")}</a></p>` : ""}
 ${related.length ? `<h2>More in ${esc(e.group)}</h2><ul class="grid">${related.map((x) => card(root, x)).join("")}</ul>` : ""}
+${e.kind === "skill" ? skillInstall(e) : ""}
 <h2>Read it from code</h2><pre>curl '${esc(base)}/api/tools/${e.id}'</pre>`,
 		"browse",
 	);

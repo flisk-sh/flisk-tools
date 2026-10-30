@@ -119,6 +119,7 @@ export function createApp(options: AppOptions = {}) {
 				ring: c.req.query("ring"),
 				check: c.req.query("check"),
 				category: c.req.query("category"),
+				sort: c.req.query("sort"),
 				page: Number(c.req.query("page")) || 1,
 			}),
 		),
@@ -283,6 +284,7 @@ export function createApp(options: AppOptions = {}) {
 			ring: c.req.query("ring"),
 			check: c.req.query("check"),
 			category: c.req.query("category"),
+			sort: c.req.query("sort") === "stars" ? "stars" : undefined,
 			page: Number(c.req.query("page")) || 1,
 		});
 		return c.json(r);
