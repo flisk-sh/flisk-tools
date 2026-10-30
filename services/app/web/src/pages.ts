@@ -74,7 +74,7 @@ function skillInstall(e: Entry): string {
 	const safe =
 		/^[\w./-]+$/.test(folder) && /^[\w.-]+\/[\w.-]+$/.test(e.repo ?? "");
 	const name = folder.split("/").pop() ?? e.id;
-	return `<h2>Install it</h2><p class="note">A skill is a folder your AI agent reads. Copy it into the agent's skills folder: for Claude Code, <code>~/.claude/skills/</code> for every project, or <code>.claude/skills/</code> for one.</p>${safe ? `<pre>${esc(`git clone --depth 1 https://github.com/${e.repo} /tmp/skill-src && mkdir -p ~/.claude/skills && cp -r /tmp/skill-src/${folder} ~/.claude/skills/${name}`)}</pre>` : ""}`;
+	return `<h2>Install it</h2><p class="note">A skill is a folder your AI agent reads. Put it in the agent's skills folder: for Claude Code, <code>~/.claude/skills/</code> for every project, or <code>.claude/skills/</code> for one.</p>${safe ? `<p class="note">One command, for the skill's SKILL.md:</p><pre>${esc(`mkdir -p ~/.claude/skills/${name} && curl -fsSL https://raw.githubusercontent.com/${e.repo}/HEAD/${folder}/SKILL.md -o ~/.claude/skills/${name}/SKILL.md`)}</pre><p class="note">If the skill has more files than SKILL.md, copy the whole folder instead:</p><pre>${esc(`git clone --depth 1 https://github.com/${e.repo} /tmp/skill-src && cp -r /tmp/skill-src/${folder} ~/.claude/skills/${name}`)}</pre>` : ""}`;
 }
 
 /** One plain sentence on what kind of thing a listing is and how a visitor uses it. */
@@ -215,6 +215,12 @@ export function homePage(base: string, query: Browse = {}): string {
 	) =>
 		`<a class="subtab" href="${href}"${on ? ' aria-current="page"' : ""}>${label}${n === undefined ? "" : `<small>${n}</small>`}</a>`;
 	const jumps = jumpLinks(query.q, root);
+	// Several tools to choose between: offer them side by side (skills and apps have no ring, so they are not compared).
+	const rated = r.items.filter((e) => e.ring);
+	const topCompare =
+		query.q && rated.length >= 3 && r.total >= 4
+			? rated.slice(0, 3)
+			: undefined;
 	const ringCount = (id: string) =>
 		query.q ? undefined : facets({ ...base0, ring: id }).total;
 	const checkCount = (id: string) =>
@@ -254,6 +260,7 @@ ${
 ${filterRow}</details>
 ${category ? `<p class="jumps"><span class="flabel">Category</span><a class="chip2" href="${link({ category: undefined })}">${esc(category)} ×</a></p>` : ""}
 ${check ? `<p class="note">${esc(DX.criteria.find((c) => c.id === check)?.help ?? "")} This is the roadmap's checklist answer, not a test run here: check the tool's own page before relying on it. Many tools meet it, so combine it with a search.</p>` : ""}
+${topCompare ? `<p class="jumps"><span class="flabel">Choosing?</span><a class="chip2 jump-compare" href="${root}/ask?q=${encodeURIComponent(topCompare.map((t) => t.name).join(" vs "))}">Compare the top ${topCompare.length}: ${topCompare.map((t) => esc(t.name)).join(", ")}</a></p>` : ""}
 ${jumps.length ? `<p class="jumps"><span class="flabel">Jump to</span>${jumps.map((j) => `<a class="chip2 jump-${j.kind}" href="${esc(j.href)}">${esc(j.label)}</a>`).join("")}</p>` : ""}
 <p class="count">${r.total} ${r.total === 1 ? "result" : "results"}${query.q ? ` for “${esc(query.q)}”` : ""} · Sort: ${(
 			[

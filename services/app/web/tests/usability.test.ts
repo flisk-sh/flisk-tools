@@ -361,3 +361,22 @@ describe("loop 9 fixes", () => {
 		);
 	});
 });
+
+describe("loop 10 fixes", () => {
+	it("gives a one-line install for a skill, and the whole-folder way when it has more files", async () => {
+		const page = await html("/listing/mattpocock-code-review");
+		expect(page).toContain(
+			"curl -fsSL https://raw.githubusercontent.com/mattpocock/skills/HEAD/",
+		);
+		expect(page).toContain("-o ~/.claude/skills/code-review/SKILL.md");
+		expect(page).toContain("If the skill has more files than SKILL.md");
+	});
+
+	it("offers to compare the top three tools of a search side by side, only when there are tools to compare", async () => {
+		const page = await html("/?q=kubernetes");
+		expect(page).toContain("Choosing?");
+		expect(page).toMatch(/Compare the top 3: [^<]+/);
+		expect(await html("/?q=code+review&kind=skill")).not.toContain("Choosing?");
+		expect(await html("/")).not.toContain("Choosing?");
+	});
+});
