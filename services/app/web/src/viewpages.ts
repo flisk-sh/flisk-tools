@@ -240,6 +240,13 @@ export function journeysPage(
 		}
 		return out;
 	};
+	const partial = knownIds.size
+		? LEVELS.filter((l) => {
+				const main = track.stops[l.id]?.main ?? [];
+				const k = knownOf(main);
+				return k > 0 && k < Math.ceil(main.length / 2);
+			}).map((l) => l.n)
+		: [];
 	const skim = knownIds.size
 		? LEVELS.filter((l) => {
 				const main = track.stops[l.id]?.main ?? [];
@@ -252,7 +259,7 @@ export function journeysPage(
 				return main.length > 0 && knownOf(main) < Math.ceil(main.length / 2);
 			})
 		: undefined;
-	const knowForm = `<form class="search" role="search" action="${root}/journeys" method="get"><input type="hidden" name="track" value="${esc(track.id)}"><input type="search" name="know" value="${esc(know ?? "")}" placeholder="Tools you know: npm, vite, docker" aria-label="Tools you know"><button type="submit">Where do I start?</button></form>${knownIds.size ? `<p class="verdict-line">${startAt ? `Start at station ${startAt.n}: <b>${esc(startAt.name)}</b>.${skim.length ? ` You can skim ${skim.length === 1 ? "station" : "stations"} ${skim.join(", ")}, where you already know most of the main tools.` : ""}` : "You already know most of the main tools on this route. Look at the last stations for what is next."}</p>` : typed.length ? `<p class="note">No tools recognised in “${esc(know ?? "")}”.</p>` : ""}`;
+	const knowForm = `<form class="search" role="search" action="${root}/journeys" method="get"><input type="hidden" name="track" value="${esc(track.id)}"><input type="search" name="know" value="${esc(know ?? "")}" placeholder="Tools you know: npm, vite, docker" aria-label="Tools you know"><button type="submit">Where do I start?</button></form>${knownIds.size ? `<p class="verdict-line">${startAt ? `Start at station ${startAt.n}: <b>${esc(startAt.name)}</b>.${partial.length ? ` You already know some tools at station ${partial.join(", ")}, so skim those.` : ""}${skim.length ? ` You can skim ${skim.length === 1 ? "station" : "stations"} ${skim.join(", ")}, where you already know most of the main tools.` : ""}` : "You already know most of the main tools on this route. Look at the last stations for what is next."}</p>` : typed.length ? `<p class="note">No tools recognised in “${esc(know ?? "")}”.</p>` : ""}`;
 	const chip = (id: string, main: boolean) => {
 		const t = toolById(id);
 		return t
@@ -425,6 +432,20 @@ function because(role: Role, me: Record<string, number>): string {
 		: "";
 }
 
+/** One line of independent evidence for a tool: its ring, how long the repository has existed, how recently it shipped. */
+function evidenceLine(t: Entry): string {
+	const parts: string[] = [];
+	if (t.ring)
+		parts.push(
+			`${t.ring === "adopt" ? "Adopt" : t.ring === "trial" ? "Trial" : t.ring === "assess" ? "Assess" : "Hold"} ring`,
+		);
+	if (t.created) parts.push(`repository ${ageOf(t.created)} old`);
+	const d = daysSince(t.release);
+	if (d !== undefined) parts.push(`last release ${d} days ago`);
+	if (t.archived) parts.push("archived, no longer maintained");
+	return esc(parts.join(", ") || "no evidence recorded");
+}
+
 /** A plain-words verdict above the compare table: who leads on each thing that can be measured. */
 function verdict(picks: Entry[]): string {
 	if (picks.length < 2) return "";
@@ -464,7 +485,7 @@ function verdict(picks: Entry[]): string {
 			: "",
 	].filter(Boolean);
 	const same = picks.every((t) => t.ring && t.ring === picks[0].ring);
-	return `<div class="result"><h3>At a glance</h3><ul class="verdict">${items.join("")}</ul><p class="note">${same ? `All are ${esc(picks[0].ring ?? "")}: the rings do not separate them, so use the lines above.` : "Maturity ring, from the Adoption Radar rules."} There is no single winner: pick on what matters to you.</p></div>`;
+	return `<div class="result"><h3>At a glance</h3><ul class="verdict">${items.join("")}</ul><h4 class="evh">The evidence for each</h4><ul class="verdict">${picks.map((t) => `<li><b>${esc(t.name)}</b>: ${evidenceLine(t)}</li>`).join("")}</ul><p class="note">${same ? `All are ${esc(picks[0].ring ?? "")}: the rings do not separate them, so use the lines above.` : "Maturity ring, from the Adoption Radar rules."} There is no single winner: pick on what matters to you.</p></div>`;
 }
 
 /** What Adopt, Trial, Assess and Hold mean, shown under a comparison so a ring is never a bare word. */

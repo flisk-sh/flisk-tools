@@ -78,7 +78,7 @@ export interface Query {
 	category?: string;
 	/** Only roadmap tools in this Radar ring. */
 	ring?: string;
-	/** Only tools that meet this "easy to use" check, like "offline" or "agent-ready". */
+	/** Only tools that meet these "easy to use" checks, comma separated, like "offline,one-command". */
 	check?: string;
 	/** "stars" lists the most-starred first, instead of the best match. */
 	sort?: "stars" | "easy";
@@ -275,6 +275,8 @@ function wordScore(doc: Doc, word: string): number {
 			)
 				s = 1.5;
 		}
+		// A synonym is weaker evidence than the word itself: it never earns name-level credit ("local" is not "LocalAI").
+		if (i > 0 && s < 10) s = Math.min(s, 3.6);
 		best = Math.max(best, s * weight);
 	}
 	return best;
@@ -285,17 +287,36 @@ const haystackOk = (e: Entry, q: Query) =>
 	(!q.group || e.group === q.group) &&
 	(!q.category || e.category === q.category) &&
 	(!q.ring || e.ring === q.ring) &&
-	(!q.check || (e.dx ?? []).includes(q.check)) &&
+	(!q.check || q.check.split(",").every((k) => (e.dx ?? []).includes(k))) &&
 	(!q.mcp || e.mcp);
 
 /** Every listing that matches, best first: official, then by stars, then by name with no query; by relevance with one. */
 export function rank(query: Query): Entry[] {
-	const words = tokens(query.q ?? "").filter((w) => !STOP.has(w));
+	const typedWords = tokens(query.q ?? "").filter((w) => !STOP.has(w));
+	// "beginner", "easy", "simple", "starter" say how a person wants it, not what it is: use them to prefer easy tools.
+	const EASY_WORDS = new Set([
+		"beginner",
+		"beginners",
+		"beginner-friendly",
+		"easy",
+		"easiest",
+		"simple",
+		"starter",
+		"newbie",
+		"junior",
+	]);
+	const wantsEasy = typedWords.some((w) => EASY_WORDS.has(w));
+	const words = wantsEasy
+		? typedWords.filter((w) => !EASY_WORDS.has(w))
+		: typedWords;
 	const pool = ENTRIES.filter((e) => haystackOk(e, query));
 	let matches: Entry[];
 	if (words.length === 0)
-		matches =
-			(query.q ?? "").trim() && tokens(query.q ?? "").length ? [] : pool;
+		matches = wantsEasy
+			? pool.filter((e) => e.dx)
+			: (query.q ?? "").trim() && tokens(query.q ?? "").length
+				? []
+				: pool;
 	else {
 		const phrase = words.join(" ");
 		// Half the words must match; if that finds fewer than three, any one word will do ("yarn pnpm bun" names three tools).
@@ -324,6 +345,7 @@ export function rank(query: Query): Entry[] {
 				// A retired tool should not lead a beginner to it; a recommended one gets a nudge.
 				s *= e.ring === "hold" ? 0.55 : e.ring === "adopt" ? 1.06 : 1;
 				if (e.archived) s *= 0.5;
+				if (wantsEasy) s *= 1 + (e.dx?.length ?? 0) / 8;
 				// The upstream project itself is a reference point, not what a visitor usually wants to install.
 				if (
 					/reference point|not a local dev tool/i.test(
@@ -359,7 +381,7 @@ export function rank(query: Query): Entry[] {
 				: scored.filter((x, i) => i < 3 || x.s >= ref * 0.3);
 		matches = kept.map((x) => x.e);
 	}
-	if (query.sort === "easy")
+	if (query.sort === "easy" || (wantsEasy && !query.sort))
 		matches = [...matches].sort(
 			(a, b) =>
 				(b.dx?.length ?? -1) - (a.dx?.length ?? -1) ||

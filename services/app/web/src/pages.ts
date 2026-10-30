@@ -74,7 +74,7 @@ function skillInstall(e: Entry): string {
 	const safe =
 		/^[\w./-]+$/.test(folder) && /^[\w.-]+\/[\w.-]+$/.test(e.repo ?? "");
 	const name = folder.split("/").pop() ?? e.id;
-	return `<h2>Install it</h2><p class="note">A skill is a folder your AI agent reads. Put it in the agent's skills folder: for Claude Code, <code>~/.claude/skills/</code> for every project, or <code>.claude/skills/</code> for one.</p>${safe ? `<p class="note">One command, for the skill's SKILL.md:</p><pre>${esc(`mkdir -p ~/.claude/skills/${name} && curl -fsSL https://raw.githubusercontent.com/${e.repo}/HEAD/${folder}/SKILL.md -o ~/.claude/skills/${name}/SKILL.md`)}</pre><p class="note">If the skill has more files than SKILL.md, copy the whole folder instead:</p><pre>${esc(`git clone --depth 1 https://github.com/${e.repo} /tmp/skill-src && cp -r /tmp/skill-src/${folder} ~/.claude/skills/${name}`)}</pre>` : ""}`;
+	return `<h2>Install it</h2><p class="note">A skill is a folder your AI agent reads. Put it in the agent's skills folder: for Claude Code, <code>~/.claude/skills/</code> for every project, or <code>.claude/skills/</code> for one.</p>${safe ? `<p class="note">Most skills are one file, so use this. It writes only that file into your home folder; you can read the SKILL.md on GitHub first:</p><pre>${esc(`mkdir -p ~/.claude/skills/${name} && curl -fsSL https://raw.githubusercontent.com/${e.repo}/HEAD/${folder}/SKILL.md -o ~/.claude/skills/${name}/SKILL.md`)}</pre><p class="note">Use this one instead only if the skill's folder has other files next to SKILL.md:</p><pre>${esc(`git clone --depth 1 https://github.com/${e.repo} /tmp/skill-src && cp -r /tmp/skill-src/${folder} ~/.claude/skills/${name}`)}</pre>` : ""}`;
 }
 
 /** One plain sentence on what kind of thing a listing is and how a visitor uses it. */
@@ -165,9 +165,10 @@ export function homePage(base: string, query: Browse = {}): string {
 	const root = rootOf(base);
 	const kind = KINDS.some((k) => k.id === query.kind) ? query.kind : undefined;
 	const ring = RING_IDS.includes(query.ring ?? "") ? query.ring : undefined;
-	const check = FILTER_CHECKS.some((c) => c.id === query.check)
-		? query.check
-		: undefined;
+	const checks = (query.check ?? "")
+		.split(",")
+		.filter((k) => FILTER_CHECKS.some((c) => c.id === k));
+	const check = checks.length ? checks.join(",") : undefined;
 	const category = ENTRIES.some((e) => e.category === query.category)
 		? query.category
 		: undefined;
@@ -228,9 +229,14 @@ export function homePage(base: string, query: Browse = {}): string {
 			: undefined;
 	const ringCount = (id: string) =>
 		query.q ? undefined : facets({ ...base0, ring: id }).total;
+	const toggled = (id: string) =>
+		(checks.includes(id)
+			? checks.filter((k) => k !== id)
+			: [...checks, id]
+		).join(",") || undefined;
 	const checkCount = (id: string) =>
-		query.q ? undefined : facets({ ...base0, check: id }).total;
-	const filterRow = `<nav class="subtabs filters" aria-label="Filters"><span class="flabel">Maturity</span>${RING_FILTERS.map((x) => sub(link({ ring: ring === x.id ? undefined : x.id }), esc(x.label), ringCount(x.id), ring === x.id)).join("")}<span class="flabel">Works</span>${FILTER_CHECKS.map((c) => sub(link({ check: check === c.id ? undefined : c.id }), esc(c.label), checkCount(c.id), check === c.id)).join("")}</nav>`;
+		query.q ? undefined : facets({ ...base0, check: toggled(id) }).total;
+	const filterRow = `<nav class="subtabs filters" aria-label="Filters"><span class="flabel">Maturity</span>${RING_FILTERS.map((x) => sub(link({ ring: ring === x.id ? undefined : x.id }), esc(x.label), ringCount(x.id), ring === x.id)).join("")}<span class="flabel">Works</span>${FILTER_CHECKS.map((c) => sub(link({ check: toggled(c.id) }), esc(c.label), checkCount(c.id), checks.includes(c.id))).join("")}</nav>`;
 	const none = `<div class="empty"><p><b>Nothing matches${query.q ? ` “${esc(query.q)}”` : " these filters"}.</b></p><ul><li>Try fewer or different words, like <a href="${root}/?q=docker">docker</a> or <a href="${root}/?q=k8s">k8s</a>.</li><li>Clear the filters and <a href="${root}/">browse everything</a>.</li><li>Looking for a path or a job? See <a href="${root}/journeys">Journeys</a> and <a href="${root}/roles">Roles</a>.</li><li>Missing from the store? <a href="${root}/publish">Add it.</a></li></ul></div>`;
 	return layout(
 		base,
@@ -280,7 +286,7 @@ ${jumps.length ? `<p class="jumps"><span class="flabel">Jump to</span>${jumps.ma
 					: `<a href="${link({ sort: k })}">${label}</a>`,
 			)
 			.join(" · ")}</p>
-${r.items.length ? `<ul class="grid">${r.items.map((e) => card(root, e, check ? FILTER_CHECKS.find((c) => c.id === check)?.label : undefined)).join("")}</ul>` : none}
+${r.items.length ? `<ul class="grid">${r.items.map((e) => card(root, e, checks.length ? checks.map((k) => FILTER_CHECKS.find((c) => c.id === k)?.label).join(" · ") : undefined)).join("")}</ul>` : none}
 <p class="pager"><span>${r.page > 1 ? `<a rel="prev" href="${link({ group: query.group, page: r.page - 1 })}">← Previous</a>` : ""}</span><span>Page ${r.page} of ${r.pages}</span><span>${r.page < r.pages ? `<a rel="next" href="${link({ group: query.group, page: r.page + 1 })}">Next →</a>` : ""}</span></p>`,
 		"browse",
 	);
@@ -371,8 +377,8 @@ export function listingPage(base: string, e: Entry): string {
 		`<section class="detail" style="${color(e.group === "Agent skills" ? e.category : e.group)}"><span class="sym" aria-hidden="true">${esc(symbol(e))}</span><div><p class="eyebrow">${esc(kindLabel(e.kind))} · ${esc(e.category)}</p><h1>${esc(e.name)}</h1><p class="lede">${esc(e.tagline)}</p><p class="note">${esc(whatIs(e))}</p><p><a class="cta" href="${esc(e.url)}" rel="noopener">Open ${esc(e.name)}</a>${e.repo ? ` <a class="cta alt" href="https://github.com/${esc(e.repo)}" rel="noopener">GitHub</a>` : ""}</p></div></section>
 <p style="max-width:46rem">${esc(e.description)}</p>
 ${e.kind === "skill" ? skillInstall(e) : ""}
-${e.install ? `<h2>Typical install</h2><pre>${esc(e.install)}</pre><p class="note">The usual way on macOS or Linux; the tool's own page has the steps for your system.</p>` : ""}
-${sameName.length ? `<h2>Same name, other repositories</h2><p class="note">${sameName.length + 1} skills are called “${esc(e.name)}”. They are different files from different authors: compare their one-liners and sources.</p><ul class="verdict">${sameName.map((x) => `<li><a href="${root}/listing/${x.id}">${esc(x.repo ?? x.id)}</a>${x.stars ? ` <span class="note">★ ${stars(x.stars)} (whole repo)</span>` : ""}: ${esc(x.tagline)}</li>`).join("")}</ul>` : ""}
+${e.install ? `<h2>Typical install</h2><pre>${esc(e.install)}</pre><p class="note">The usual way on macOS or Linux (Homebrew, npm or a script). For Windows and other systems, use the steps on the tool's own page.</p>` : ""}
+${sameName.length ? `<h2>Same name, other repositories</h2><p class="note">${sameName.length + 1} skills are called “${esc(e.name)}”. They are different files from different authors: compare their one-liners and sources. They also install into the same folder, so keep one, or rename the folder if you want both.</p><ul class="verdict">${sameName.map((x) => `<li><a href="${root}/listing/${x.id}">${esc(x.repo ?? x.id)}</a>${x.stars ? ` <span class="note">★ ${stars(x.stars)} (whole repo)</span>` : ""}: ${esc(x.tagline)}</li>`).join("")}</ul>` : ""}
 ${e.mcp ? mcpPanel(e) : ""}
 <dl class="facts"><dt>Type</dt><dd>${esc(kindLabel(e.kind))}</dd><dt>Group</dt><dd><a href="${esc(homeHref(root, { group: e.group }))}">${esc(e.group)}</a></dd><dt>Category</dt><dd><a href="${esc(homeHref(root, { category: e.category }))}">${esc(e.category)}</a></dd>${e.author ? `<dt>By</dt><dd><a href="https://github.com/${esc(e.author)}" rel="noopener">@${esc(e.author)}</a>${e.official ? " (Flisk)" : ""}</dd>` : ""}${e.stars ? `<dt>${e.kind === "skill" ? "GitHub stars (whole repo)" : "GitHub stars"}</dt><dd>${e.stars.toLocaleString("en-US")}${e.repo ? ` <span class="note">(${esc(e.repo)})</span>` : ""}</dd>` : ""}${e.license ? `<dt>License</dt><dd>${esc(e.license)}</dd>` : ""}</dl>
 ${glance(e)}

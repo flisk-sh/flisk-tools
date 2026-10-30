@@ -369,7 +369,9 @@ describe("loop 10 fixes", () => {
 			"curl -fsSL https://raw.githubusercontent.com/mattpocock/skills/HEAD/",
 		);
 		expect(page).toContain("-o ~/.claude/skills/code-review/SKILL.md");
-		expect(page).toContain("If the skill has more files than SKILL.md");
+		expect(page).toContain(
+			"if the skill's folder has other files next to SKILL.md",
+		);
 	});
 
 	it("offers to compare the top three tools of a search side by side, only when there are tools to compare", async () => {
@@ -507,5 +509,46 @@ describe("evidence and installs", () => {
 		expect(search({ q: "kubernetes laptop" }).items[0].id).not.toBe(
 			"kubernetes",
 		);
+	});
+});
+
+describe("run 11 findings", () => {
+	it("reads 'beginner' as a wish for easy tools, not as a word to match", () => {
+		const top = search({ q: "kubernetes beginner" })
+			.items.slice(0, 3)
+			.map((e) => e.id);
+		expect(top).toContain("minikube");
+		expect(search({ q: "easy" }).items.length).toBeGreaterThan(10);
+	});
+
+	it("does not let a synonym earn name-level credit, so 'laptop' does not find LocalAI first", () => {
+		expect(search({ q: "kubernetes laptop" }).items[0].id).not.toBe("localai");
+	});
+
+	it("combines checks: tools that run offline AND start with one command", () => {
+		const both = search({ check: "offline,one-command" });
+		const one = search({ check: "offline" });
+		expect(both.total).toBeGreaterThan(0);
+		expect(both.total).toBeLessThan(one.total);
+		expect(
+			both.items.every(
+				(e) => e.dx?.includes("offline") && e.dx?.includes("one-command"),
+			),
+		).toBe(true);
+	});
+
+	it("lists the evidence for each tool under a comparison, and warns before the curl install", async () => {
+		const cmp = await html("/ask?q=pnpm+vs+npm+vs+bun");
+		expect(cmp).toContain("The evidence for each");
+		expect(cmp).toMatch(/repository \d+ years? old, last release \d+ days ago/);
+		const skill = await html("/listing/mattpocock-code-review");
+		expect(skill).toContain("It writes only that file into your home folder");
+		expect(skill).toContain("only if the skill's folder has other files");
+	});
+
+	it("says which later stations you already know part of", async () => {
+		expect(
+			await html("/journeys?track=platform&know=npm,+vite,+docker"),
+		).toContain("You already know some tools at station");
 	});
 });
