@@ -16,9 +16,13 @@ const rpc = (a: ReturnType<typeof createApp>, body: unknown) =>
 	});
 
 describe("catalog", () => {
-	it("has a tools/<id>/main.ts for every Tool, and ids that are safe in a path", () => {
+	it("has a tools/<id>/main.ts for every runnable tool, an https address for every link, and ids that are safe in a path", () => {
 		for (const a of TOOLS) {
 			expect(a.id).toMatch(/^[a-z0-9-]+$/);
+			if (a.kind === "link") {
+				expect(a.url).toMatch(/^https:\/\/[^\s]+$/);
+				continue;
+			}
 			expect(
 				existsSync(`${import.meta.dir}/../../../../tools/${a.id}/main.ts`),
 			).toBe(true);
@@ -40,6 +44,12 @@ describe("pages", () => {
 		const html = await res.text();
 		for (const a of TOOLS) expect(html).toContain(`/tools/${a.id}`);
 		expect(html).not.toContain("<script src");
+	});
+
+	it("sends a link tool to where it lives, and a runnable one to the console", async () => {
+		const link = await (await app.request("/tools/citable")).text();
+		expect(link).toContain('href="https://citable.flisk.si"');
+		expect(link).not.toContain("/console?");
 	});
 
 	it("gives each Tool a page, and 404s an unknown one", async () => {

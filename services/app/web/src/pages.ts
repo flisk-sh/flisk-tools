@@ -3,7 +3,7 @@
 
 import { esc, faqJsonLd, head, type PageMeta } from "./seo";
 import { SITE } from "./site";
-import { CATEGORIES, TOOLS, type Tool } from "./tools";
+import { TOOLS, type Tool } from "./tools";
 
 const STYLE = `
 :root{--bg:${SITE.themeColor.light};--fg:#141413;--muted:#66635c;--line:#e3e0d7;--card:#fff;--sunk:#efede7;--pass:#18794e;--fail:#c22a1f;--accent:#2d4cc8;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
@@ -97,6 +97,9 @@ ${script ? `<script src="${root}/console.js" defer></script>` : ""}
 const card = (root: string, a: Tool) =>
 	`<li><span class="tag">${esc(a.category)}</span><h3><a href="${root}/tools/${a.id}">${esc(a.name)}</a></h3><p>${esc(a.tagline)}</p></li>`;
 
+const runnable = TOOLS.filter((a) => a.kind === "run");
+const links = TOOLS.filter((a) => a.kind === "link");
+
 export function homePage(base: string): string {
 	const root = new URL(`${base}/`).pathname.replace(/\/$/, "");
 	return layout(
@@ -112,8 +115,10 @@ export function homePage(base: string): string {
 <p class="reassure"><b>●</b> Free · Sign in with GitHub · Nothing stored here</p></div></section>
 <div class="wrap"><p class="kick">How it works</p><h2>Your GitHub is the server.</h2>
 <ol class="steps"><li>Sign in with GitHub. No password, no key.</li><li>The console forks this repository to your account.</li><li>It starts the Tool as a GitHub Action, on your free minutes.</li><li>The result lands in your fork as a JSON file.</li></ol>
-<p class="kick">The store</p><h2>${TOOLS.length} Tools, ${CATEGORIES.length} categories</h2>
-<ul class="grid">${TOOLS.map((a) => card(root, a)).join("")}</ul>
+<p class="kick">Run in your GitHub</p><h2>${runnable.length} tools you can run now</h2>
+<ul class="grid">${runnable.map((a) => card(root, a)).join("")}</ul>
+<p class="kick">Flisk's own tools</p><h2>${links.length} apps and libraries from the Flisk org</h2>
+<ul class="grid">${links.map((a) => card(root, a)).join("")}</ul>
 <h2>Add your own</h2>
 <p>A tool is one file, <code>tools/&lt;name&gt;/main.ts</code>, that exports a function. Open a pull request to the <a href="${SITE.repo}">repository</a> and it joins the store.</p></div>`,
 	);
@@ -131,10 +136,18 @@ export function toolPage(base: string, a: Tool): string {
 			crumbs: [{ name: a.name, path: `tools/${a.id}` }],
 		},
 		`<section class="hero short stage"><div class="wrap"><h1 class="grad">${esc(a.name)}</h1>
-<p class="lede">${esc(a.tagline)}</p><a class="cta" href="${root}/console?${esc(qs)}">Run it with GitHub</a></div></section>
-<div class="wrap"><p>${esc(a.description)}</p>
-<h2>Input</h2><ul>${a.inputs.map((i) => `<li><code>${esc(i.name)}</code>: ${esc(i.label)}${i.required ? "" : " (optional)"}, like <code>${esc(i.placeholder)}</code></li>`).join("")}</ul>
-<h2>Output</h2><pre>${esc(a.output)}</pre>
+<p class="lede">${esc(a.tagline)}</p>${
+			a.kind === "link"
+				? `<a class="cta" href="${esc(a.url ?? "")}" rel="noopener">Open ${esc(a.name)}</a>`
+				: `<a class="cta" href="${root}/console?${esc(qs)}">Run it with GitHub</a>`
+		}</div></section>
+<div class="wrap"><p>${esc(a.description)}</p>${
+			a.kind === "link"
+				? ""
+				: `
+<h2>Input</h2><ul>${a.inputs.map((i) => `<li><code>${esc(i.name)}</code>: ${esc(i.label)}${i.required ? "" : " (optional)"}, like <code>${esc(i.placeholder)}</code></li>`).join("")}</ul>`
+		}
+<h2>${a.kind === "link" ? "What you get" : "Output"}</h2><pre>${esc(a.output)}</pre>
 <h2>Read the catalog from code</h2>
 <pre>curl '${esc(base)}/api/tools/${a.id}'</pre></div>`,
 	);

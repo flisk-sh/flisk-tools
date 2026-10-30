@@ -104,6 +104,7 @@ async function run(tool, input) {
 
 async function main() {
   const list = await (await fetch(d.root + "/api/tools")).json();
+  list.tools = list.tools.filter((x) => x.kind === "run");
   const sel = document.getElementById("tool");
   for (const a of list.tools) { const o = document.createElement("option"); o.value = a.id; o.textContent = a.name; sel.appendChild(o); }
   const fields = document.getElementById("fields");

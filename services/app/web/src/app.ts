@@ -138,7 +138,7 @@ export function createApp(options: AppOptions = {}) {
 				{
 					name: "Tool store",
 					path: "",
-					note: `${TOOLS.length} Tools that run in your own GitHub Actions`,
+					note: `${TOOLS.length} tools: some run in your own GitHub Actions, the rest are Flisk apps`,
 				},
 				{
 					name: "Catalog API",
