@@ -95,7 +95,7 @@ describe("files for crawlers", () => {
 		);
 		expect(xml).toContain("<loc>https://tool.test/about</loc>");
 		expect(xml).toContain("<loc>https://tool.test/listing/readme-score</loc>");
-		expect(xml.match(/<url>/g)).toHaveLength(10 + ENTRIES.length);
+		expect(xml.match(/<url>/g)).toHaveLength(11 + ENTRIES.length);
 	});
 
 	it("llms.txt, the manifest and security.txt", async () => {

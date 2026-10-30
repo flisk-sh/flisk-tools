@@ -26,6 +26,7 @@ export type View =
 	| "roles"
 	| "skills"
 	| "ask"
+	| "portfolio"
 	| "";
 
 const FONTS = `<link rel="preconnect" href="https://api.fontshare.com"><link rel="preconnect" href="https://cdn.fontshare.com" crossorigin><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,7 +54,7 @@ ${FONTS}
 <header class="site-header"><div class="wrap bar"><a class="brand" href="${root}/"><img src="${root}/icon.svg" alt="" width="20" height="20"><span>${esc(SITE.name)}</span></a>
 <span class="hook">${ENTRIES.length} listings · ${counts("app")} apps · ${counts("tool")} dev tools · ${counts("skill")} agent skills · ${mcpCount()} with an MCP server · free, no signup to browse</span>
 <nav class="nav" aria-label="Primary"><a href="${root}/publish">Publish</a><a class="nav-extra" href="${root}/about">About</a><a class="nav-extra" href="${esc(SITE.repo)}" rel="noopener">GitHub</a><span id="gh-slot"></span><button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch theme">Theme</button></nav></div></header>
-<main id="main" class="wrap"><nav class="views" aria-label="Views">${tab("browse", `${root}/`, "Browse")}${tab("compass", `${root}/compass`, "Compass")}${tab("radar", `${root}/radar`, "Radar")}${tab("lab", `${root}/lab`, "Lab")}${tab("journeys", `${root}/journeys`, "Journeys")}${tab("roles", `${root}/roles`, "Roles")}${tab("skills", `${root}/skills`, "Skills")}${tab("ask", `${root}/ask`, "Ask")}</nav>
+<main id="main" class="wrap"><nav class="views" aria-label="Views">${tab("browse", `${root}/`, "Browse")}${tab("compass", `${root}/compass`, "Compass")}${tab("radar", `${root}/radar`, "Radar")}${tab("lab", `${root}/lab`, "Lab")}${tab("journeys", `${root}/journeys`, "Journeys")}${tab("roles", `${root}/roles`, "Roles")}${tab("skills", `${root}/skills`, "Skills")}${tab("ask", `${root}/ask`, "Ask")}${tab("portfolio", `${root}/portfolio`, "Portfolio")}</nav>
 ${body}</main>
 <footer><div class="wrap">${esc(SITE.name)}: nothing stored here, no cookies. <a href="${esc(SITE.repo)}">Open source</a>, made by <a href="${esc(SITE.author.url)}">${esc(SITE.author.name)}</a>. Tools and skills come from the <a href="https://roadmap.flisk.si" rel="noopener">DevEx Roadmap</a>; wrong entry? <a href="${esc(SITE.repo)}/pulls" rel="noopener">Fix it on GitHub</a>.</div></footer>
 <script src="${root}/signin.js" defer></script>

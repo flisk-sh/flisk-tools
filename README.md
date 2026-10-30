@@ -15,6 +15,12 @@ Apify Store, with no server to pay for, no database and no API keys. Sign in wit
 Search, filters and pages live in the address (`/?q=docker&kind=skill&page=2`), so every view is a link and the site
 needs no JavaScript to browse. A listing opens where it lives: its own website or GitHub repository.
 
+## Views
+
+Browse and Lab, plus the DevEx Roadmap's views drawn from its data: Compass, Radar, Journeys, Roles, Skills, Ask (compare
+tools side by side) and Portfolio (rate the tools you know, get your best-fit roles and a link to share; the ratings live
+in the address, nothing is stored). All are drawn on the server; only Portfolio's editor needs JavaScript.
+
 ## How it works
 
 - **The store** is one Bun + Hono service on Render's free plan. The catalog is one JSON file built into the image

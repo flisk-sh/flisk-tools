@@ -8,7 +8,16 @@ import {
 	search,
 	symbol,
 } from "./catalog";
+import { PUBLISH_API } from "./client";
 import { card, color, layout, rootOf } from "./pages";
+import {
+	cleanName,
+	familyShape,
+	LEVEL_LABELS,
+	meString,
+	parseMe,
+	roleFit,
+} from "./portfolio";
 import { esc } from "./seo";
 import { SITE } from "./site";
 import {
@@ -305,5 +314,128 @@ ${row("What it is", (t) => esc(t.tagline))}${row("Adoption ring", (t) => (t.ring
 <p class="chiplist" style="margin-top:.8rem">${examples.map((x) => `<a class="chip2" href="${root}/ask?q=${encodeURIComponent(x)}">${esc(x)}</a>`).join("")}</p>
 ${table}`,
 		"ask",
+	);
+}
+
+/** A spider chart of the families: the shape is the point, so it is scaled to your strongest one. */
+function spider(shape: ReturnType<typeof familyShape>): string {
+	const size = 380;
+	const c = size / 2;
+	const R = c - 58;
+	const n = shape.length;
+	const max = Math.max(3, ...shape.map((s) => s.sum));
+	const pt = (i: number, v: number) => {
+		const a = -Math.PI / 2 + (i / n) * Math.PI * 2;
+		return [c + Math.cos(a) * R * v, c + Math.sin(a) * R * v] as const;
+	};
+	const ring = (k: number) =>
+		`<polygon class="spider-ring" points="${shape
+			.map((_, i) =>
+				pt(i, k)
+					.map((v) => v.toFixed(1))
+					.join(","),
+			)
+			.join(" ")}"/>`;
+	const poly = shape
+		.map((s, i) =>
+			pt(i, s.sum / max)
+				.map((v) => v.toFixed(1))
+				.join(","),
+		)
+		.join(" ");
+	const labels = shape
+		.map((s, i) => {
+			const [x, y] = pt(i, 1.2);
+			return `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" class="sl" text-anchor="middle">${esc(s.name)}</text>`;
+		})
+		.join("");
+	return `<svg viewBox="0 0 ${size} ${size}" class="spider" role="img" aria-label="Your skill shape across tool families">${[0.25, 0.5, 0.75, 1].map(ring).join("")}<polygon class="spider-shape" points="${poly}"/>${labels}</svg>`;
+}
+
+export function portfolioPage(
+	base: string,
+	opts: { me?: string; name?: string; family?: string } = {},
+): string {
+	const root = rootOf(base);
+	const me = parseMe(opts.me);
+	const name = cleanName(opts.name);
+	const rated = Object.keys(me).length;
+	const fam = FAMILIES.find((f) => f.id === opts.family)?.id ?? FAMILIES[0].id;
+	const fits = roleFit(me);
+	const best = fits.filter((f) => f.pct > 0).slice(0, 6);
+	const shape = familyShape(me);
+	const q = (extra: string) => {
+		const p = new URLSearchParams(extra);
+		if (rated) p.set("me", meString(me));
+		if (name) p.set("name", name);
+		const s = p.toString();
+		return `${root}/portfolio${s ? `?${s}` : ""}`;
+	};
+	const toolName = (id: string) => toolById(id)?.name ?? id;
+	const chip = (t: Entry) => {
+		const l = me[t.id] ?? 0;
+		return `<button type="button" class="rate" data-id="${t.id}" data-name="${esc(t.name)}" data-level="${l}" aria-label="${esc(`${t.name}: ${LEVEL_LABELS[l]}`)}" style="--c:${familyColor(t.family)}">${esc(t.name)}</button>`;
+	};
+	const tools = ROADMAP_TOOLS.filter((t) => t.family === fam);
+	const result = rated
+		? `<section id="result" class="result"><h2>${name ? `${esc(name)}'s portfolio` : "Your portfolio"}</h2>
+<div class="pf-grid"><div>${spider(shape)}<p class="note">Skill shape across the ${FAMILIES.length} families, scaled to your strongest.</p></div>
+<div><h3>Best-fit roles</h3>${
+				best.length
+					? `<ol class="fits">${best
+							.map(
+								(f) =>
+									`<li><div class="fit-top"><strong>${esc(f.role.name)}</strong><span>${f.pct}%</span></div><div class="bar"><i style="width:${Math.min(100, f.pct)}%"></i></div>${f.noKey ? `<p class="note">Halved: none of its key tools rated (${f.keyGaps.slice(0, 3).map(toolName).map(esc).join(", ")}).</p>` : ""}${
+										f.gaps.length
+											? `<p class="note">Must-have you have not rated: ${f.gaps
+													.slice(0, 4)
+													.map(
+														(id) =>
+															`<a href="${root}/listing/${id}">${esc(toolName(id))}</a>`,
+													)
+													.join(", ")}</p>`
+											: ""
+									}</li>`,
+							)
+							.join("")}</ol>`
+					: "<p>Rate a few more tools to see a match.</p>"
+			}</div></div>
+<h3>Rated tools</h3><p class="chiplist">${Object.keys(me)
+				.map((id) => toolById(id))
+				.filter((t): t is Entry => Boolean(t))
+				.sort(
+					(a, b) =>
+						(me[b.id] ?? 0) - (me[a.id] ?? 0) || a.name.localeCompare(b.name),
+				)
+				.map(
+					(t) =>
+						`<a class="chip2" href="${root}/listing/${t.id}" style="--c:${familyColor(t.family)}">${esc(t.name)} <small>${"●".repeat(me[t.id] ?? 0)}</small></a>`,
+				)
+				.join("")}</p>
+<div class="share"><h3>Share it</h3><p><button type="button" id="pf-copy" class="cta alt">Copy link</button> <a class="cta alt" href="${esc(`${root}/portfolio.md?${new URLSearchParams({ me: meString(me), ...(name ? { name } : {}) }).toString()}`)}" download="portfolio.md">Download Markdown</a> <button type="button" id="pf-publish" class="cta" hidden>Publish a CV to pages.flisk.si</button></p><p id="pf-publish-out" class="note" aria-live="polite">The link above holds your ratings, so anyone with it sees this page. Publishing a CV needs a GitHub sign-in (top right) and replaces the CV you may have published from the roadmap.</p></div></section>`
+		: `<section class="result"><p>Rate the tools you know below, one level at a time: tap once for <b>${LEVEL_LABELS[1]}</b>, twice for <b>${LEVEL_LABELS[2]}</b>, three times for <b>${LEVEL_LABELS[3]}</b>, again to clear. Then press <b>See my result</b>.</p></section>`;
+	return layout(
+		base,
+		{
+			path: "portfolio",
+			title: "Portfolio: your best-fit developer role",
+			description:
+				`Rate the developer tools you know from 0 to 3 and get your best-fit role, your skill shape across ${FAMILIES.length} families and a page to share. Nothing is stored.`.slice(
+					0,
+					160,
+				),
+			noindex: rated > 0 || Boolean(opts.family),
+			crumbs: [{ name: "Portfolio", path: "portfolio" }],
+		},
+		`${hero("Portfolio", "Which developer role <em>fits you</em>?", "Rate the tools you know from 0 to 3. You get your best-fit roles, your skill shape and a link to share. The ratings live in the address, so nothing is stored.")}
+<div id="pf" data-me="${esc(meString(me))}" data-path="${esc(`${root}/portfolio`)}" data-api="${esc(PUBLISH_API)}">
+<p class="pf-bar"><label>Your name (optional) <input id="pf-name" maxlength="40" value="${esc(name)}" placeholder="Alex"></label> <span id="pf-count" class="note">${rated} rated</span> <a id="pf-see" class="cta" href="${esc(q(opts.family ? `family=${opts.family}` : ""))}#result">See my result</a></p>
+${result}
+<h2>Rate your tools</h2>
+<nav class="subtabs" aria-label="Family">${FAMILIES.map((f) => `<a class="subtab" data-extra="family=${f.id}" href="${esc(q(`family=${f.id}`))}"${f.id === fam ? ' aria-current="page"' : ""}>${esc(f.name)}<small>${ROADMAP_TOOLS.filter((t) => t.family === f.id).length}</small></a>`).join("")}</nav>
+<p class="note">Tap a tool to rate it: not rated, know of it, use it, know it well. Without JavaScript, open a result link someone shared.</p>
+<p class="rates">${tools.map(chip).join("")}</p></div>
+<script src="${root}/portfolio.js" defer></script>`,
+		"portfolio",
 	);
 }

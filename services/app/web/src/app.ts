@@ -3,7 +3,7 @@
 import { Hono } from "hono";
 import { ASSETS } from "./assets.generated";
 import { ENTRIES, findEntry, search } from "./catalog";
-import { PUBLISH_JS, SIGNIN_JS } from "./client";
+import { PORTFOLIO_JS, PUBLISH_JS, SIGNIN_JS } from "./client";
 import {
 	clientIp,
 	type ProxyMode,
@@ -19,6 +19,7 @@ import {
 	notFoundPage,
 	publishPage,
 } from "./pages";
+import { cleanName, meString, parseMe, portfolioMarkdown } from "./portfolio";
 import {
 	ICONS,
 	llmsTxt,
@@ -32,6 +33,7 @@ import {
 	askPage,
 	compassPage,
 	journeysPage,
+	portfolioPage,
 	radarPage,
 	rolesPage,
 	skillsPage,
@@ -135,6 +137,24 @@ export function createApp(options: AppOptions = {}) {
 			),
 		),
 	);
+	app.get("/portfolio", (c) =>
+		c.html(
+			portfolioPage(baseOf(c), {
+				me: c.req.query("me"),
+				name: c.req.query("name"),
+				family: c.req.query("family"),
+			}),
+		),
+	);
+	app.get("/portfolio.md", (c) => {
+		const me = parseMe(c.req.query("me"));
+		const name = cleanName(c.req.query("name"));
+		const link = `${baseOf(c)}/portfolio?me=${encodeURIComponent(meString(me))}`;
+		return c.body(portfolioMarkdown(me, name, link), 200, {
+			"content-type": "text/markdown; charset=utf-8",
+			"content-disposition": 'attachment; filename="portfolio.md"',
+		});
+	});
 	app.get("/ask", (c) =>
 		c.html(askPage(baseOf(c), (c.req.query("q") ?? "").slice(0, 200))),
 	);
@@ -147,6 +167,7 @@ export function createApp(options: AppOptions = {}) {
 	for (const [path, body] of [
 		["/signin.js", SIGNIN_JS],
 		["/publish.js", PUBLISH_JS],
+		["/portfolio.js", PORTFOLIO_JS],
 	] as const)
 		app.get(path, (c) =>
 			c.body(body, 200, {
@@ -169,6 +190,7 @@ export function createApp(options: AppOptions = {}) {
 			"roles",
 			"skills",
 			"ask",
+			"portfolio",
 			...ENTRIES.map((e) => `listing/${e.id}`),
 		];
 		return c.body(sitemapXml(baseOf(c), paths, lastmod), 200, {

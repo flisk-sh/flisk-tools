@@ -36,6 +36,8 @@ export interface Role {
 	core: string[];
 	daily: string[];
 	nice: string[];
+	/** The few tools that set the role apart from others that share the same generic tools. */
+	key?: string[];
 }
 export interface Level {
 	n: number;

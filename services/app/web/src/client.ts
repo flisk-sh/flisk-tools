@@ -28,6 +28,7 @@ function readSession() {
 }
 const login = readSession();
 window.toolsLogin = login;
+window.toolsToken = login ? sessionStorage.getItem(KEY) || "" : "";
 const slot = document.getElementById("gh-slot");
 if (slot) {
   if (login) {
@@ -93,6 +94,76 @@ form.addEventListener("submit", (ev) => {
   const json = JSON.stringify(entry, null, 2) + "\\n";
   const target = form.dataset.repo + "/new/main/listings?filename=" + encodeURIComponent("listings/" + login + "--" + entry.id + ".json") + "&value=" + encodeURIComponent(json);
   location.href = target;
+});
+})();
+`;
+
+export const PORTFOLIO_JS = `(() => {
+"use strict";
+const root = document.getElementById("pf");
+if (!root) return;
+const KEY = "tools-me";
+const base = root.dataset.path;
+const name = () => document.getElementById("pf-name").value.trim().slice(0, 40);
+let me = {};
+for (const part of (root.dataset.me || "").split(",")) { const m = /^(.+?)([1-3])$/.exec(part); if (m) me[m[1]] = Number(m[2]); }
+const raw = () => Object.keys(me).sort().map((id) => id + me[id]).join(",");
+const qs = (extra) => {
+  const p = new URLSearchParams(extra || "");
+  if (raw()) p.set("me", raw());
+  if (name()) p.set("name", name());
+  const s = p.toString();
+  return base + (s ? "?" + s : "");
+};
+const LABELS = ["Not rated", "Know of it", "Use it", "Know it well"];
+function sync() {
+  try { history.replaceState(null, "", qs(new URLSearchParams(location.search).get("family") ? "family=" + new URLSearchParams(location.search).get("family") : "")); } catch (e) {}
+  try { localStorage.setItem(KEY, raw()); } catch (e) {}
+  for (const a of root.querySelectorAll("[data-extra]")) a.href = qs(a.dataset.extra);
+  const see = document.getElementById("pf-see");
+  if (see) see.href = qs("") + "#result";
+  const n = document.getElementById("pf-count");
+  if (n) n.textContent = Object.keys(me).length + " rated";
+}
+root.addEventListener("click", (ev) => {
+  const b = ev.target.closest(".rate");
+  if (!b) return;
+  const next = (Number(b.dataset.level) + 1) % 4;
+  b.dataset.level = String(next);
+  b.setAttribute("aria-label", b.dataset.name + ": " + LABELS[next]);
+  if (next) me[b.dataset.id] = next; else delete me[b.dataset.id];
+  sync();
+});
+document.getElementById("pf-name").addEventListener("input", sync);
+if (!new URLSearchParams(location.search).get("me")) {
+  try { const saved = localStorage.getItem(KEY); if (saved) location.replace(base + "?me=" + encodeURIComponent(saved)); } catch (e) {}
+}
+const copy = document.getElementById("pf-copy");
+if (copy) copy.addEventListener("click", async () => {
+  try { await navigator.clipboard.writeText(location.origin + qs("")); copy.textContent = "Copied"; } catch (e) { copy.textContent = "Copy failed"; }
+});
+const pub = document.getElementById("pf-publish");
+function showPublish() {
+  if (pub && window.toolsToken) pub.hidden = false;
+}
+document.addEventListener("tools-login", showPublish);
+showPublish();
+if (pub) pub.addEventListener("click", async () => {
+  const out = document.getElementById("pf-publish-out");
+  out.textContent = "Publishing…";
+  try {
+    const r = await fetch(root.dataset.api + "/v1/me/space", {
+      method: "PUT",
+      headers: { "content-type": "application/json", authorization: "Bearer " + window.toolsToken },
+      body: JSON.stringify({ cv: { me: raw(), name: name() || undefined } }),
+    });
+    const j = await r.json();
+    if (!r.ok) { out.textContent = j.error || "Could not publish (" + r.status + ")."; return; }
+    out.textContent = "";
+    const a = document.createElement("a");
+    a.href = j.url; a.rel = "noopener"; a.textContent = j.url;
+    out.append("Live in about two minutes at ", a, ". It replaces the CV you published from the roadmap.");
+  } catch (e) { out.textContent = "Could not reach the publishing service."; }
 });
 })();
 `;
