@@ -312,6 +312,8 @@ export function rank(query: Query): Entry[] {
 				if (hit < need || strong === 0) continue;
 				const coverage = hit / words.length;
 				let s = sum * (0.4 + 0.6 * coverage);
+				// A retired tool should not lead a beginner to it; a recommended one gets a nudge.
+				s *= e.ring === "hold" ? 0.55 : e.ring === "adopt" ? 1.06 : 1;
 				if (words.length > 1 && doc.flat.includes(phrase)) s += 8;
 				// The name is exactly what was typed: it is the thing they are looking for. Extra words in a name count against it.
 				const inName = words.filter((w) => doc.name.includes(stem(w))).length;
@@ -332,7 +334,7 @@ export function rank(query: Query): Entry[] {
 		);
 		// Drop the loose tail: anything far weaker than the best match, but always keep the first ten.
 		const best = scored[0]?.s ?? 0;
-		const kept = scored.filter((x, i) => i < 10 || x.s >= best * 0.22);
+		const kept = scored.filter((x, i) => i < 3 || x.s >= best * 0.25);
 		matches = kept.map((x) => x.e);
 	}
 	return matches;
@@ -360,7 +362,6 @@ export function facets(query: Query): {
 	for (const e of rank({
 		...query,
 		kind: undefined,
-		group: undefined,
 		category: undefined,
 		page: undefined,
 	}))

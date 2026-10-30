@@ -212,8 +212,13 @@ export function journeysPage(base: string, trackId?: string): string {
 <p class="note">Showing the ${esc(track.name)} route. Each station lists tools to learn first (bold) and tools worth knowing.</p>
 <ol class="metro">${LEVELS.map((l) => {
 			const stop = track.stops[l.id];
-			return `<li id="${l.id}"><span class="station" aria-hidden="true">${l.n}</span><div class="stop"><h3>${esc(l.name)}</h3><p>${esc(l.goal)}</p>${stop?.tip ? `<p class="tip">${esc(stop.tip)}</p>` : ""}<p class="chiplist">${(stop?.main ?? []).map((id) => chip(id, true)).join("")}${(stop?.side ?? []).map((id) => chip(id, false)).join("")}</p><p class="note">You learn: ${l.skills.map(esc).join(" · ")}</p>${l.flisk ? `<p class="note flisk-${esc(l.flisk.status)}">Flisk: ${esc(l.flisk.text)}</p>` : ""}</div></li>`;
-		}).join("")}</ol>`,
+			return `<li id="${l.id}"><span class="station" aria-hidden="true">${l.n}</span><div class="stop"><h3>${esc(l.name)}</h3><p>${esc(l.goal)}</p>${stop?.tip ? `<p class="tip">${esc(stop.tip)}</p>` : ""}<p class="chiplist">${(stop?.main ?? []).map((id) => chip(id, true)).join("")}${(stop?.side ?? []).map((id) => chip(id, false)).join("")}</p><p class="note">You learn: ${l.skills.map(esc).join(" · ")}</p>${l.flisk && l.flisk.status !== "soon" ? `<p class="note">Flisk: ${esc(l.flisk.text)}</p>` : ""}</div></li>`;
+		}).join("")}</ol>
+<details class="legend-rings"><summary>Where Flisk helps on this line, and where not yet</summary><ul class="verdict">${LEVELS.filter(
+			(l) => l.flisk,
+		)
+			.map((l) => `<li><b>${esc(l.name)}:</b> ${esc(l.flisk?.text ?? "")}</li>`)
+			.join("")}</ul></details>`,
 		"journeys",
 	);
 }
@@ -234,7 +239,7 @@ export function rolesPage(base: string, group?: string, know?: string): string {
 	const knownTools = found.flatMap((x) =>
 		x.hit?.kind === "skill" ? [] : x.hit ? [x.hit] : [],
 	);
-	const meKnow = parseMe(knownTools.map((t) => `${t.id}2`).join(","));
+	const meKnow = parseMe(knownTools.map((t) => `${t.id}3`).join(","));
 	const bestFits = Object.keys(meKnow).length
 		? roleFit(meKnow)
 				.filter((f) => f.pct > 0)
@@ -259,7 +264,7 @@ export function rolesPage(base: string, group?: string, know?: string): string {
 						? `<ol class="fits">${bestFits
 								.map(
 									(f) =>
-										`<li><div class="fit-top"><strong><a href="${root}/roles?group=${f.role.group}#${f.role.id}">${esc(f.role.name)}</a></strong><span>${f.pct}%</span></div><div class="bar"><i style="width:${Math.min(100, f.pct)}%"></i></div>${
+										`<li><div class="fit-top"><strong><a href="${root}/roles?group=${f.role.group}#${f.role.id}">${esc(f.role.name)}</a></strong><span>${f.pct}% <small class="note">${band(f.pct)}</small></span></div><div class="bar"><i style="width:${Math.min(100, f.pct)}%"></i></div>${
 											f.gaps.length
 												? `<p class="note">Learn next: ${f.gaps
 														.slice(0, 4)
@@ -273,7 +278,7 @@ export function rolesPage(base: string, group?: string, know?: string): string {
 								)
 								.join(
 									"",
-								)}</ol><p class="note">Matched as if you use each tool. For a finer answer, <a href="${root}/portfolio?me=${encodeURIComponent(meString(meKnow))}">rate how well you know each one</a>.</p>`
+								)}</ol><p class="note">The percentage is how much of the job's tools you already know: 100% is every tool listed, so 20% to 30% is a normal start. For a finer answer, <a href="${root}/portfolio?me=${encodeURIComponent(meString(meKnow))}">rate how well you know each one</a>.</p>`
 						: "<p>No role matched those tools yet. Try more tools, like <code>npm, vite, docker</code>.</p>"
 				}</div>`
 			: ""
@@ -339,6 +344,17 @@ export function skillsPage(base: string, cat?: string, page = 1): string {
 <p class="pager"><span>${r.page > 1 ? `<a rel="prev" href="${link({ cat: current?.id, page: r.page - 1 })}">← Previous</a>` : ""}</span><span>Page ${r.page} of ${r.pages} · ${PAGE_SIZE} per page</span><span>${r.page < r.pages ? `<a rel="next" href="${link({ cat: current?.id, page: r.page + 1 })}">Next →</a>` : ""}</span></p>`,
 		"skills",
 	);
+}
+
+/** A word for a role-fit percentage, so 20% is not read as failure. */
+function band(pct: number): string {
+	return pct >= 60
+		? "strong match"
+		: pct >= 35
+			? "good match"
+			: pct >= 15
+				? "early match"
+				: "a start";
 }
 
 /** A plain-words verdict above the compare table: who leads on each thing that can be measured. */
@@ -430,7 +446,7 @@ ${row("What it is", (t) => esc(t.tagline))}${row("Adoption ring", (t) => (t.ring
 		`${hero("Compare", "Compare tools, <em>side by side</em>", "Type two to five tools with vs, a comma or and. The answer comes from the data, every check with its meaning, and no AI is called.")}
 <form class="search" role="search" action="${root}/ask" method="get"><input type="search" name="q" value="${esc(q)}" placeholder="yarn vs npm vs bun" aria-label="Tools to compare"><button type="submit">Compare</button></form>
 <p class="chiplist" style="margin-top:.8rem">${examples.map((x) => `<a class="chip2" href="${root}/ask?q=${encodeURIComponent(x)}">${esc(x)}</a>`).join("")}</p>
-${verdict(picks)}${table}${ringLegend(picks)}${picks.length ? `<p class="note">Easy to use and Big, real systems count the checks each tool meets, 10 points each; the ticks below show which. Maturity comes from the Adoption Radar rules: release age, version and last update.</p>` : ""}`,
+${verdict(picks)}${table}${ringLegend(picks)}${picks.length ? `<p class="note">Easy to use and Big, real systems count the checks each tool meets, 10 points each; the ticks below show which. Maturity comes from the Adoption Radar rules: release age, version and last update. The two scores come from a checklist written for local development with containers and services, so for tools outside that world, like package managers, read them lightly.</p>` : ""}`,
 		"ask",
 	);
 }

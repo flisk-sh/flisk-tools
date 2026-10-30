@@ -159,3 +159,41 @@ describe("loop 3 fixes", () => {
 		expect(page).toContain("A maintainer reviews every pull request");
 	});
 });
+
+describe("loop 4 fixes", () => {
+	it("counts the type tabs within the chosen group, so they match the list", () => {
+		const f = facets({ group: "Monorepos & frameworks", ring: "adopt" });
+		expect(f.total).toBe(
+			search({ group: "Monorepos & frameworks", ring: "adopt" }).total,
+		);
+	});
+
+	it("does not put a retired tool first for k8s", () => {
+		const top = search({ q: "k8s" }).items.slice(0, 3);
+		expect(top.every((e) => e.ring !== "hold")).toBe(true);
+	});
+
+	it("reads 'docker' as Docker Desktop in the role finder", async () => {
+		const page = await html("/roles?know=npm,+vite,+docker");
+		expect(page).toContain("Docker Desktop");
+		expect(page).toContain("normal start");
+		expect(page).toMatch(/(a start|early match|good match|strong match)/);
+	});
+
+	it("keeps the 'coming soon' notes out of each station, in one place at the bottom", async () => {
+		const page = await html("/journeys");
+		expect(page).toContain("Where Flisk helps on this line");
+		expect(page.match(/Flisk: Flisk does not/g) ?? []).toEqual([]);
+	});
+
+	it("hides chip counts that would not match the list while a query is active", async () => {
+		const page = await html("/?q=code+review");
+		expect(page).not.toMatch(/Adopt<small>/);
+		expect(await html("/")).toMatch(/Adopt<small>\d+<\/small>/);
+	});
+
+	it("names the source repository on a skill's card, and shows the JSON example on publish", async () => {
+		expect(await html("/?q=code+review&kind=skill")).toContain('class="src"');
+		expect(await html("/publish")).toContain('"id":"link-checker"');
+	});
+});

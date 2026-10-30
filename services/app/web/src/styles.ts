@@ -97,6 +97,7 @@ details{margin-top:.4rem}summary{cursor:pointer;color:var(--accent-text);font-si
 .start a.on{border-color:var(--accent);background:var(--accent-tint)}
 .verdict{margin:.4rem 0 0;padding-left:1.1rem;display:grid;gap:.25rem}.proof{color:var(--adopt)!important;font-size:.8rem!important;font-weight:600}.legend-rings{margin-top:.8rem}
 .jump-compare{--c:var(--accent);font-weight:700;padding:.3rem .9rem!important;background:color-mix(in srgb,var(--accent) 22%,transparent)!important}
+.card h3 .src{display:block;font:400 .68rem var(--font-mono);color:var(--faint);overflow:hidden;text-overflow:ellipsis}
 .note{font-family:var(--font-mono);font-size:.74rem;color:var(--faint)}
 footer{margin-top:4rem;border-top:1px solid var(--line);padding:1.4rem 0 2.4rem;color:var(--faint);font-size:.8125rem}
 `;

@@ -97,6 +97,15 @@ export const toolById = (id: string) => {
 	return e?.kind === "skill" ? undefined : e;
 };
 
+/** What people type for a specific tool. "docker" means Docker Desktop, the one most people have. */
+const ALIASES: Record<string, string> = {
+	docker: "docker-desktop",
+	k8s: "kubernetes",
+	node: "nodejs",
+	js: "javascript",
+	ts: "typescript",
+};
+
 /** "yarn vs npm, bun" -> the tools they name, best match first per word, no repeats. */
 export function resolveNames(query: string, limit = 5): Entry[] {
 	const names = query
@@ -105,7 +114,8 @@ export function resolveNames(query: string, limit = 5): Entry[] {
 		.filter(Boolean);
 	const out: Entry[] = [];
 	for (const n of names) {
-		const slug = n.replace(/[^a-z0-9]+/g, "-");
+		const slug =
+			ALIASES[n.replace(/[^a-z0-9]+/g, "-")] ?? n.replace(/[^a-z0-9]+/g, "-");
 		const pool = ENTRIES.filter((e) => e.kind === "tool" || e.kind === "app");
 		const hit =
 			pool.find((e) => e.id === slug || e.name.toLowerCase() === n) ??
