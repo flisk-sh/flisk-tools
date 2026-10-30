@@ -145,13 +145,21 @@
 		"id": "flisk-demos",
 		"name": "Flisk Demos",
 		"tagline": "A personalised Flisk demo for what you build",
-		"description": "Open demo.flisk.sh/your-handle/what-you-build-in-dashes and get a demo stack made for you.",
+		"description": "Open demo.flisk.sh/your-handle/what-you-build-in-dashes and get a demo stack made for you. Also an MCP server (make_demo, get_unfollowers) and a JSON API.",
 		"group": "Flisk apps",
 		"category": "Demos",
 		"url": "https://demo.flisk.sh",
 		"repo": "flisk-sh/flisk-demo-worker",
 		"author": "flisk-sh",
-		"official": true
+		"official": true,
+		"mcp": {
+			"transport": "http",
+			"url": "https://demo.flisk.sh/mcp",
+			"tools": [
+				"make_demo",
+				"get_unfollowers"
+			]
+		}
 	},
 	{
 		"kind": "app",
@@ -226,5 +234,33 @@
 				"get_listing"
 			]
 		}
+	},
+	{
+		"kind": "skill",
+		"id": "flisk-demo-bubbles",
+		"name": "flisk-demo-bubbles",
+		"tagline": "Hand out a personalised Flisk demo for a person from what they build",
+		"description": "Reply with a demo.flisk.sh link, call the JSON API or the make_demo MCP tool, and post the returned reply exactly. plain=1 gives a reply for non-developers.",
+		"group": "Flisk apps",
+		"category": "Demos",
+		"url": "https://github.com/flisk-sh/flisk-skills/blob/HEAD/skills/flisk-demo-bubbles/SKILL.md",
+		"repo": "flisk-sh/flisk-skills",
+		"author": "flisk-sh",
+		"official": true,
+		"license": "MIT"
+	},
+	{
+		"kind": "skill",
+		"id": "flisk-unfollowers",
+		"name": "flisk-unfollowers",
+		"tagline": "Who unfollowed an X account in the last 10 minutes, hour or day",
+		"description": "Uses the get_unfollowers MCP tool or the unfollowers API. X keeps no unfollow history, so it compares stored follower lists and says when the history is partial.",
+		"group": "Flisk apps",
+		"category": "Demos",
+		"url": "https://github.com/flisk-sh/flisk-skills/blob/HEAD/skills/flisk-unfollowers/SKILL.md",
+		"repo": "flisk-sh/flisk-skills",
+		"author": "flisk-sh",
+		"official": true,
+		"license": "MIT"
 	}
 ]
