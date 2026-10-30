@@ -199,7 +199,19 @@ export function journeysPage(
 	know?: string,
 ): string {
 	const root = rootOf(base);
-	const track = TRACKS.find((t) => t.id === trackId) ?? TRACKS[0];
+	const typed0 = typedTools(know);
+	const ids0 = new Set(typed0.flatMap((x) => (x.hit ? [x.hit.id] : [])));
+	// With no route chosen, open the one where you already know the most main tools; otherwise the first.
+	const fits0 = TRACKS.map((t) => ({
+		t,
+		n: Object.values(t.stops).reduce(
+			(a, s) => a + s.main.filter((id) => ids0.has(id)).length,
+			0,
+		),
+	}));
+	const track =
+		TRACKS.find((t) => t.id === trackId) ??
+		(ids0.size ? fits0.sort((a, b) => b.n - a.n)[0].t : TRACKS[0]);
 	const typed = typedTools(know);
 	const knownIds = new Set(typed.flatMap((x) => (x.hit ? [x.hit.id] : [])));
 	// Only an exact match counts as known. A tool of the same kind (npm for pnpm) is shown as a hint, once per tool you typed.
@@ -317,10 +329,10 @@ export function rolesPage(base: string, group?: string, know?: string): string {
 						: ""
 				}.</p>${
 					bestFits.length
-						? `<p class="verdict-line">Your best fit: <b>${esc(bestFits[0].role.name)}</b> (${bestFits[0].pct}%, ${band(bestFits[0].pct)}). ${because(bestFits[0].role, meKnow)} Open it below, or start with its Learn next list.</p><ol class="fits">${bestFits
+						? `<p class="verdict-line">Your best fit: <b>${esc(bestFits[0].role.name)}</b> (you know ${bestFits[0].coreKnown} of its ${bestFits[0].coreTotal} must-have tools). ${because(bestFits[0].role, meKnow)} Open it below, or start with its Learn next list.</p><ol class="fits">${bestFits
 								.map(
 									(f) =>
-										`<li><div class="fit-top"><strong><a href="${root}/roles?group=${f.role.group}#${f.role.id}">${esc(f.role.name)}</a></strong><span>${f.pct}% <small class="note">${band(f.pct)}</small></span></div><div class="bar"><i style="width:${Math.min(100, f.pct)}%"></i></div>${
+										`<li><div class="fit-top"><strong><a href="${root}/roles?group=${f.role.group}#${f.role.id}">${esc(f.role.name)}</a></strong><span>${f.coreKnown} of ${f.coreTotal} must-have tools <small class="note">(${f.pct}% of its whole list)</small></span></div><div class="bar"><i style="width:${Math.min(100, f.pct)}%"></i></div>${
 											f.gaps.length
 												? `<p class="note">Learn next: ${f.gaps
 														.slice(0, 4)
@@ -334,7 +346,7 @@ export function rolesPage(base: string, group?: string, know?: string): string {
 								)
 								.join(
 									"",
-								)}</ol><p class="note">The percentage is how much of the job's tools you already know: 100% is every tool listed, so 20% to 30% is a normal start. For a finer answer, <a href="${root}/portfolio?me=${encodeURIComponent(meString(meKnow))}">rate how well you know each one</a>.</p>`
+								)}</ol><p class="note">The percentage is how much of the job's whole tool list you know, must-have, every-day and good-to-know together; most people sit below 30%, so read the must-have count first. For a finer answer, <a href="${root}/portfolio?me=${encodeURIComponent(meString(meKnow))}">rate how well you know each one</a>.</p>`
 						: "<p>No role matched those tools yet. Try more tools, like <code>npm, vite, docker</code>.</p>"
 				}</div>`
 			: ""
@@ -411,17 +423,6 @@ function because(role: Role, me: Record<string, number>): string {
 		: "";
 }
 
-/** A word for a role-fit percentage, so 20% is not read as failure. */
-function band(pct: number): string {
-	return pct >= 60
-		? "strong match"
-		: pct >= 35
-			? "good match"
-			: pct >= 15
-				? "early match"
-				: "a start";
-}
-
 /** A plain-words verdict above the compare table: who leads on each thing that can be measured. */
 function verdict(picks: Entry[]): string {
 	if (picks.length < 2) return "";
@@ -482,6 +483,8 @@ export function askPage(base: string, q = ""): string {
 	];
 	const row = (label: string, cell: (t: Entry) => string) =>
 		`<tr><th scope="row">${esc(label)}</th>${picks.map((t) => `<td>${cell(t)}</td>`).join("")}</tr>`;
+	// The "big, real systems" checks are about containers and services: leave them out when none of these tools has many.
+	const showBig = picks.some((t) => (t.parity?.length ?? 0) >= 4);
 	const ringLabel = (t: Entry) =>
 		RINGS.find((r) => r.id === t.ring)?.label ?? "-";
 	const check = (list: string[] | undefined, id: string) =>
@@ -490,9 +493,9 @@ export function askPage(base: string, q = ""): string {
 			: '<span class="no">·</span>';
 	const table = picks.length
 		? `<div class="tablewrap"><table class="compare"><thead><tr><th></th>${picks.map((t) => `<th scope="col"><a href="${root}/listing/${t.id}">${esc(t.name)}</a></th>`).join("")}</tr></thead><tbody>
-${row("What it is", (t) => esc(t.tagline))}${row("Adoption ring", (t) => (t.ring ? `<span class="rk r-${t.ring}">${esc(ringLabel(t))}</span>` : "-"))}${row("Easy to use", (t) => (t.dx ? `${t.dx.length * 10} / 100` : "-"))}${row("Big, real systems", (t) => (t.parity ? `${t.parity.length * 10} / 100` : "-"))}${row("GitHub stars", (t) => (t.stars ? t.stars.toLocaleString("en-US") : "-"))}${row("Latest release", (t) => (t.version ? `${esc(t.version.replace(/^.*\//, ""))}${t.release ? `, ${esc(t.release)}` : ""}` : "-"))}${row("Last push", (t) => esc(t.pushed ?? "-"))}${row("License", (t) => esc(t.license ?? "-"))}${row("MCP server", (t) => (t.mcp ? "Yes" : "-"))}
+${row("What it is", (t) => esc(t.tagline))}${row("Adoption ring", (t) => (t.ring ? `<span class="rk r-${t.ring}">${esc(ringLabel(t))}</span>` : "-"))}${row("Easy to use", (t) => (t.dx ? `${t.dx.length * 10} / 100` : "-"))}${showBig ? row("Big, real systems", (t) => (t.parity ? `${t.parity.length * 10} / 100` : "-")) : ""}${row("GitHub stars", (t) => (t.stars ? t.stars.toLocaleString("en-US") : "-"))}${row("Latest release", (t) => (t.version ? `${esc(t.version.replace(/^.*\//, ""))}${t.release ? `, ${esc(t.release)}` : ""}` : "-"))}${row("Last push", (t) => esc(t.pushed ?? "-"))}${row("License", (t) => esc(t.license ?? "-"))}${row("MCP server", (t) => (t.mcp ? "Yes" : "-"))}
 <tr class="sec"><th scope="row" colspan="${picks.length + 1}">${esc(DX.title)}</th></tr>${DX.criteria.map((c) => row(c.label, (t) => check(t.dx, c.id))).join("")}
-<tr class="sec"><th scope="row" colspan="${picks.length + 1}">${esc(PARITY.title)}</th></tr>${PARITY.criteria.map((c) => row(c.label, (t) => check(t.parity, c.id))).join("")}
+${showBig ? `<tr class="sec"><th scope="row" colspan="${picks.length + 1}">${esc(PARITY.title)}</th></tr>${PARITY.criteria.map((c) => row(c.label, (t) => check(t.parity, c.id))).join("")}` : ""}
 </tbody></table></div>`
 		: q
 			? `<p>No tool matched “${esc(q)}”. Try names like <code>yarn vs npm</code>.</p>`
@@ -513,7 +516,7 @@ ${row("What it is", (t) => esc(t.tagline))}${row("Adoption ring", (t) => (t.ring
 		`${hero("Compare", "Compare tools, <em>side by side</em>", "Type two to five tools with vs, a comma or and. The answer comes from the data, every check with its meaning, and no AI is called.")}
 <form class="search" role="search" action="${root}/ask" method="get"><input type="search" name="q" value="${esc(q)}" placeholder="yarn vs npm vs bun" aria-label="Tools to compare"><button type="submit">Compare</button></form>
 <p class="chiplist" style="margin-top:.8rem">${examples.map((x) => `<a class="chip2" href="${root}/ask?q=${encodeURIComponent(x)}">${esc(x)}</a>`).join("")}</p>
-${verdict(picks)}${table}${ringLegend(picks)}${picks.length ? `<p class="note">Easy to use and Big, real systems count the checks each tool meets, 10 points each; the ticks below show which. Maturity comes from the Adoption Radar rules: release age, version and last update. The two scores come from a checklist written for local development with containers and services, so for tools outside that world, like package managers, read them lightly.</p>` : ""}`,
+${verdict(picks)}${table}${ringLegend(picks)}${picks.length && !showBig ? `<p class="note">The big, real systems checks are left out: they are about containers and services and do not apply to these tools.</p>` : ""}${picks.length ? `<p class="note">Easy to use and Big, real systems count the checks each tool meets, 10 points each; the ticks below show which. Maturity comes from the Adoption Radar rules: release age, version and last update. The two scores come from a checklist written for local development with containers and services, so for tools outside that world, like package managers, read them lightly.</p>` : ""}`,
 		"ask",
 	);
 }

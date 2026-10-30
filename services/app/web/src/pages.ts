@@ -181,8 +181,13 @@ export function homePage(base: string, query: Browse = {}): string {
 			category ||
 			(query.page ?? 1) > 1,
 	);
+	// A check filter matches many tools, so with no query and no chosen sort, the ones that meet the most checks come first.
 	const sortKey: "stars" | "easy" | undefined =
-		query.sort === "stars" || query.sort === "easy" ? query.sort : undefined;
+		query.sort === "stars" || query.sort === "easy"
+			? query.sort
+			: check && !query.q
+				? "easy"
+				: undefined;
 	const base0 = {
 		...query,
 		kind,
@@ -345,6 +350,13 @@ export function listingPage(base: string, e: Entry): string {
 	const related = search({ group: e.group })
 		.items.filter((x) => x.id !== e.id)
 		.slice(0, 6);
+	// Several repositories publish a skill with the same name; say so, and say how to tell them apart.
+	const sameName =
+		e.kind === "skill"
+			? ENTRIES.filter(
+					(x) => x.kind === "skill" && x.name === e.name && x.id !== e.id,
+				)
+			: [];
 	const similar = search({ category: e.category, kind: e.kind })
 		.items.filter((x) => x.id !== e.id && x.ring)
 		.slice(0, 2);
@@ -359,6 +371,7 @@ export function listingPage(base: string, e: Entry): string {
 		`<section class="detail" style="${color(e.group === "Agent skills" ? e.category : e.group)}"><span class="sym" aria-hidden="true">${esc(symbol(e))}</span><div><p class="eyebrow">${esc(kindLabel(e.kind))} · ${esc(e.category)}</p><h1>${esc(e.name)}</h1><p class="lede">${esc(e.tagline)}</p><p class="note">${esc(whatIs(e))}</p><p><a class="cta" href="${esc(e.url)}" rel="noopener">Open ${esc(e.name)}</a>${e.repo ? ` <a class="cta alt" href="https://github.com/${esc(e.repo)}" rel="noopener">GitHub</a>` : ""}</p></div></section>
 <p style="max-width:46rem">${esc(e.description)}</p>
 ${e.kind === "skill" ? skillInstall(e) : ""}
+${sameName.length ? `<h2>Same name, other repositories</h2><p class="note">${sameName.length + 1} skills are called “${esc(e.name)}”. They are different files from different authors: compare their one-liners and sources.</p><ul class="verdict">${sameName.map((x) => `<li><a href="${root}/listing/${x.id}">${esc(x.repo ?? x.id)}</a>${x.stars ? ` <span class="note">★ ${stars(x.stars)} (whole repo)</span>` : ""}: ${esc(x.tagline)}</li>`).join("")}</ul>` : ""}
 ${e.mcp ? mcpPanel(e) : ""}
 <dl class="facts"><dt>Type</dt><dd>${esc(kindLabel(e.kind))}</dd><dt>Group</dt><dd><a href="${esc(homeHref(root, { group: e.group }))}">${esc(e.group)}</a></dd><dt>Category</dt><dd><a href="${esc(homeHref(root, { category: e.category }))}">${esc(e.category)}</a></dd>${e.author ? `<dt>By</dt><dd><a href="https://github.com/${esc(e.author)}" rel="noopener">@${esc(e.author)}</a>${e.official ? " (Flisk)" : ""}</dd>` : ""}${e.stars ? `<dt>${e.kind === "skill" ? "GitHub stars (whole repo)" : "GitHub stars"}</dt><dd>${e.stars.toLocaleString("en-US")}</dd>` : ""}${e.license ? `<dt>License</dt><dd>${esc(e.license)}</dd>` : ""}</dl>
 ${glance(e)}

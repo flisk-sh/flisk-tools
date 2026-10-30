@@ -176,8 +176,8 @@ describe("loop 4 fixes", () => {
 	it("reads 'docker' as Docker Desktop in the role finder", async () => {
 		const page = await html("/roles?know=npm,+vite,+docker");
 		expect(page).toContain("Docker Desktop");
-		expect(page).toContain("normal start");
-		expect(page).toMatch(/(a start|early match|good match|strong match)/);
+		expect(page).toContain("read the must-have count first");
+		expect(page).toMatch(/\d of \d must-have tools/);
 	});
 
 	it("keeps the 'coming soon' notes out of each station, in one place at the bottom", async () => {
@@ -410,5 +410,48 @@ describe("loop 10 findings", () => {
 			"You know 1 of 3 tools to learn first here: Docker Desktop.",
 		);
 		expect(page).not.toContain("npm, like");
+	});
+});
+
+describe("remaining gaps", () => {
+	it("answers a role question with must-have counts, not only a small percentage", async () => {
+		const page = await html("/roles?know=npm,+vite,+docker");
+		expect(page).toMatch(/you know \d of its \d must-have tools/);
+		expect(page).toMatch(/\d of \d must-have tools/);
+	});
+
+	it("opens the journey route where you already know the most, when none is chosen", async () => {
+		const ai = await html("/journeys?know=langgraph,+mcp+inspector,+ollama");
+		expect(ai).toContain("AI and agents engineer route");
+		expect(ai).toMatch(/Showing the AI[^<]*route/);
+		const chosen = await html("/journeys?track=backend&know=langgraph");
+		expect(chosen).toMatch(/Showing the Backend[^<]*route/);
+	});
+
+	it("leaves out the big-systems checks when they do not apply to what is compared", async () => {
+		const page = await html("/ask?q=pnpm+vs+npm+vs+bun");
+		expect(page).not.toContain("Works with containers");
+		expect(page).toContain("big, real systems checks are left out");
+		expect(await html("/ask?q=kubernetes+vs+minikube+vs+k3s")).toContain(
+			"Works with containers",
+		);
+	});
+
+	it("puts the tools that meet the most checks first when only a check filter is set", () => {
+		const r = search({ check: "offline", sort: "easy" }).items;
+		for (let i = 1; i < r.length; i++)
+			expect(r[i - 1].dx?.length ?? 0).toBeGreaterThanOrEqual(
+				r[i].dx?.length ?? 0,
+			);
+	});
+
+	it("lists the other skills with the same name, with their repositories", async () => {
+		const page = await html("/listing/mattpocock-code-review");
+		expect(page).toContain("Same name, other repositories");
+		expect(page).toContain("mrgoonie");
+		expect(page).toContain("sentry");
+		expect(await html("/listing/citable")).not.toContain(
+			"Same name, other repositories",
+		);
 	});
 });

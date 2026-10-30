@@ -36,6 +36,9 @@ export const meString = (me: Me) =>
 export interface Fit {
 	role: Role;
 	pct: number;
+	/** How many of the role's must-have tools you rated, and how many it lists. */
+	coreKnown: number;
+	coreTotal: number;
 	/** Must-have tools you have not rated. */
 	gaps: string[];
 	keyGot: number;
@@ -60,12 +63,18 @@ export function roleFit(me: Me, roles: Role[] = ROLES): Fit[] {
 			let got = 0;
 			let max = 0;
 			const gaps: string[] = [];
+			let coreKnown = 0;
+			let coreTotal = 0;
 			for (const [tier, weight] of TIERS)
 				for (const id of role[tier] ?? []) {
 					if (!toolById(id)) continue;
 					max += weight * 3;
 					got += weight * (me[id] ?? 0);
-					if (tier === "core" && !me[id]) gaps.push(id);
+					if (tier === "core") {
+						coreTotal++;
+						if (me[id]) coreKnown++;
+						else gaps.push(id);
+					}
 				}
 			const keys = (role.key ?? []).filter((id) => toolById(id));
 			const keyGot = keys.reduce((a, id) => a + (me[id] ?? 0), 0);
@@ -74,6 +83,8 @@ export function roleFit(me: Me, roles: Role[] = ROLES): Fit[] {
 			return {
 				role,
 				pct,
+				coreKnown,
+				coreTotal,
 				gaps,
 				keyGot,
 				noKey,
