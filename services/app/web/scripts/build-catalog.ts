@@ -15,7 +15,7 @@ const files = (dir: string) =>
 const entries: Entry[] = [];
 // catalog/ is read in name order, so flisk.json wins over the roadmap import when both list the same id.
 const taken = new Set<string>();
-for (const f of files("catalog"))
+for (const f of files("catalog").filter((x) => x !== "overrides.json"))
 	for (const e of read(join(root, "catalog", f)) as Entry[]) {
 		if (taken.has(e.id)) continue;
 		taken.add(e.id);
@@ -30,6 +30,18 @@ for (const f of files("listings")) {
 	if (e.kind === "skill" && !e.repo)
 		throw new Error(`listings/${f}: a skill needs its repo`);
 	entries.push({ ...e, author: m[1], official: false });
+}
+
+// catalog/overrides.json adds fields to an imported entry by id (the roadmap import is regenerated, so facts we add,
+// like an MCP server, live here).
+const overrides = read(join(root, "catalog", "overrides.json")) as Record<
+	string,
+	Partial<Entry>
+>;
+for (const [id, extra] of Object.entries(overrides)) {
+	const e = entries.find((x) => x.id === id);
+	if (!e) throw new Error(`catalog/overrides.json: no entry with id ${id}`);
+	Object.assign(e, extra);
 }
 
 const ids = new Set<string>();

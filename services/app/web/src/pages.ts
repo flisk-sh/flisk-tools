@@ -117,7 +117,8 @@ export function homePage(base: string, query: Browse = {}): string {
 		},
 		`<section class="hero"><p class="eyebrow">Free · open source · no server, no database</p><h1>Every dev tool, agent skill and app, <em>in one free store</em></h1>
 <p class="lede">${esc(SITE.description)}</p>
-<form class="search" role="search" action="${root}/" method="get"><input type="search" name="q" value="${esc(query.q ?? "")}" placeholder="Search ${ENTRIES.length} tools, skills and apps" aria-label="Search the store">${kind ? `<input type="hidden" name="kind" value="${kind}">` : ""}<button type="submit">Search</button></form></section>
+<form class="search" role="search" action="${root}/" method="get"><input type="search" name="q" value="${esc(query.q ?? "")}" placeholder="Search ${ENTRIES.length} tools, skills and apps" aria-label="Search the store">${kind ? `<input type="hidden" name="kind" value="${kind}">` : ""}<button type="submit">Search</button></form>
+<p class="note own-mcp">Add this store to your AI: <code>claude mcp add --transport http flisk-tools ${esc(base)}/mcp</code></p></section>
 <nav class="subtabs" aria-label="Type">${sub(link({ kind: undefined }), "All", ENTRIES.length, !kind)}${KINDS.map((k) => sub(link({ kind: k.id }), esc(k.plural), counts(k.id), kind === k.id)).join("")}${sub(link({ mcp: !query.mcp, kind: undefined }), "With MCP", mcpCount(), Boolean(query.mcp))}</nav>
 <nav class="subtabs" aria-label="Group">${groups(kind)
 			.map((g) =>

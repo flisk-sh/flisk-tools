@@ -1,0 +1,5 @@
+{
+	"playwright-mcp": {
+		"mcp": { "transport": "stdio", "command": "npx @playwright/mcp@latest" }
+	}
+}
