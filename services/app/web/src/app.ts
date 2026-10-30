@@ -131,7 +131,7 @@ export function createApp(options: AppOptions = {}) {
 	);
 	app.get("/radar", (c) => c.html(radarPage(baseOf(c), c.req.query("family"))));
 	app.get("/journeys", (c) =>
-		c.html(journeysPage(baseOf(c), c.req.query("track"))),
+		c.html(journeysPage(baseOf(c), c.req.query("track"), c.req.query("know"))),
 	);
 	app.get("/roles", (c) =>
 		c.html(
@@ -284,7 +284,9 @@ export function createApp(options: AppOptions = {}) {
 			ring: c.req.query("ring"),
 			check: c.req.query("check"),
 			category: c.req.query("category"),
-			sort: c.req.query("sort") === "stars" ? "stars" : undefined,
+			sort: ["stars", "easy"].includes(c.req.query("sort") ?? "")
+				? (c.req.query("sort") as "stars" | "easy")
+				: undefined,
 			page: Number(c.req.query("page")) || 1,
 		});
 		return c.json(r);

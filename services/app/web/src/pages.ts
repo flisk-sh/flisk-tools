@@ -155,7 +155,7 @@ export function homeHref(root: string, q: Browse): string {
 	if (q.ring) p.set("ring", q.ring);
 	if (q.check) p.set("check", q.check);
 	if (q.category) p.set("category", q.category);
-	if (q.sort === "stars") p.set("sort", "stars");
+	if (q.sort === "stars" || q.sort === "easy") p.set("sort", q.sort);
 	if (q.page && q.page > 1) p.set("page", String(q.page));
 	const s = p.toString();
 	return `${root}/${s ? `?${s}` : ""}`;
@@ -181,13 +181,15 @@ export function homePage(base: string, query: Browse = {}): string {
 			category ||
 			(query.page ?? 1) > 1,
 	);
+	const sortKey: "stars" | "easy" | undefined =
+		query.sort === "stars" || query.sort === "easy" ? query.sort : undefined;
 	const base0 = {
 		...query,
 		kind,
 		ring,
 		check,
 		category,
-		sort: query.sort === "stars" ? ("stars" as const) : undefined,
+		sort: sortKey,
 	};
 	const r = search(base0);
 	const f = facets(base0);
@@ -201,7 +203,7 @@ export function homePage(base: string, query: Browse = {}): string {
 				ring,
 				check,
 				category,
-				sort: query.sort === "stars" ? "stars" : undefined,
+				sort: sortKey,
 				...extra,
 			}),
 		);
@@ -238,7 +240,19 @@ ${filterRow}</details>
 ${category ? `<p class="jumps"><span class="flabel">Category</span><a class="chip2" href="${link({ category: undefined })}">${esc(category)} ×</a></p>` : ""}
 ${check ? `<p class="note">${esc(DX.criteria.find((c) => c.id === check)?.help ?? "")} This is the roadmap's checklist answer, not a test run here: check the tool's own page before relying on it. Many tools meet it, so combine it with a search.</p>` : ""}
 ${jumps.length ? `<p class="jumps"><span class="flabel">Jump to</span>${jumps.map((j) => `<a class="chip2 jump-${j.kind}" href="${esc(j.href)}">${esc(j.label)}</a>`).join("")}</p>` : ""}
-<p class="count">${r.total} ${r.total === 1 ? "result" : "results"}${query.q ? ` for “${esc(query.q)}”` : ""} · Sort: ${query.sort === "stars" ? `<a href="${link({ sort: undefined })}">Best match</a> · <b>Most starred</b>` : `<b>${query.q ? "Best match" : "Official first"}</b> · <a href="${link({ sort: "stars" })}">Most starred</a>`}</p>
+<p class="count">${r.total} ${r.total === 1 ? "result" : "results"}${query.q ? ` for “${esc(query.q)}”` : ""} · Sort: ${(
+			[
+				[undefined, query.q ? "Best match" : "Official first"],
+				["stars", "Most starred"],
+				["easy", "Easiest to use"],
+			] as const
+		)
+			.map(([k, label]) =>
+				sortKey === k
+					? `<b>${label}</b>`
+					: `<a href="${link({ sort: k })}">${label}</a>`,
+			)
+			.join(" · ")}</p>
 ${r.items.length ? `<ul class="grid">${r.items.map((e) => card(root, e, check ? FILTER_CHECKS.find((c) => c.id === check)?.label : undefined)).join("")}</ul>` : none}
 <p class="pager"><span>${r.page > 1 ? `<a rel="prev" href="${link({ group: query.group, page: r.page - 1 })}">← Previous</a>` : ""}</span><span>Page ${r.page} of ${r.pages}</span><span>${r.page < r.pages ? `<a rel="next" href="${link({ group: query.group, page: r.page + 1 })}">Next →</a>` : ""}</span></p>`,
 		"browse",

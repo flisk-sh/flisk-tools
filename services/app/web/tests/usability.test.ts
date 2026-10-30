@@ -298,3 +298,39 @@ describe("loop 7 fixes", () => {
 		expect(await html("/listing/citable")).not.toContain("Install it");
 	});
 });
+
+describe("loop 8 fixes", () => {
+	it("sorts by how easy a tool is to use, with tools that have no score last", () => {
+		const r = search({ q: "kubernetes", sort: "easy" }).items.filter(
+			(e) => e.dx,
+		);
+		for (let i = 1; i < r.length; i++)
+			expect(r[i - 1].dx?.length ?? 0).toBeGreaterThanOrEqual(
+				r[i].dx?.length ?? 0,
+			);
+	});
+
+	it("offers three sorts and marks the active one", async () => {
+		const page = await html("/?q=kubernetes&sort=easy");
+		expect(page).toContain("<b>Easiest to use</b>");
+		expect(page).toContain("Most starred</a>");
+		expect(page).toContain("Best match</a>");
+	});
+
+	it("tells a visitor where to start on a journey from the tools they know", async () => {
+		const page = await html(
+			"/journeys?track=platform&know=npm,+pnpm,+docker,+docker+compose",
+		);
+		expect(page).toContain("Start at station");
+		expect(page).toMatch(/You know \d of \d tools to learn first here/);
+		expect(await html("/journeys?know=zzzzzz")).toContain(
+			"No tools recognised",
+		);
+	});
+
+	it("says what 'docker' was read as, and why the top role matched", async () => {
+		const page = await html("/roles?know=npm,+vite,+docker");
+		expect(page).toContain("docker → Docker Desktop");
+		expect(page).toContain("It matches because you know");
+	});
+});

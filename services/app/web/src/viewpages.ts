@@ -30,10 +30,12 @@ import {
 	ROADMAP_TOOLS,
 	ROLE_GROUPS,
 	ROLES,
+	type Role,
 	resolveNames,
 	SKILL_CATEGORIES,
 	TRACKS,
 	toolById,
+	typedTools,
 	unit,
 } from "./views";
 
@@ -191,9 +193,24 @@ const ROUTE_NAMES: Record<string, string> = {
 };
 
 /** Journeys: seven levels from Package Wrangler to Platform Architect, as a metro line, with a route for each track. */
-export function journeysPage(base: string, trackId?: string): string {
+export function journeysPage(
+	base: string,
+	trackId?: string,
+	know?: string,
+): string {
 	const root = rootOf(base);
 	const track = TRACKS.find((t) => t.id === trackId) ?? TRACKS[0];
+	const typed = typedTools(know);
+	const knownIds = new Set(typed.flatMap((x) => (x.hit ? [x.hit.id] : [])));
+	const knownOf = (ids: string[]) =>
+		ids.filter((id) => knownIds.has(id)).length;
+	const startAt = knownIds.size
+		? LEVELS.find((l) => {
+				const main = track.stops[l.id]?.main ?? [];
+				return main.length > 0 && knownOf(main) < Math.ceil(main.length / 2);
+			})
+		: undefined;
+	const knowForm = `<form class="search" role="search" action="${root}/journeys" method="get"><input type="hidden" name="track" value="${esc(track.id)}"><input type="search" name="know" value="${esc(know ?? "")}" placeholder="Tools you know: npm, vite, docker" aria-label="Tools you know"><button type="submit">Where do I start?</button></form>${knownIds.size ? `<p class="verdict-line">${startAt ? `Start at station ${startAt.n}: <b>${esc(startAt.name)}</b>. You already know the first ${startAt.n - 1} stations' main tools.` : "You already know most of the main tools on this route. Look at the last stations for what is next."}</p>` : typed.length ? `<p class="note">No tools recognised in “${esc(know ?? "")}”.</p>` : ""}`;
 	const chip = (id: string, main: boolean) => {
 		const t = toolById(id);
 		return t
@@ -215,10 +232,11 @@ export function journeysPage(base: string, trackId?: string): string {
 		},
 		`${hero("Journeys", "Seven levels, <em>one line</em>", "A metro line from your first lockfile to platform architecture. Pick a route; each station lists the tools to learn and the ones worth knowing.")}
 <nav class="start" aria-label="Route">${TRACKS.map((t) => `<a href="${root}/journeys?track=${t.id}"${t.id === track.id ? ' aria-current="page" class="on"' : ""}><b>${esc(ROUTE_NAMES[t.id] ?? `${t.name} route`)}</b><small>${esc(t.blurb)}</small></a>`).join("")}</nav>
+${knowForm}
 <p class="note">Showing the ${esc(track.name)} route. Each station lists tools to learn first (bold) and tools worth knowing.</p>
 <ol class="metro">${LEVELS.map((l) => {
 			const stop = track.stops[l.id];
-			return `<li id="${l.id}"><span class="station" aria-hidden="true">${l.n}</span><div class="stop"><h3>${esc(l.name)}</h3><p>${esc(l.goal)}</p>${stop?.tip ? `<p class="tip">${esc(stop.tip)}</p>` : ""}<p class="chiplist"><span class="flabel">Learn first</span>${(stop?.main ?? []).map((id) => chip(id, true)).join("")}</p><p class="chiplist"><span class="flabel">Also worth knowing</span>${(stop?.side ?? []).map((id) => chip(id, false)).join("")}</p><p class="note">You learn: ${l.skills.map(esc).join(" · ")}</p>${l.flisk && l.flisk.status !== "soon" ? `<p class="note">Flisk: ${esc(l.flisk.text)}</p>` : ""}</div></li>`;
+			return `<li id="${l.id}"><span class="station" aria-hidden="true">${l.n}</span><div class="stop"><h3>${esc(l.name)}</h3><p>${esc(l.goal)}</p>${stop?.tip ? `<p class="tip">${esc(stop.tip)}</p>` : ""}${knownIds.size && stop?.main?.length ? `<p class="note">You know ${knownOf(stop.main)} of ${stop.main.length} tools to learn first here.</p>` : ""}<p class="chiplist"><span class="flabel">Learn first</span>${(stop?.main ?? []).map((id) => chip(id, true)).join("")}</p><p class="chiplist"><span class="flabel">Also worth knowing</span>${(stop?.side ?? []).map((id) => chip(id, false)).join("")}</p><p class="note">You learn: ${l.skills.map(esc).join(" · ")}</p>${l.flisk && l.flisk.status !== "soon" ? `<p class="note">Flisk: ${esc(l.flisk.text)}</p>` : ""}</div></li>`;
 		}).join("")}</ol>
 <details class="legend-rings"><summary>Where Flisk helps on this line, and where not yet</summary><ul class="verdict">${LEVELS.filter(
 			(l) => l.flisk,
@@ -256,7 +274,11 @@ export function rolesPage(base: string, group?: string, know?: string): string {
 			? `<div class="result"><p class="note">Understood: ${
 					found
 						.filter((x) => x.hit)
-						.map((x) => esc(x.hit?.name ?? ""))
+						.map((x) =>
+							x.hit && x.hit.name.toLowerCase() !== x.n.toLowerCase()
+								? `${esc(x.n)} → ${esc(x.hit.name)}`
+								: esc(x.hit?.name ?? ""),
+						)
 						.join(", ") || "nothing"
 				}${
 					found.some((x) => !x.hit)
@@ -267,7 +289,7 @@ export function rolesPage(base: string, group?: string, know?: string): string {
 						: ""
 				}.</p>${
 					bestFits.length
-						? `<p class="verdict-line">Your best fit: <b>${esc(bestFits[0].role.name)}</b> (${bestFits[0].pct}%, ${band(bestFits[0].pct)}). Open it below, or start with its Learn next list.</p><ol class="fits">${bestFits
+						? `<p class="verdict-line">Your best fit: <b>${esc(bestFits[0].role.name)}</b> (${bestFits[0].pct}%, ${band(bestFits[0].pct)}). ${because(bestFits[0].role, meKnow)} Open it below, or start with its Learn next list.</p><ol class="fits">${bestFits
 								.map(
 									(f) =>
 										`<li><div class="fit-top"><strong><a href="${root}/roles?group=${f.role.group}#${f.role.id}">${esc(f.role.name)}</a></strong><span>${f.pct}% <small class="note">${band(f.pct)}</small></span></div><div class="bar"><i style="width:${Math.min(100, f.pct)}%"></i></div>${
@@ -350,6 +372,15 @@ export function skillsPage(base: string, cat?: string, page = 1): string {
 <p class="pager"><span>${r.page > 1 ? `<a rel="prev" href="${link({ cat: current?.id, page: r.page - 1 })}">← Previous</a>` : ""}</span><span>Page ${r.page} of ${r.pages} · ${PAGE_SIZE} per page</span><span>${r.page < r.pages ? `<a rel="next" href="${link({ cat: current?.id, page: r.page + 1 })}">Next →</a>` : ""}</span></p>`,
 		"skills",
 	);
+}
+
+/** Which of the tools you typed are in the role's lists, so the match is explained. */
+function because(role: Role, me: Record<string, number>): string {
+	const all = [...role.core, ...role.daily, ...role.nice];
+	const known = all.filter((id) => me[id]);
+	return known.length
+		? `It matches because you know ${known.map((id) => esc(toolById(id)?.name ?? id)).join(", ")}, which are on its list.`
+		: "";
 }
 
 /** A word for a role-fit percentage, so 20% is not read as failure. */

@@ -131,3 +131,16 @@ export function resolveNames(query: string, limit = 5): Entry[] {
 	}
 	return out;
 }
+
+/** "npm, vite docker" -> each word typed and the tool it was read as, for the finder on Roles and Journeys. */
+export function typedTools(
+	text: string | undefined,
+): { n: string; hit?: Entry }[] {
+	const raw = (text ?? "").slice(0, 300);
+	return raw
+		.split(raw.includes(",") ? /[,;\n]/ : /\s+/)
+		.map((s) => s.trim())
+		.filter(Boolean)
+		.slice(0, 15)
+		.map((n) => ({ n, hit: resolveNames(n, 1)[0] }));
+}
