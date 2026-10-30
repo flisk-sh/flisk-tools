@@ -38,17 +38,45 @@ describe("catalog", () => {
 	it("searches by every word, filters by kind and group, and pages", () => {
 		const r = search({ q: "docker compose" });
 		expect(r.total).toBeGreaterThan(0);
-		for (const e of r.items)
-			expect(
-				`${e.name} ${e.tagline} ${e.category} ${e.group}`.toLowerCase(),
-			).toContain("docker");
+		// Relevance, not popularity: the tool with that name comes first, however many stars others have.
+		expect(r.items[0].id).toBe("docker-compose");
 		expect(
 			search({ kind: "skill" }).items.every((e) => e.kind === "skill"),
 		).toBe(true);
 		expect(search({}).items).toHaveLength(PAGE_SIZE);
 		expect(search({ page: 9999 }).page).toBe(search({}).pages);
 		expect(search({ q: "zzzz-no-such-thing" }).total).toBe(0);
+		expect(search({ q: "asdfgh" }).total).toBe(0);
 		expect(groups("skill")[0].name).toBe("Agent skills");
+	});
+});
+
+describe("search", () => {
+	const top = (q: string, n = 3) =>
+		search({ q })
+			.items.slice(0, n)
+			.map((e) => e.id);
+
+	it("forgives a typo and knows k8s means Kubernetes", () => {
+		expect(top("kubernets")).toContain("kubernetes");
+		expect(top("k8s", 5)).toContain("kubernetes");
+	});
+
+	it("matches some of the words, best match first", () => {
+		expect(search({ q: "browser automation", mcp: true }).items[0].id).toBe(
+			"playwright-mcp",
+		);
+		expect(top("claude code")[0]).toBe("claude-code");
+	});
+
+	it("searches the roadmap's checks, like works offline with no account", () => {
+		const r = search({ q: "offline no account" });
+		expect(r.total).toBeGreaterThan(0);
+		expect(r.items[0].dx).toContain("offline");
+	});
+
+	it("returns nothing for a query that matches nothing real", () => {
+		expect(search({ q: "zzzz-no-such-thing" }).total).toBe(0);
 	});
 });
 

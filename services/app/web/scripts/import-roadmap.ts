@@ -23,7 +23,10 @@ const json = (file: string) =>
 const families = new Map(
 	yaml("families.yml").map((f) => [f.id, f.name as string]),
 );
-const github = json("github.json").tools as Record<string, { stars?: number }>;
+const github = json("github.json").tools as Record<
+	string,
+	{ stars?: number; pushed?: string; release?: string; version?: string }
+>;
 const skillRepos = json("skill_repos.json").repos as Record<
 	string,
 	{ stars?: number }
@@ -57,6 +60,9 @@ for (const file of readdirSync(join(dir, "_data/tools")).filter((f) =>
 			url: String(t.url),
 			repo: t.repo ? String(t.repo) : undefined,
 			stars: github[String(t.id)]?.stars,
+			pushed: github[String(t.id)]?.pushed?.slice(0, 10),
+			release: github[String(t.id)]?.release?.slice(0, 10),
+			version: github[String(t.id)]?.version,
 			license: t.license ? String(t.license) : undefined,
 			author: String(t.repo ?? "").split("/")[0] || undefined,
 			family,

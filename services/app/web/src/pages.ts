@@ -4,7 +4,7 @@ import {
 	counts,
 	ENTRIES,
 	type Entry,
-	groups,
+	facets,
 	hue,
 	KINDS,
 	kindLabel,
@@ -13,9 +13,11 @@ import {
 	search,
 	symbol,
 } from "./catalog";
+import { jumpLinks } from "./jump";
 import { esc, faqJsonLd, head, type PageMeta } from "./seo";
 import { SITE } from "./site";
 import { STYLE } from "./styles";
+import { DX, PARITY, RINGS as RING_DEFS } from "./views";
 
 export type View =
 	| "browse"
@@ -54,9 +56,9 @@ ${FONTS}
 <header class="site-header"><div class="wrap bar"><a class="brand" href="${root}/"><img src="${root}/icon.svg" alt="" width="20" height="20"><span>${esc(SITE.name)}</span></a>
 <span class="hook">${ENTRIES.length} listings · ${counts("app")} apps · ${counts("tool")} dev tools · ${counts("skill")} agent skills · ${mcpCount()} with an MCP server · free, no signup to browse</span>
 <nav class="nav" aria-label="Primary"><a href="${root}/publish">Publish</a><a class="nav-extra" href="${root}/about">About</a><a class="nav-extra" href="${esc(SITE.repo)}" rel="noopener">GitHub</a><span id="gh-slot"></span><button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch theme">Theme</button></nav></div></header>
-<main id="main" class="wrap"><nav class="views" aria-label="Views">${tab("browse", `${root}/`, "Browse")}${tab("compass", `${root}/compass`, "Compass")}${tab("radar", `${root}/radar`, "Radar")}${tab("lab", `${root}/lab`, "Lab")}${tab("journeys", `${root}/journeys`, "Journeys")}${tab("roles", `${root}/roles`, "Roles")}${tab("skills", `${root}/skills`, "Skills")}${tab("ask", `${root}/ask`, "Ask")}${tab("portfolio", `${root}/portfolio`, "Portfolio")}</nav>
+<main id="main" class="wrap"><nav class="views" aria-label="Views">${tab("browse", `${root}/`, "Browse")}${tab("compass", `${root}/compass`, "Compass")}${tab("radar", `${root}/radar`, "Radar")}${tab("lab", `${root}/lab`, "Lab")}${tab("journeys", `${root}/journeys`, "Journeys")}${tab("roles", `${root}/roles`, "Roles")}${tab("skills", `${root}/skills`, "Skills")}${tab("ask", `${root}/ask`, "Compare")}${tab("portfolio", `${root}/portfolio`, "Portfolio")}</nav>
 ${body}</main>
-<footer><div class="wrap">${esc(SITE.name)}: nothing stored here, no cookies. <a href="${esc(SITE.repo)}">Open source</a>, made by <a href="${esc(SITE.author.url)}">${esc(SITE.author.name)}</a>. Tools and skills come from the <a href="https://roadmap.flisk.si" rel="noopener">DevEx Roadmap</a>; wrong entry? <a href="${esc(SITE.repo)}/pulls" rel="noopener">Fix it on GitHub</a>.</div></footer>
+<footer><div class="wrap">${esc(SITE.name)}: nothing stored here, no cookies. <a href="${esc(SITE.repo)}">Open source</a>, made by <a href="${esc(SITE.author.url)}">${esc(SITE.author.name)}</a>. Tools and skills come from the <a href="https://roadmap.flisk.si" rel="noopener">DevEx Roadmap</a>; wrong entry? <a href="${esc(SITE.repo)}/pulls" rel="noopener">Fix it on GitHub</a>. <a href="${root}/rate">Rate this site</a> (2 questions).</div></footer>
 <script src="${root}/signin.js" defer></script>
 </body></html>`;
 }
@@ -84,13 +86,30 @@ ${m.tools?.length ? `<p class="note">Tools: ${m.tools.map((t) => `<code>${esc(t)
 }
 
 export const card = (root: string, e: Entry) =>
-	`<li class="card" style="${color(e.group === "Agent skills" ? e.category : e.group)}"><div class="top"><span class="sym" aria-hidden="true">${esc(symbol(e))}</span><h3><a href="${root}/listing/${e.id}">${esc(e.name)}</a></h3></div><p>${esc(e.tagline)}</p><div class="meta"><span class="g">${esc(kindLabel(e.kind))} · ${esc(e.category)}</span>${e.mcp ? `<span class="mcp">MCP</span>` : ""}${e.stars ? `<span>★ ${stars(e.stars)}</span>` : ""}${e.official ? `<span class="by">by Flisk</span>` : e.author ? `<span>@${esc(e.author)}</span>` : ""}</div></li>`;
+	`<li class="card" style="${color(e.group === "Agent skills" ? e.category : e.group)}"><div class="top"><span class="sym" aria-hidden="true">${esc(symbol(e))}</span><h3><a href="${root}/listing/${e.id}">${esc(e.name)}</a></h3></div><p>${esc(e.tagline)}</p><div class="meta"><span class="g">${esc(kindLabel(e.kind))} · ${esc(e.category)}</span>${e.ring ? `<span class="rk r-${e.ring}" title="Maturity: ${e.ring}">${e.ring === "adopt" ? "Adopt" : e.ring === "trial" ? "Trial" : e.ring === "assess" ? "Assess" : "Hold"}</span>` : ""}${e.mcp ? `<span class="mcp">MCP</span>` : ""}${e.stars ? `<span>★ ${stars(e.stars)}</span>` : ""}${e.official ? `<span class="by">by Flisk</span>` : e.kind === "skill" && e.repo ? `<span title="Source repository">${esc(e.repo)}</span>` : e.author ? `<span>@${esc(e.author)}</span>` : ""}</div></li>`;
+
+const RING_IDS = ["adopt", "trial", "assess", "hold"];
+const RING_FILTERS = [
+	{ id: "adopt", label: "Adopt" },
+	{ id: "trial", label: "Trial" },
+	{ id: "assess", label: "Assess" },
+	{ id: "hold", label: "Hold" },
+];
+/** Checks from the roadmap's "easy to use" list that people look for by name. */
+const FILTER_CHECKS = [
+	{ id: "offline", label: "Runs offline, no account" },
+	{ id: "one-command", label: "One command starts it" },
+	{ id: "agent-ready", label: "AI can drive it" },
+	{ id: "cross-platform", label: "Mac, Linux, Windows" },
+];
 
 interface Browse {
 	q?: string;
 	kind?: string;
 	group?: string;
 	mcp?: boolean;
+	ring?: string;
+	check?: string;
 	page?: number;
 }
 
@@ -101,6 +120,8 @@ export function homeHref(root: string, q: Browse): string {
 	if (q.kind) p.set("kind", q.kind);
 	if (q.group) p.set("group", q.group);
 	if (q.mcp) p.set("mcp", "1");
+	if (q.ring) p.set("ring", q.ring);
+	if (q.check) p.set("check", q.check);
 	if (q.page && q.page > 1) p.set("page", String(q.page));
 	const s = p.toString();
 	return `${root}/${s ? `?${s}` : ""}`;
@@ -109,14 +130,46 @@ export function homeHref(root: string, q: Browse): string {
 export function homePage(base: string, query: Browse = {}): string {
 	const root = rootOf(base);
 	const kind = KINDS.some((k) => k.id === query.kind) ? query.kind : undefined;
+	const ring = RING_IDS.includes(query.ring ?? "") ? query.ring : undefined;
+	const check = FILTER_CHECKS.some((c) => c.id === query.check)
+		? query.check
+		: undefined;
 	const filtered = Boolean(
-		query.q || kind || query.group || query.mcp || (query.page ?? 1) > 1,
+		query.q ||
+			kind ||
+			query.group ||
+			query.mcp ||
+			ring ||
+			check ||
+			(query.page ?? 1) > 1,
 	);
-	const r = search({ ...query, kind });
+	const base0 = { ...query, kind, ring, check };
+	const r = search(base0);
+	const f = facets(base0);
 	const link = (extra: Browse) =>
-		esc(homeHref(root, { q: query.q, kind, mcp: query.mcp, ...extra }));
-	const sub = (href: string, label: string, n: number, on: boolean) =>
-		`<a class="subtab" href="${href}"${on ? ' aria-current="page"' : ""}>${label}<small>${n}</small></a>`;
+		esc(
+			homeHref(root, {
+				q: query.q,
+				kind,
+				group: query.group,
+				mcp: query.mcp,
+				ring,
+				check,
+				...extra,
+			}),
+		);
+	const sub = (
+		href: string,
+		label: string,
+		n: number | undefined,
+		on: boolean,
+	) =>
+		`<a class="subtab" href="${href}"${on ? ' aria-current="page"' : ""}>${label}${n === undefined ? "" : `<small>${n}</small>`}</a>`;
+	const jumps = jumpLinks(query.q, root);
+	const ringCount = (id: string) => facets({ ...base0, ring: id }).total;
+	const checkCount = (id: string) => facets({ ...base0, check: id }).total;
+	const filterRow = `<nav class="subtabs filters" aria-label="Filters"><span class="flabel">Maturity</span>${RING_FILTERS.map((x) => sub(link({ ring: ring === x.id ? undefined : x.id }), esc(x.label), ringCount(x.id), ring === x.id)).join("")}<span class="flabel">Works</span>${FILTER_CHECKS.map((c) => sub(link({ check: check === c.id ? undefined : c.id }), esc(c.label), checkCount(c.id), check === c.id)).join("")}</nav>`;
+	const none = `<div class="empty"><p><b>Nothing matches${query.q ? ` “${esc(query.q)}”` : " these filters"}.</b></p><ul><li>Try fewer or different words, like <a href="${root}/?q=docker">docker</a> or <a href="${root}/?q=k8s">k8s</a>.</li><li>Clear the filters and <a href="${root}/">browse everything</a>.</li><li>Looking for a path or a job? See <a href="${root}/journeys">Journeys</a> and <a href="${root}/roles">Roles</a>.</li><li>Missing from the store? <a href="${root}/publish">Add it.</a></li></ul></div>`;
 	return layout(
 		base,
 		{
@@ -127,21 +180,15 @@ export function homePage(base: string, query: Browse = {}): string {
 		},
 		`<section class="hero"><p class="eyebrow">Free · open source · no server, no database</p><h1>Every dev tool, agent skill and app, <em>in one free store</em></h1>
 <p class="lede">${esc(SITE.description)}</p>
-<form class="search" role="search" action="${root}/" method="get"><input type="search" name="q" value="${esc(query.q ?? "")}" placeholder="Search ${ENTRIES.length} tools, skills and apps" aria-label="Search the store">${kind ? `<input type="hidden" name="kind" value="${kind}">` : ""}<button type="submit">Search</button></form>
-<p class="note own-mcp">Add this store to your AI: <code>claude mcp add --transport http flisk-tools ${esc(base)}/mcp</code></p></section>
-<nav class="subtabs" aria-label="Type">${sub(link({ kind: undefined }), "All", ENTRIES.length, !kind)}${KINDS.map((k) => sub(link({ kind: k.id }), esc(k.plural), counts(k.id), kind === k.id)).join("")}${sub(link({ mcp: !query.mcp, kind: undefined }), "With MCP", mcpCount(), Boolean(query.mcp))}</nav>
-<nav class="subtabs" aria-label="Group">${groups(kind)
-			.map((g) =>
-				sub(
-					link({ group: g.name }),
-					esc(g.name),
-					g.count,
-					query.group === g.name,
-				),
-			)
-			.join("")}</nav>
+<form class="search" role="search" action="${root}/" method="get"><input type="search" name="q" value="${esc(query.q ?? "")}" placeholder="Search ${ENTRIES.length} tools, skills and apps: try docker, k8s, code review" aria-label="Search the store">${kind ? `<input type="hidden" name="kind" value="${kind}">` : ""}<button type="submit">Search</button></form>
+<p class="note own-mcp">Compare tools: <a href="${root}/ask?q=yarn+vs+pnpm+vs+bun">yarn vs pnpm vs bun</a> · Add this store to your AI (tools: search_store, get_listing): <code>claude mcp add --transport http flisk-tools ${esc(base)}/mcp</code></p></section>
+${filtered ? "" : `<section class="start" aria-label="Start here"><a href="${root}/?q=docker"><b>Find a tool</b><small>Search ${counts("tool")} dev tools by what they do</small></a><a href="${root}/roles"><b>Which role fits me?</b><small>Type the tools you know</small></a><a href="${root}/journeys"><b>Learn a path</b><small>Seven levels, three routes</small></a><a href="${root}/ask?q=yarn+vs+pnpm+vs+bun"><b>Compare tools</b><small>Side by side, from the data</small></a></section>`}
+<nav class="subtabs" aria-label="Type">${sub(link({ kind: undefined }), "All", f.total, !kind)}${KINDS.map((k) => sub(link({ kind: k.id }), esc(k.plural), f.kinds[k.id] ?? 0, kind === k.id)).join("")}${sub(link({ mcp: !query.mcp, kind: undefined }), "With MCP", facets({ ...base0, mcp: true }).total, Boolean(query.mcp))}</nav>
+<details class="facetbox"${query.group || ring || check ? " open" : ""}><summary>Narrow it down: group, maturity, what it works with</summary><nav class="subtabs" aria-label="Group">${f.groups.map((g) => sub(link({ group: g.name }), esc(g.name), g.count, query.group === g.name)).join("")}</nav>
+${filterRow}</details>
+${jumps.length ? `<p class="jumps"><span class="flabel">Jump to</span>${jumps.map((j) => `<a class="chip2 jump-${j.kind}" href="${esc(j.href)}">${esc(j.label)}</a>`).join("")}</p>` : ""}
 <p class="count">${r.total} ${r.total === 1 ? "result" : "results"}${query.q ? ` for “${esc(query.q)}”` : ""}</p>
-${r.items.length ? `<ul class="grid">${r.items.map((e) => card(root, e)).join("")}</ul>` : `<p>Nothing matches. <a href="${root}/">Clear the search</a>, or <a href="${root}/publish">add it to the store</a>.</p>`}
+${r.items.length ? `<ul class="grid">${r.items.map((e) => card(root, e)).join("")}</ul>` : none}
 <p class="pager"><span>${r.page > 1 ? `<a rel="prev" href="${link({ group: query.group, page: r.page - 1 })}">← Previous</a>` : ""}</span><span>Page ${r.page} of ${r.pages}</span><span>${r.page < r.pages ? `<a rel="next" href="${link({ group: query.group, page: r.page + 1 })}">Next →</a>` : ""}</span></p>`,
 		"browse",
 	);
@@ -191,12 +238,29 @@ export function labPage(base: string, kindParam?: string): string {
 	);
 }
 
+/** What a visitor weighs a tool by: maturity ring, how easy, how big-system ready, and the checks it meets. */
+function glance(e: Entry): string {
+	if (!e.ring) return "";
+	const ring = RING_DEFS.find((r) => r.id === e.ring);
+	const met = (e.dx ?? [])
+		.map((id) => DX.criteria.find((c) => c.id === id))
+		.filter(Boolean);
+	const big = (e.parity ?? [])
+		.map((id) => PARITY.criteria.find((c) => c.id === id))
+		.filter(Boolean);
+	return `<h2>At a glance</h2><dl class="facts"><dt>Maturity</dt><dd><span class="rk r-${e.ring}">${esc(ring?.label ?? e.ring)}</span>: ${esc(ring?.help ?? "")}</dd><dt>Easy to use</dt><dd>${(e.dx?.length ?? 0) * 10} / 100</dd><dt>Big, real systems</dt><dd>${(e.parity?.length ?? 0) * 10} / 100</dd>${e.version ? `<dt>Latest release</dt><dd>${esc(e.version.replace(/^.*\//, ""))}${e.release ? `, ${esc(e.release)}` : ""}</dd>` : ""}${e.pushed ? `<dt>Last push</dt><dd>${esc(e.pushed)}</dd>` : ""}</dl>
+${met.length ? `<p class="note">Easy to use because it: ${met.map((c) => esc(c?.label ?? "")).join(" · ")}</p>` : ""}${big.length ? `<p class="note">Fits big systems because it: ${big.map((c) => esc(c?.label ?? "")).join(" · ")}</p>` : ""}`;
+}
+
 export function listingPage(base: string, e: Entry): string {
 	const root = rootOf(base);
 	const path = `listing/${e.id}`;
 	const related = search({ group: e.group })
 		.items.filter((x) => x.id !== e.id)
 		.slice(0, 6);
+	const similar = search({ category: e.category, kind: e.kind })
+		.items.filter((x) => x.id !== e.id && x.ring)
+		.slice(0, 2);
 	return layout(
 		base,
 		{
@@ -207,9 +271,11 @@ export function listingPage(base: string, e: Entry): string {
 		},
 		`<section class="detail" style="${color(e.group === "Agent skills" ? e.category : e.group)}"><span class="sym" aria-hidden="true">${esc(symbol(e))}</span><div><p class="eyebrow">${esc(kindLabel(e.kind))} · ${esc(e.category)}</p><h1>${esc(e.name)}</h1><p class="lede">${esc(e.tagline)}</p><p><a class="cta" href="${esc(e.url)}" rel="noopener">Open ${esc(e.name)}</a>${e.repo ? ` <a class="cta alt" href="https://github.com/${esc(e.repo)}" rel="noopener">GitHub</a>` : ""}</p></div></section>
 <p style="max-width:46rem">${esc(e.description)}</p>
-<dl class="facts"><dt>Type</dt><dd>${esc(kindLabel(e.kind))}</dd><dt>Group</dt><dd><a href="${esc(homeHref(root, { group: e.group }))}">${esc(e.group)}</a></dd><dt>Category</dt><dd>${esc(e.category)}</dd>${e.author ? `<dt>By</dt><dd><a href="https://github.com/${esc(e.author)}" rel="noopener">@${esc(e.author)}</a>${e.official ? " (Flisk)" : ""}</dd>` : ""}${e.stars ? `<dt>GitHub stars</dt><dd>${e.stars.toLocaleString("en-US")}</dd>` : ""}${e.license ? `<dt>License</dt><dd>${esc(e.license)}</dd>` : ""}</dl>
-${related.length ? `<h2>More in ${esc(e.group)}</h2><ul class="grid">${related.map((x) => card(root, x)).join("")}</ul>` : ""}
 ${e.mcp ? mcpPanel(e) : ""}
+<dl class="facts"><dt>Type</dt><dd>${esc(kindLabel(e.kind))}</dd><dt>Group</dt><dd><a href="${esc(homeHref(root, { group: e.group }))}">${esc(e.group)}</a></dd><dt>Category</dt><dd>${esc(e.category)}</dd>${e.author ? `<dt>By</dt><dd><a href="https://github.com/${esc(e.author)}" rel="noopener">@${esc(e.author)}</a>${e.official ? " (Flisk)" : ""}</dd>` : ""}${e.stars ? `<dt>GitHub stars</dt><dd>${e.stars.toLocaleString("en-US")}</dd>` : ""}${e.license ? `<dt>License</dt><dd>${esc(e.license)}</dd>` : ""}</dl>
+${glance(e)}
+${similar.length >= 1 && e.ring ? `<p><a class="cta alt" href="${root}/ask?q=${encodeURIComponent([e.name, ...similar.map((s) => s.name)].join(" vs "))}">Compare with ${similar.map((s) => esc(s.name)).join(" and ")}</a></p>` : ""}
+${related.length ? `<h2>More in ${esc(e.group)}</h2><ul class="grid">${related.map((x) => card(root, x)).join("")}</ul>` : ""}
 <h2>Read it from code</h2><pre>curl '${esc(base)}/api/tools/${e.id}'</pre>`,
 		"browse",
 	);
@@ -230,8 +296,9 @@ export function publishPage(base: string): string {
 			crumbs: [{ name: "Publish", path: "publish" }],
 		},
 		`<div class="prose"><p class="eyebrow">Publish</p><h1>Add yours to the <em>store</em></h1>
-<p class="lede">Sign in with GitHub, fill in the form, and GitHub opens a pull request with your listing. When it is merged, it is in the store.</p>
-<ol class="steps"><li>Sign in with GitHub (top right). We read only your public login.</li><li>Describe your app, tool or skill below.</li><li>GitHub opens a ready pull request. Press <b>Propose new file</b>, then <b>Create pull request</b>.</li><li>A check confirms the file is yours and well formed. Then it is merged.</li></ol>
+<p class="lede">Browsing the store needs no sign-in. To add a listing, sign in with GitHub, fill in the form, and GitHub opens a pull request with it. When it is merged, it is in the store.</p>
+<details open><summary>What you will fill in</summary><p class="note">Type (app, dev tool or agent skill) · Name · Id (lowercase, dashes) · One line (up to 120 characters) · Description (up to 600) · Group · Category · Address (https) · GitHub repo (needed for a skill) · MCP server address or command (optional). No JavaScript? Add a file named <code>listings/&lt;your github login&gt;--&lt;id&gt;.json</code> in the repository instead.</p></details>
+<ol class="steps"><li>Sign in with GitHub (top right). We read only your public login.</li><li>Describe your app, tool or skill below.</li><li>GitHub opens a ready pull request. On GitHub press the green <b>Commit changes…</b>, then <b>Propose changes</b>, then <b>Create pull request</b>.</li><li>A check confirms the file is yours and well formed. Then it is merged.</li></ol>
 <noscript><p>The form needs JavaScript. Without it, add a file named <code>listings/&lt;your github login&gt;--&lt;id&gt;.json</code> in the <a href="${esc(SITE.repo)}">repository</a>; the listings README shows the fields.</p></noscript>
 <form id="pub" hidden data-repo="${esc(SITE.repo)}">
 <p id="who" class="note"></p>
@@ -240,12 +307,18 @@ export function publishPage(base: string): string {
 <label>Id (lowercase, dashes) <input name="id" maxlength="60" required pattern="[a-z0-9][a-z0-9\\-]{0,60}" placeholder="link-checker"></label>
 <label>One line, up to 120 characters <input name="tagline" maxlength="120" required placeholder="Find the broken links on a page"></label>
 <label>Description, up to 600 characters <textarea name="description" maxlength="600" rows="4" required></textarea></label>
-<label>Group <input name="group" maxlength="40" required placeholder="Web"></label>
-<label>Category <input name="category" maxlength="40" required placeholder="Quality"></label>
+<label>Group <input name="group" maxlength="40" required placeholder="Web" list="dl-groups"></label>
+<label>Category <input name="category" maxlength="40" required placeholder="Quality" list="dl-cats"></label>
 <label>Address, https <input name="url" type="url" required placeholder="https://example.com"></label>
 <label>GitHub repo, owner/name (needed for skills) <input name="repo" placeholder="you/link-checker"></label>
 <label>MCP server address, https (if it has one) <input name="mcp_url" type="url" placeholder="https://example.com/mcp"></label>
 <label>Or the command of a local MCP server <input name="mcp_command" maxlength="120" placeholder="npx -y @you/your-mcp"></label>
+<datalist id="dl-groups">${[...new Set(ENTRIES.map((x) => x.group))].map((g) => `<option value="${esc(g)}">`).join("")}</datalist><datalist id="dl-cats">${[
+			...new Set(ENTRIES.map((x) => x.category)),
+		]
+			.slice(0, 120)
+			.map((g) => `<option value="${esc(g)}">`)
+			.join("")}</datalist>
 <button type="submit">Open the pull request</button></form>
 <p id="need" class="note">Sign in with GitHub to see the form.</p></div>
 <script src="${root}/publish.js" defer></script>`,
@@ -286,5 +359,31 @@ export function notFoundPage(base: string): string {
 			noindex: true,
 		},
 		`<div class="prose"><h1>Page not found</h1><p class="lede">There is no page at this address. <a href="${root}/">Search the store</a>.</p></div>`,
+	);
+}
+
+export function ratePage(base: string): string {
+	const root = rootOf(base);
+	const scale = (name: string) =>
+		`<div class="scale" role="radiogroup" aria-label="${name}"><span class="note">Strongly disagree</span>${[1, 2, 3, 4, 5, 6, 7].map((n) => `<label><input type="radio" name="${name === "capabilities" ? "c" : "e"}" value="${n}" required><span>${n}</span></label>`).join("")}<span class="note">Strongly agree</span></div>`;
+	return layout(
+		base,
+		{
+			path: "rate",
+			title: "Rate this site: two questions",
+			description:
+				`Two questions, 30 seconds: does ${SITE.name} meet your needs and is it easy to use? Your answer opens a prefilled GitHub issue.`.slice(
+					0,
+					160,
+				),
+			noindex: true,
+		},
+		`<div class="prose"><p class="eyebrow">Rate this site</p><h1>Two questions, <em>thirty seconds</em></h1>
+<p class="lede">This is UMUX-Lite, a standard short usability survey. Your answers open a prefilled GitHub issue; press Submit there. Nothing is stored here, and you need a GitHub account to submit.</p>
+<form id="rate" action="${root}/umux" method="get">
+<fieldset><legend>1. This site's capabilities meet my requirements.</legend>${scale("capabilities")}</fieldset>
+<fieldset><legend>2. This site is easy to use.</legend>${scale("easy")}</fieldset>
+<label>What would make it better? (optional) <textarea name="note" maxlength="600" rows="3" placeholder="The one thing you could not find or that confused you"></textarea></label>
+<button type="submit">Open the GitHub issue</button></form></div>`,
 	);
 }

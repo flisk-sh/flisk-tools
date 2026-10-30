@@ -104,9 +104,25 @@ ${familyTabs(root, "compass", fam)}
 <text x="${px(3)}" y="${py(97)}" class="q">Hard but big</text><text x="${px(97)}" y="${py(97)}" class="q" text-anchor="end">Easy and big</text><text x="${px(3)}" y="${py(4)}" class="q">Hard and small</text><text x="${px(97)}" y="${py(4)}" class="q" text-anchor="end">Easy and small</text>
 ${dots}</svg></figure>
 <ul class="legend2">${FAMILIES.map((f) => `<li><span class="sw" style="background:${f.color}"></span>${esc(f.name)}</li>`).join("")}</ul>
-<p class="note">${esc(DX.explain)}</p>`,
+<p class="note">${esc(DX.explain)}</p>
+${quadrants(root, tools)}`,
 		"compass",
 	);
+}
+
+/** The Compass in words: the most-starred tools in each corner, for anyone who cannot read a chart. */
+function quadrants(root: string, tools: Entry[]): string {
+	const cell = (
+		label: string,
+		test: (c: { x: number; y: number }) => boolean,
+	) => {
+		const list = tools
+			.filter((t) => test(compass(t)))
+			.sort((a, b) => (b.stars ?? 0) - (a.stars ?? 0))
+			.slice(0, 8);
+		return `<section class="ringbox"><h3>${esc(label)} <small>${tools.filter((t) => test(compass(t))).length}</small></h3><p class="chiplist">${list.map((t) => `<a class="chip2" href="${root}/listing/${t.id}" style="--c:${familyColor(t.family)}">${esc(t.name)}</a>`).join("")}</p></section>`;
+	};
+	return `<h2>In words</h2><div class="rings">${cell("Easy to use and built for big systems", (c) => c.x >= 50 && c.y >= 50)}${cell("Easy to use, small and simple", (c) => c.x >= 50 && c.y < 50)}${cell("Harder to use, built for big systems", (c) => c.x < 50 && c.y >= 50)}${cell("Harder to use, small and simple", (c) => c.x < 50 && c.y < 50)}</div><p class="note">The eight most-starred in each corner. Use the family tabs above to narrow it.</p>`;
 }
 
 /** The Adoption Radar: Adopt, Trial, Assess or Hold, one slice per family. */
@@ -192,21 +208,76 @@ export function journeysPage(base: string, trackId?: string): string {
 			crumbs: [{ name: "Journeys", path: "journeys" }],
 		},
 		`${hero("Journeys", "Seven levels, <em>one line</em>", "A metro line from your first lockfile to platform architecture. Pick a route; each station lists the tools to learn and the ones worth knowing.")}
-<nav class="subtabs" aria-label="Route">${TRACKS.map((t) => sub(`${root}/journeys?track=${t.id}`, t.name, undefined, t.id === track.id)).join("")}</nav>
+<nav class="subtabs" aria-label="Route">${TRACKS.map((t) => sub(`${root}/journeys?track=${t.id}`, `${t.name} route`, undefined, t.id === track.id)).join("")}</nav>
 <p class="note">${esc(track.blurb)}</p>
 <ol class="metro">${LEVELS.map((l) => {
 			const stop = track.stops[l.id];
-			return `<li><span class="station" aria-hidden="true">${l.n}</span><div class="stop"><h3>${esc(l.name)}</h3><p>${esc(l.goal)}</p>${stop?.tip ? `<p class="tip">${esc(stop.tip)}</p>` : ""}<p class="chiplist">${(stop?.main ?? []).map((id) => chip(id, true)).join("")}${(stop?.side ?? []).map((id) => chip(id, false)).join("")}</p><p class="note">You learn: ${l.skills.map(esc).join(" · ")}</p>${l.flisk ? `<p class="note flisk-${esc(l.flisk.status)}">Flisk: ${esc(l.flisk.text)}</p>` : ""}</div></li>`;
+			return `<li id="${l.id}"><span class="station" aria-hidden="true">${l.n}</span><div class="stop"><h3>${esc(l.name)}</h3><p>${esc(l.goal)}</p>${stop?.tip ? `<p class="tip">${esc(stop.tip)}</p>` : ""}<p class="chiplist">${(stop?.main ?? []).map((id) => chip(id, true)).join("")}${(stop?.side ?? []).map((id) => chip(id, false)).join("")}</p><p class="note">You learn: ${l.skills.map(esc).join(" · ")}</p>${l.flisk ? `<p class="note flisk-${esc(l.flisk.status)}">Flisk: ${esc(l.flisk.text)}</p>` : ""}</div></li>`;
 		}).join("")}</ol>`,
 		"journeys",
 	);
 }
 
 /** Roles: jobs in software and the tools each one needs. */
-export function rolesPage(base: string, group?: string): string {
+export function rolesPage(base: string, group?: string, know?: string): string {
 	const root = rootOf(base);
 	const g = ROLE_GROUPS.find((x) => x.id === group) ?? ROLE_GROUPS[0];
 	const list = ROLES.filter((r) => r.group === g.id);
+	// "Which role fits me?": tools typed by name become ratings of 2 ("use it"), no script needed.
+	const typed = (know ?? "")
+		.slice(0, 300)
+		.split(know?.includes(",") ? /[,;\n]/ : /\s+/)
+		.map((s) => s.trim())
+		.filter(Boolean)
+		.slice(0, 15);
+	const found = typed.map((n) => ({ n, hit: resolveNames(n, 1)[0] }));
+	const knownTools = found.flatMap((x) =>
+		x.hit?.kind === "skill" ? [] : x.hit ? [x.hit] : [],
+	);
+	const meKnow = parseMe(knownTools.map((t) => `${t.id}2`).join(","));
+	const bestFits = Object.keys(meKnow).length
+		? roleFit(meKnow)
+				.filter((f) => f.pct > 0)
+				.slice(0, 5)
+		: [];
+	const finder = `<form class="search" role="search" action="${root}/roles" method="get"><input type="search" name="know" value="${esc(know ?? "")}" placeholder="Tools you know: npm, vite, docker" aria-label="Tools you know"><button type="submit">Find my role</button></form>${
+		typed.length
+			? `<div class="result"><p class="note">Understood: ${
+					found
+						.filter((x) => x.hit)
+						.map((x) => esc(x.hit?.name ?? ""))
+						.join(", ") || "nothing"
+				}${
+					found.some((x) => !x.hit)
+						? `. Not found: ${found
+								.filter((x) => !x.hit)
+								.map((x) => esc(x.n))
+								.join(", ")}`
+						: ""
+				}.</p>${
+					bestFits.length
+						? `<ol class="fits">${bestFits
+								.map(
+									(f) =>
+										`<li><div class="fit-top"><strong><a href="${root}/roles?group=${f.role.group}#${f.role.id}">${esc(f.role.name)}</a></strong><span>${f.pct}%</span></div><div class="bar"><i style="width:${Math.min(100, f.pct)}%"></i></div>${
+											f.gaps.length
+												? `<p class="note">Learn next: ${f.gaps
+														.slice(0, 4)
+														.map(
+															(id) =>
+																`<a href="${root}/listing/${id}">${esc(toolById(id)?.name ?? id)}</a>`,
+														)
+														.join(", ")}</p>`
+												: ""
+										}</li>`,
+								)
+								.join(
+									"",
+								)}</ol><p class="note">Matched as if you use each tool. For a finer answer, <a href="${root}/portfolio?me=${encodeURIComponent(meString(meKnow))}">rate how well you know each one</a>.</p>`
+						: "<p>No role matched those tools yet. Try more tools, like <code>npm, vite, docker</code>.</p>"
+				}</div>`
+			: ""
+	}`;
 	const tools = (ids: string[]) =>
 		ids
 			.map((id) => toolById(id))
@@ -230,9 +301,10 @@ export function rolesPage(base: string, group?: string): string {
 			crumbs: [{ name: "Roles", path: "roles" }],
 		},
 		`${hero("Roles", "What does <em>your job</em> need?", `${ROLES.length} jobs in software and the tools each one needs: must have, every day, good to know.`)}
+${finder}
 <nav class="subtabs" aria-label="Group">${ROLE_GROUPS.map((x) => sub(`${root}/roles?group=${x.id}`, x.name, ROLES.filter((r) => r.group === x.id).length, x.id === g.id)).join("")}</nav>
-<p class="note">${esc(g.blurb)}</p>
-<ul class="grid">${list.map((r) => `<li class="card" style="${color(r.group)}"><div class="top"><span class="sym" aria-hidden="true">${esc(symbol(r))}</span><h3>${esc(r.name)}</h3></div><p>${esc(r.what)}</p><details><summary>Tools for this job</summary><p class="note">Must have</p><p class="chiplist">${tools(r.core)}</p><p class="note">Every day</p><p class="chiplist">${tools(r.daily)}</p><p class="note">Good to know</p><p class="chiplist">${tools(r.nice)}</p><p class="note">A day: ${r.day.map(esc).join(" · ")}</p></details></li>`).join("")}</ul>`,
+<p class="note">${esc(g.blurb)} Not sure which job fits? <a href="${root}/portfolio">Rate the tools you know</a> and get your best match.</p>
+<ul class="grid">${list.map((r) => `<li class="card" id="${r.id}" style="${color(r.group)}"><div class="top"><span class="sym" aria-hidden="true">${esc(symbol(r))}</span><h3>${esc(r.name)}</h3></div><p>${esc(r.what)}</p><details><summary>Tools for this job</summary><p class="note">Must have</p><p class="chiplist">${tools(r.core)}</p><p class="note">Every day</p><p class="chiplist">${tools(r.daily)}</p><p class="note">Good to know</p><p class="chiplist">${tools(r.nice)}</p><p class="note">A day: ${r.day.map(esc).join(" · ")}</p></details></li>`).join("")}</ul>`,
 		"roles",
 	);
 }
@@ -289,7 +361,7 @@ export function askPage(base: string, q = ""): string {
 			: '<span class="no">·</span>';
 	const table = picks.length
 		? `<div class="tablewrap"><table class="compare"><thead><tr><th></th>${picks.map((t) => `<th scope="col"><a href="${root}/listing/${t.id}">${esc(t.name)}</a></th>`).join("")}</tr></thead><tbody>
-${row("What it is", (t) => esc(t.tagline))}${row("Adoption ring", (t) => (t.ring ? `<span class="rk r-${t.ring}">${esc(ringLabel(t))}</span>` : "-"))}${row("Easy to use", (t) => (t.dx ? `${t.dx.length * 10} / 100` : "-"))}${row("Big, real systems", (t) => (t.parity ? `${t.parity.length * 10} / 100` : "-"))}${row("GitHub stars", (t) => (t.stars ? t.stars.toLocaleString("en-US") : "-"))}${row("License", (t) => esc(t.license ?? "-"))}${row("MCP server", (t) => (t.mcp ? "Yes" : "-"))}
+${row("What it is", (t) => esc(t.tagline))}${row("Adoption ring", (t) => (t.ring ? `<span class="rk r-${t.ring}">${esc(ringLabel(t))}</span>` : "-"))}${row("Easy to use", (t) => (t.dx ? `${t.dx.length * 10} / 100` : "-"))}${row("Big, real systems", (t) => (t.parity ? `${t.parity.length * 10} / 100` : "-"))}${row("GitHub stars", (t) => (t.stars ? t.stars.toLocaleString("en-US") : "-"))}${row("Latest release", (t) => (t.version ? `${esc(t.version.replace(/^.*\//, ""))}${t.release ? `, ${esc(t.release)}` : ""}` : "-"))}${row("Last push", (t) => esc(t.pushed ?? "-"))}${row("License", (t) => esc(t.license ?? "-"))}${row("MCP server", (t) => (t.mcp ? "Yes" : "-"))}
 <tr class="sec"><th scope="row" colspan="${picks.length + 1}">${esc(DX.title)}</th></tr>${DX.criteria.map((c) => row(c.label, (t) => check(t.dx, c.id))).join("")}
 <tr class="sec"><th scope="row" colspan="${picks.length + 1}">${esc(PARITY.title)}</th></tr>${PARITY.criteria.map((c) => row(c.label, (t) => check(t.parity, c.id))).join("")}
 </tbody></table></div>`
@@ -309,10 +381,10 @@ ${row("What it is", (t) => esc(t.tagline))}${row("Adoption ring", (t) => (t.ring
 			noindex: Boolean(q),
 			crumbs: [{ name: "Ask", path: "ask" }],
 		},
-		`${hero("Ask", "Compare tools, <em>side by side</em>", "Type two to five tools with vs, a comma or and. The answer comes from the data, every check with its meaning, and no AI is called.")}
+		`${hero("Compare", "Compare tools, <em>side by side</em>", "Type two to five tools with vs, a comma or and. The answer comes from the data, every check with its meaning, and no AI is called.")}
 <form class="search" role="search" action="${root}/ask" method="get"><input type="search" name="q" value="${esc(q)}" placeholder="yarn vs npm vs bun" aria-label="Tools to compare"><button type="submit">Compare</button></form>
 <p class="chiplist" style="margin-top:.8rem">${examples.map((x) => `<a class="chip2" href="${root}/ask?q=${encodeURIComponent(x)}">${esc(x)}</a>`).join("")}</p>
-${table}`,
+${table}${picks.length ? `<p class="note">Easy to use and Big, real systems count the checks each tool meets, 10 points each; the ticks below show which. Maturity comes from the Adoption Radar rules: release age, version and last update.</p>` : ""}`,
 		"ask",
 	);
 }

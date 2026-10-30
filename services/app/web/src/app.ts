@@ -18,6 +18,7 @@ import {
 	listingPage,
 	notFoundPage,
 	publishPage,
+	ratePage,
 } from "./pages";
 import { cleanName, meString, parseMe, portfolioMarkdown } from "./portfolio";
 import {
@@ -29,6 +30,7 @@ import {
 	webManifest,
 } from "./seo";
 import { SITE } from "./site";
+import { issueUrl, readAnswer } from "./umux";
 import {
 	askPage,
 	compassPage,
@@ -114,6 +116,8 @@ export function createApp(options: AppOptions = {}) {
 				kind: c.req.query("kind"),
 				group: c.req.query("group"),
 				mcp: c.req.query("mcp") === "1",
+				ring: c.req.query("ring"),
+				check: c.req.query("check"),
 				page: Number(c.req.query("page")) || 1,
 			}),
 		),
@@ -127,7 +131,9 @@ export function createApp(options: AppOptions = {}) {
 	app.get("/journeys", (c) =>
 		c.html(journeysPage(baseOf(c), c.req.query("track"))),
 	);
-	app.get("/roles", (c) => c.html(rolesPage(baseOf(c), c.req.query("group"))));
+	app.get("/roles", (c) =>
+		c.html(rolesPage(baseOf(c), c.req.query("group"), c.req.query("know"))),
+	);
 	app.get("/skills", (c) =>
 		c.html(
 			skillsPage(
@@ -137,6 +143,15 @@ export function createApp(options: AppOptions = {}) {
 			),
 		),
 	);
+	app.get("/rate", (c) => c.html(ratePage(baseOf(c))));
+	app.get("/umux", (c) => {
+		const answer = readAnswer(c.req.query("c"), c.req.query("e"));
+		if (!answer) return c.html(ratePage(baseOf(c)), 400);
+		return c.redirect(
+			issueUrl(SITE.repo, answer, c.req.query("note") ?? "", baseOf(c)),
+			303,
+		);
+	});
 	app.get("/portfolio", (c) =>
 		c.html(
 			portfolioPage(baseOf(c), {
@@ -258,6 +273,8 @@ export function createApp(options: AppOptions = {}) {
 			kind: c.req.query("kind"),
 			group: c.req.query("group"),
 			mcp: c.req.query("mcp") === "1",
+			ring: c.req.query("ring"),
+			check: c.req.query("check"),
 			page: Number(c.req.query("page")) || 1,
 		});
 		return c.json(r);
