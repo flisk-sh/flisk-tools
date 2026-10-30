@@ -336,9 +336,14 @@ export function rank(query: Query): Entry[] {
 				Number(b.e.official ?? false) - Number(a.e.official ?? false) ||
 				(b.e.stars ?? 0) - (a.e.stars ?? 0),
 		);
-		// Drop the loose tail: anything far weaker than the best match, but always keep the first ten.
-		const best = scored[0]?.s ?? 0;
-		const kept = scored.filter((x, i) => i < 3 || x.s >= best * 0.25);
+		// Drop the loose tail: anything far weaker than the third-best match. (Not the best: an exact name match scores far
+		// above everything else, and measuring against it would throw away the real matches, like k3s for "kubernetes".)
+		const ref = scored[Math.min(2, scored.length - 1)]?.s ?? 0;
+		// One word: every strong match counts. Several words: partial matches must be reasonably close to the best ones.
+		const kept =
+			words.length === 1
+				? scored
+				: scored.filter((x, i) => i < 3 || x.s >= ref * 0.3);
 		matches = kept.map((x) => x.e);
 	}
 	if (query.sort === "easy")
@@ -370,6 +375,7 @@ export function search(query: Query): Result {
 export function facets(query: Query): {
 	kinds: Record<string, number>;
 	groups: { name: string; count: number }[];
+	categories: { name: string; count: number }[];
 	total: number;
 } {
 	const kinds: Record<string, number> = {};
@@ -389,8 +395,14 @@ export function facets(query: Query): {
 	});
 	for (const e of forGroups)
 		counts.set(e.group, (counts.get(e.group) ?? 0) + 1);
+	const cats = new Map<string, number>();
+	for (const e of rank({ ...query, category: undefined, page: undefined }))
+		cats.set(e.category, (cats.get(e.category) ?? 0) + 1);
 	return {
 		kinds,
+		categories: [...cats]
+			.map(([name, count]) => ({ name, count }))
+			.sort((a, b) => b.count - a.count || a.name.localeCompare(b.name)),
 		groups: [...counts]
 			.map(([name, count]) => ({ name, count }))
 			.sort((a, b) => b.count - a.count),

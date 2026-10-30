@@ -210,7 +210,7 @@ export function journeysPage(
 				return main.length > 0 && knownOf(main) < Math.ceil(main.length / 2);
 			})
 		: undefined;
-	const knowForm = `<form class="search" role="search" action="${root}/journeys" method="get"><input type="hidden" name="track" value="${esc(track.id)}"><input type="search" name="know" value="${esc(know ?? "")}" placeholder="Tools you know: npm, vite, docker" aria-label="Tools you know"><button type="submit">Where do I start?</button></form>${knownIds.size ? `<p class="verdict-line">${startAt ? `Start at station ${startAt.n}: <b>${esc(startAt.name)}</b>. You already know the first ${startAt.n - 1} stations' main tools.` : "You already know most of the main tools on this route. Look at the last stations for what is next."}</p>` : typed.length ? `<p class="note">No tools recognised in “${esc(know ?? "")}”.</p>` : ""}`;
+	const knowForm = `<form class="search" role="search" action="${root}/journeys" method="get"><input type="hidden" name="track" value="${esc(track.id)}"><input type="search" name="know" value="${esc(know ?? "")}" placeholder="Tools you know: npm, vite, docker" aria-label="Tools you know"><button type="submit">Where do I start?</button></form>${knownIds.size ? `<p class="verdict-line">${startAt ? `Start at station ${startAt.n}: <b>${esc(startAt.name)}</b>. ${startAt.n > 1 ? `You already know the main tools of ${startAt.n === 2 ? "station 1" : `stations 1 to ${startAt.n - 1}`}.` : "Nothing on this route is behind you yet."}` : "You already know most of the main tools on this route. Look at the last stations for what is next."}</p>` : typed.length ? `<p class="note">No tools recognised in “${esc(know ?? "")}”.</p>` : ""}`;
 	const chip = (id: string, main: boolean) => {
 		const t = toolById(id);
 		return t
@@ -424,11 +424,13 @@ function verdict(picks: Entry[]): string {
 			(t) => t.dx?.length ?? 0,
 			(t) => `${(t.dx?.length ?? 0) * 10}/100`,
 		),
-		lead(
-			"Most ready for big systems",
-			(t) => t.parity?.length ?? 0,
-			(t) => `${(t.parity?.length ?? 0) * 10}/100`,
-		),
+		picks.some((t) => (t.parity?.length ?? 0) >= 4)
+			? lead(
+					"Most ready for big systems",
+					(t) => t.parity?.length ?? 0,
+					(t) => `${(t.parity?.length ?? 0) * 10}/100`,
+				)
+			: "",
 	].filter(Boolean);
 	const same = picks.every((t) => t.ring && t.ring === picks[0].ring);
 	return `<div class="result"><h3>At a glance</h3><ul class="verdict">${items.join("")}</ul><p class="note">${same ? `All are ${esc(picks[0].ring ?? "")}: the rings do not separate them, so use the lines above.` : "Maturity ring, from the Adoption Radar rules."} There is no single winner: pick on what matters to you.</p></div>`;

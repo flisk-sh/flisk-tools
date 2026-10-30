@@ -235,7 +235,22 @@ export function homePage(base: string, query: Browse = {}): string {
 <div class="callout"><b>Use this store from your AI</b><code>claude mcp add --transport http flisk-tools ${esc(base)}/mcp</code><small>Claude Code. Tools: search_store, get_listing. No key needed. <a href="${root}/listing/flisk-tools">More</a></small></div></section>
 ${filtered ? "" : `<section class="start" aria-label="Start here"><a href="${root}/?q=docker"><b>Find a tool</b><small>Search ${counts("tool")} dev tools by what they do</small></a><a href="${root}/roles"><b>Which role fits me?</b><small>Type the tools you know</small></a><a href="${root}/journeys"><b>Learn a path</b><small>Seven levels, three routes</small></a><a href="${root}/ask?q=yarn+vs+pnpm+vs+bun"><b>Compare tools</b><small>Side by side, from the data</small></a></section>`}
 <nav class="subtabs" aria-label="Type">${sub(link({ kind: undefined }), "All", f.total, !kind)}${KINDS.map((k) => sub(link({ kind: k.id }), esc(k.plural), f.kinds[k.id] ?? 0, kind === k.id)).join("")}${sub(link({ mcp: !query.mcp, kind: undefined }), "With MCP", facets({ ...base0, mcp: true }).total, Boolean(query.mcp))}</nav>
-<details class="facetbox"${query.group || ring || check ? " open" : ""}><summary>Narrow it down: group, maturity, what it works with</summary><nav class="subtabs" aria-label="Group">${f.groups.map((g) => sub(link({ group: g.name }), esc(g.name), g.count, query.group === g.name)).join("")}</nav>
+<details class="facetbox"${query.group || ring || check || category ? " open" : ""}><summary>Narrow it down: group, maturity, what it works with</summary><nav class="subtabs" aria-label="Group">${f.groups.map((g) => sub(link({ group: g.name }), esc(g.name), g.count, query.group === g.name)).join("")}</nav>
+${
+	f.categories.length > 1
+		? `<nav class="subtabs" aria-label="Category"><span class="flabel">Category</span>${f.categories
+				.slice(0, 14)
+				.map((c) =>
+					sub(
+						link({ category: category === c.name ? undefined : c.name }),
+						esc(c.name),
+						c.count,
+						category === c.name,
+					),
+				)
+				.join("")}</nav>`
+		: ""
+}
 ${filterRow}</details>
 ${category ? `<p class="jumps"><span class="flabel">Category</span><a class="chip2" href="${link({ category: undefined })}">${esc(category)} ×</a></p>` : ""}
 ${check ? `<p class="note">${esc(DX.criteria.find((c) => c.id === check)?.help ?? "")} This is the roadmap's checklist answer, not a test run here: check the tool's own page before relying on it. Many tools meet it, so combine it with a search.</p>` : ""}

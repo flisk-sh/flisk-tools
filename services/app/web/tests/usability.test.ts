@@ -334,3 +334,30 @@ describe("loop 8 fixes", () => {
 		expect(page).toContain("It matches because you know");
 	});
 });
+
+describe("loop 9 fixes", () => {
+	it("returns every strong match for a single word, not only the top few (regression: kubernetes gave 3)", () => {
+		expect(search({ q: "kubernetes" }).total).toBeGreaterThan(30);
+		expect(search({ q: "terraform" }).total).toBeGreaterThan(8);
+		const ids = search({ q: "kubernetes" }).items.map((e) => e.id);
+		expect(ids).toContain("k3s");
+	});
+
+	it("still trims the loose tail of a several-word query", () => {
+		expect(search({ q: "code review" }).total).toBeLessThan(40);
+	});
+
+	it("offers category chips that narrow the results, from the results page", async () => {
+		const page = await html("/?q=kubernetes");
+		expect(page).toContain('aria-label="Category"');
+		expect(page).toContain("category=Local+Kubernetes");
+		const r = search({ q: "kubernetes", category: "Local Kubernetes" });
+		expect(r.items.length).toBeGreaterThan(2);
+	});
+
+	it("does not claim a 'most ready for big systems' winner among package managers", async () => {
+		expect(await html("/ask?q=pnpm+vs+npm+vs+bun")).not.toContain(
+			"Most ready for big systems",
+		);
+	});
+});
