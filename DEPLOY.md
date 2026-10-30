@@ -12,17 +12,18 @@ Nothing to sign up for besides Render: no database, no keys.
 The free plan sleeps after 15 minutes without traffic and takes about a minute to wake. On launch day, upgrade to
 Starter for the day, or keep it awake.
 
-## 2. Your own domain (optional)
+## 2. The domain: tools.flisk.si
 
-`bun run rename --domain …` uncomments `domains` in `render.yaml` and sets `PUBLIC_URL`. Then:
+Render's free workspace allows two custom domains and they are taken, so `tools.flisk.si` goes through a Cloudflare
+Worker (`cloudflare/`) that forwards to `flisk-tools.onrender.com`, the same way `readme.flisk.si` does:
 
-1. Render → the service → **Settings → Custom Domains** shows the CNAME target (`<service>.onrender.com`).
-2. Your DNS (Cloudflare: **DNS → Add record**): `CNAME`, the subdomain, that target, proxy **DNS only**.
-3. Wait for Render to issue the certificate.
+1. Cloudflare → `flisk.si` → **DNS**: no record named `tools` may exist (the Worker's custom domain creates it).
+2. `cd cloudflare && bunx wrangler@4 deploy`, or in the dashboard: **Workers & Pages → Create → Worker**, paste
+   `worker.js`, deploy, then **Settings → Domains & Routes → Add → Custom domain → `tools.flisk.si`**.
+3. `PUBLIC_URL` stays `https://tools.flisk.si/` so canonical links and the sitemap are right.
 
-Without a payment method on file, Render allows two custom domains per workspace; the Blueprint sync fails on a
-third. If you put Cloudflare's proxy in front instead, set `TRUST_PROXY=cloudflare` and accept traffic from
-Cloudflare only.
+If the workspace gets a free slot, `domains: [tools.flisk.si]` in `render.yaml` and a DNS-only CNAME to the
+onrender.com address do the same without the Worker.
 
 ## 3. Check it
 

@@ -9,12 +9,10 @@ services:
     region: frankfurt
     autoDeploy: true
     healthCheckPath: /ready
-    # Your own domain: uncomment and put it in PUBLIC_URL too (`bun run rename` does both). Without a payment method
-    # on file, Render allows two custom domains per workspace.
-    domains:
-      - tools.flisk.si
+    # No `domains:` here: the workspace's two free custom domains are taken, so tools.flisk.si is served by the
+    # Cloudflare Worker in cloudflare/, which forwards to this service's onrender.com address (see DEPLOY.md).
     envVars:
-      # The address people use. Without a custom domain, your service's https://<name>.onrender.com/.
+      # The address people use (tools.flisk.si, through the Cloudflare Worker), for canonical links and the sitemap.
       - key: PUBLIC_URL
         value: https://tools.flisk.si/
       - key: TRUST_PROXY
