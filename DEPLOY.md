@@ -40,7 +40,12 @@ curl -s -X POST https://flisk-tools.onrender.com/mcp -H 'content-type: applicati
 
 ## 4. Turn on GitHub sign-in (once)
 
-1. GitHub → **Settings → Developer settings → OAuth Apps → New OAuth App** (create it under the `flisk-sh` org).
-   Homepage URL: your site. Callback URL: the same (the device flow does not use it).
-2. Tick **Enable Device Flow**. Save.
-3. Copy the **Client ID** (it is public; do not generate a client secret) into Render as `GITHUB_CLIENT_ID`.
+Sign-in is the one the DevEx Roadmap and Pages already use: **publish.flisk.si**. It has its own GitHub OAuth App and
+keeps no token, so this site needs no OAuth App, no client id and no secret. It only has to be told that this site may
+be sent visitors back:
+
+1. In `flisk-sh/pages`, open `services/app/publish/wrangler.toml` and add this site to `ALLOWED_ORIGINS`
+   (comma-separated), for example `https://tools.flisk.si`.
+2. Deploy the worker: `cd services/app/publish && bunx wrangler@4 deploy`.
+
+Until then, search, browsing and the API work; the "Sign in with GitHub" button shows an error page from publish.flisk.si.

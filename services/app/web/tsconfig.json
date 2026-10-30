@@ -7,10 +7,18 @@
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
-		"types": ["bun"],
+		"types": [
+			"bun"
+		],
 		"outDir": "./dist",
-		"rootDir": "./src"
+		"rootDir": "./src",
+		"resolveJsonModule": true
 	},
-	"include": ["src/**/*"],
-	"exclude": ["node_modules", "dist"]
+	"include": [
+		"src/**/*"
+	],
+	"exclude": [
+		"node_modules",
+		"dist"
+	]
 }

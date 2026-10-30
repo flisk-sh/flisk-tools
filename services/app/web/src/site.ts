@@ -5,10 +5,10 @@
 export const SITE = {
 	name: "Flisk Tools",
 	/** Under 60 characters: the <title> of the home page and the Product Hunt tagline. */
-	tagline: "Run small web tools on your own GitHub, free",
+	tagline: "Every dev tool, agent skill and app, in one free store",
 	/** 140 to 160 characters: the meta description and the link preview text. */
 	description:
-		"A free store of small web and GitHub tools that run in your own GitHub Actions. Sign in with GitHub, click Run, get JSON. No server, no database, no keys.",
+		"A free, open store of developer tools, AI agent skills and Flisk apps. Search any of them, and sign in with GitHub to add your own. No server, no database.",
 	/** Where the site lives online, ending in a slash. PUBLIC_URL overrides it at run time. */
 	url: "https://flisk-tools.onrender.com/",
 	repo: "https://github.com/flisk-sh/flisk-tools",
@@ -27,23 +27,23 @@ export const SITE = {
 	faq: [
 		{
 			q: "Is this an Apify alternative?",
-			a: "It covers the small end of it: run a script, get structured output. Tools run on GitHub Actions in your own fork instead of on a platform you pay for, so there are no proxies, no browser farms and no schedules faster than every 5 minutes.",
+			a: "It is a store in the same spirit: a public catalog where anyone can find and publish tools. It lists things that live elsewhere (a website, a GitHub repository, an agent skill) instead of running them on servers we pay for, so it costs nothing to host and holds no data.",
 		},
 		{
-			q: "Who pays for the compute?",
-			a: "You do, with your free GitHub Actions minutes. Runs in public repositories are free and unlimited. This site only serves pages, so it costs nothing to host and holds no data.",
+			q: "What is in the store?",
+			a: "Flisk's own apps, the developer tools and agent skills of the DevEx Roadmap with their live GitHub stars, and listings that people add with a pull request.",
+		},
+		{
+			q: "How do I add my tool?",
+			a: "Sign in with GitHub on the Publish page, fill in the form, and GitHub opens a pull request with your listing as one JSON file named after your login. When it is merged, it is in the store.",
 		},
 		{
 			q: "What does signing in with GitHub allow?",
-			a: "The console asks for the public_repo and workflow scopes so it can fork this repository to your account and start a run there. The token is handed to your browser once, through a relay that keeps and logs nothing, and then lives only in your browser's local storage. Every later call goes straight to GitHub.",
-		},
-		{
-			q: "Where do results go?",
-			a: "Each run commits a JSON file to the results branch of your fork. You own it, can read it on GitHub and can delete it any time.",
+			a: "It tells this site your public GitHub login for one hour, in this browser tab only, through the same sign-in the DevEx Roadmap and Pages use. No token is kept and nothing is written to your account.",
 		},
 		{
 			q: "Is there an API or an MCP server?",
-			a: "Yes: /api/tools lists the catalog as JSON, and /mcp is an MCP server with list_tools and get_tool, for Claude, ChatGPT, Cursor or Codex. Neither needs a key. Running a Tool needs your GitHub sign-in, so it happens in the console.",
+			a: "Yes: /api/tools?q=docker searches the catalog as JSON, and /mcp is an MCP server with search_store and get_listing, for Claude, ChatGPT, Cursor or Codex. Neither needs a key.",
 		},
 	],
 } as const;

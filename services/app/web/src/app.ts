@@ -1,8 +1,9 @@
-// Routes. The store is /tools/<id>; /console is the one page with a script, and /auth/* relays GitHub's device flow
-// for it. Everything else is the site around it: SEO files, icons, the catalog API and MCP.
+// Routes. The store is the home page (search and filters in the address) and /listing/<id>; /publish is the form that
+// opens a pull request. Everything else is the site around it: SEO files, icons, the catalog API and MCP.
 import { Hono } from "hono";
 import { ASSETS } from "./assets.generated";
-import { CONSOLE_JS } from "./console";
+import { ENTRIES, findEntry, search } from "./catalog";
+import { PUBLISH_JS, SIGNIN_JS } from "./client";
 import {
 	clientIp,
 	type ProxyMode,
@@ -12,10 +13,10 @@ import {
 import { handleMcp } from "./mcp";
 import {
 	aboutPage,
-	consolePage,
 	homePage,
+	listingPage,
 	notFoundPage,
-	toolPage,
+	publishPage,
 } from "./pages";
 import {
 	ICONS,
@@ -26,7 +27,6 @@ import {
 	webManifest,
 } from "./seo";
 import { SITE } from "./site";
-import { findTool, RUNNER, TOOLS } from "./tools";
 
 export interface AppOptions {
 	/** The address people use, ending in a slash. Without it, each request's own address (see baseOf). */
@@ -36,12 +36,6 @@ export interface AppOptions {
 	callsPerMinute?: number;
 	/** The date sitemap.xml gives as lastmod: when this build started. */
 	builtAt?: Date;
-	/** The client id of a GitHub OAuth App with the device flow on. Public by design, not a secret; empty turns sign-in off. */
-	clientId?: string;
-	/** owner/name of the repository Tools run from; each person's fork of it is where they run. */
-	runnerRepo?: string;
-	/** Tests replace the network. */
-	fetcher?: typeof fetch;
 }
 
 /** The icons and the social card from assets.generated.ts, decoded once. tests/seo.test.ts fails on a missing one. */
@@ -63,10 +57,6 @@ export function createApp(options: AppOptions = {}) {
 	const limit = new RateLimiter(options.callsPerMinute ?? 120, 60 * 1000);
 	const lastmod = (options.builtAt ?? new Date()).toISOString().slice(0, 10);
 	const files = loadAssets();
-	const clientId = options.clientId ?? "";
-	const runnerRepo =
-		options.runnerRepo ?? new URL(SITE.repo).pathname.replace(/^\/|\/$/g, "");
-	const doFetch = options.fetcher ?? fetch;
 	const app = new Hono();
 
 	/**
@@ -96,8 +86,7 @@ export function createApp(options: AppOptions = {}) {
 
 	app.use("*", async (c, next) => {
 		await next();
-		const withScript = new URL(c.req.url).pathname.endsWith("/console");
-		for (const [k, v] of Object.entries(securityHeaders(withScript)))
+		for (const [k, v] of Object.entries(securityHeaders()))
 			if (!c.res.headers.has(k)) c.res.headers.set(k, v);
 	});
 
@@ -107,27 +96,43 @@ export function createApp(options: AppOptions = {}) {
 	app.get("/ready", (c) => c.json({ ready: true }));
 
 	// Pages
-	app.get("/", (c) => c.html(homePage(baseOf(c))));
+	app.get("/", (c) =>
+		c.html(
+			homePage(baseOf(c), {
+				q: (c.req.query("q") ?? "").slice(0, 100),
+				kind: c.req.query("kind"),
+				group: c.req.query("group"),
+				page: Number(c.req.query("page")) || 1,
+			}),
+		),
+	);
 	app.get("/about", (c) => c.html(aboutPage(baseOf(c))));
-	app.get("/tools/:id", (c) => {
-		const tool = findTool(c.req.param("id"));
-		if (!tool) return c.html(notFoundPage(baseOf(c)), 404);
-		return c.html(toolPage(baseOf(c), tool));
+	app.get("/publish", (c) => c.html(publishPage(baseOf(c))));
+	app.get("/listing/:id", (c) => {
+		const entry = findEntry(c.req.param("id"));
+		if (!entry) return c.html(notFoundPage(baseOf(c)), 404);
+		return c.html(listingPage(baseOf(c), entry));
 	});
-	app.get("/console", (c) =>
-		c.html(consolePage(baseOf(c), { clientId, repo: runnerRepo, ...RUNNER })),
-	);
-	app.get("/console.js", (c) =>
-		c.body(CONSOLE_JS, 200, {
-			"content-type": "text/javascript; charset=utf-8",
-			"cache-control": "public, max-age=300",
-		}),
-	);
+	for (const [path, body] of [
+		["/signin.js", SIGNIN_JS],
+		["/publish.js", PUBLISH_JS],
+	] as const)
+		app.get(path, (c) =>
+			c.body(body, 200, {
+				"content-type": "text/javascript; charset=utf-8",
+				"cache-control": "public, max-age=300",
+			}),
+		);
 
 	// For search engines and AI assistants
 	app.get("/robots.txt", (c) => c.text(robotsTxt(baseOf(c))));
 	app.get("/sitemap.xml", (c) => {
-		const paths = ["", "about", ...TOOLS.map((a) => `tools/${a.id}`)];
+		const paths = [
+			"",
+			"about",
+			"publish",
+			...ENTRIES.map((e) => `listing/${e.id}`),
+		];
 		return c.body(sitemapXml(baseOf(c), paths, lastmod), 200, {
 			"content-type": "application/xml; charset=utf-8",
 		});
@@ -136,19 +141,19 @@ export function createApp(options: AppOptions = {}) {
 		c.text(
 			llmsTxt(baseOf(c), [
 				{
-					name: "Tool store",
+					name: "The store",
 					path: "",
-					note: `${TOOLS.length} tools: some run in your own GitHub Actions, the rest are Flisk apps`,
+					note: `${ENTRIES.length} dev tools, agent skills and apps; search with ?q=`,
 				},
 				{
 					name: "Catalog API",
 					path: "api/tools",
-					note: "every Tool with its inputs, as JSON",
+					note: "search the catalog as JSON: ?q=, kind=, group=, page=",
 				},
 				{
 					name: "MCP server",
 					path: "mcp",
-					note: "Streamable HTTP, tools list_tools and get_tool",
+					note: "Streamable HTTP, tools search_store and get_listing",
 				},
 				{
 					name: "About and FAQ",
@@ -185,59 +190,24 @@ export function createApp(options: AppOptions = {}) {
 				})
 			: undefined;
 	};
-	app.get("/api/tools", (c) => tooMany(c) ?? c.json({ tools: TOOLS }));
+	app.get("/api/tools", (c) => {
+		const blocked = tooMany(c);
+		if (blocked) return blocked;
+		const r = search({
+			q: c.req.query("q"),
+			kind: c.req.query("kind"),
+			group: c.req.query("group"),
+			page: Number(c.req.query("page")) || 1,
+		});
+		return c.json(r);
+	});
 	app.get("/api/tools/:id", (c) => {
 		const blocked = tooMany(c);
 		if (blocked) return blocked;
-		const tool = findTool(c.req.param("id"));
-		return tool ? c.json(tool) : c.json({ error: "No such Tool." }, 404);
+		const entry = findEntry(c.req.param("id"));
+		return entry ? c.json(entry) : c.json({ error: "No such listing." }, 404);
 	});
 
-	// Sign-in with GitHub's device flow. github.com sends no CORS headers, so the browser asks us to relay two form
-	// posts. Nothing is kept: the client id is public and the token goes straight back to the browser.
-	const github = async (path: string, form: Record<string, string>) => {
-		const res = await doFetch(`https://github.com/login/${path}`, {
-			method: "POST",
-			headers: {
-				accept: "application/json",
-				"content-type": "application/x-www-form-urlencoded",
-			},
-			body: new URLSearchParams(form),
-			signal: AbortSignal.timeout(10_000),
-		});
-		return { status: res.ok ? 200 : 502, body: await res.json() };
-	};
-	app.post("/auth/device", async (c) => {
-		const blocked = tooMany(c);
-		if (blocked) return blocked;
-		if (!clientId)
-			return c.json(
-				{ error: "Sign-in is not set up: GITHUB_CLIENT_ID is empty." },
-				503,
-			);
-		const r = await github("device/code", {
-			client_id: clientId,
-			scope: "public_repo workflow",
-		});
-		return c.json(r.body, r.status as 200);
-	});
-	app.post("/auth/token", async (c) => {
-		const blocked = tooMany(c);
-		if (blocked) return blocked;
-		if (!clientId) return c.json({ error: "Sign-in is not set up." }, 503);
-		const body = (await c.req.json().catch(() => ({}))) as {
-			device_code?: unknown;
-		};
-		const code = String(body.device_code ?? "");
-		if (!/^[\w-]{10,200}$/.test(code))
-			return c.json({ error: "device_code is missing or malformed." }, 400);
-		const r = await github("oauth/access_token", {
-			client_id: clientId,
-			device_code: code,
-			grant_type: "urn:ietf:params:oauth:grant-type:device_code",
-		});
-		return c.json(r.body, r.status as 200);
-	});
 	app.get("/mcp", (c) =>
 		c.text("Send MCP requests with POST.", 405, { allow: "POST" }),
 	);

@@ -19,7 +19,3 @@ services:
         value: https://flisk-tools.onrender.com/
       - key: TRUST_PROXY
         value: last-forwarded
-      # Public, not a secret: the client id of a GitHub OAuth App with "Enable Device Flow" on (see DEPLOY.md). Without
-      # it the store works and the console says sign-in is not set up.
-      - key: GITHUB_CLIENT_ID
-        sync: false

@@ -1,9 +1,16 @@
-// The pages, rendered on the server with no JavaScript except the console's: home, a Tool, the console, about with
-// the FAQ, and not found. Each one passes its own PageMeta to head(), which writes every SEO tag.
-
+// The pages, rendered on the server. The only scripts are signin.js (the GitHub button) and publish.js (the form on
+// /publish). Each page passes its own PageMeta to head(), which writes every SEO tag.
+import {
+	counts,
+	ENTRIES,
+	type Entry,
+	groups,
+	KINDS,
+	kindLabel,
+	search,
+} from "./catalog";
 import { esc, faqJsonLd, head, type PageMeta } from "./seo";
 import { SITE } from "./site";
-import { TOOLS, type Tool } from "./tools";
 
 const STYLE = `
 :root{--bg:${SITE.themeColor.light};--fg:#141413;--muted:#66635c;--line:#e3e0d7;--card:#fff;--sunk:#efede7;--pass:#18794e;--fail:#c22a1f;--accent:#2d4cc8;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
@@ -63,129 +70,148 @@ footer{margin-top:96px;border-top:1px solid var(--line);padding:26px 0 44px;colo
 `;
 
 const EXTRA = `
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin:18px 0 0;padding:0;list-style:none}
-.grid li{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:8px}
-.grid li:hover{border-color:var(--accent)}.grid h3{margin:0;font-size:18px;letter-spacing:-.02em}.grid h3 a{color:var(--fg);text-decoration:none}
-.grid p{margin:0;color:var(--muted);font-size:14.5px}.tag{align-self:flex-start;font:600 11px var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--accent);background:var(--sunk);border-radius:6px;padding:3px 8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin:18px 0 0;padding:0;list-style:none}
+.grid li{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:8px;position:relative}
+.grid li:hover{border-color:var(--accent)}.grid h3{margin:0;font-size:18px;letter-spacing:-.02em}.grid h3 a{color:var(--fg);text-decoration:none}.grid h3 a::after{content:"";position:absolute;inset:0}
+.grid p{margin:0;color:var(--muted);font-size:14.5px}.grid .meta{margin-top:auto;font-size:12.5px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap}
+.tag{align-self:flex-start;font:600 11px var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--accent);background:var(--sunk);border-radius:6px;padding:3px 8px}
+.official{color:var(--pass)}
+.navr{display:flex;gap:18px;align-items:center;flex-wrap:wrap;justify-content:flex-end}#gh-slot{display:inline-flex;gap:8px}
 .cta{display:inline-block;text-decoration:none;font-weight:650;padding:12px 22px;border-radius:10px;background:linear-gradient(135deg,#5b7cff,#8b5cf6);color:#fff;box-shadow:0 8px 24px -10px rgba(91,124,255,.8)}
+.cta.alt{background:transparent;color:var(--fg);box-shadow:none;border:1px solid var(--line)}
+.search{display:flex;gap:10px;max-width:640px;margin:0 auto;padding:8px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14)}
+.search input{flex:1;min-width:0;font:inherit;padding:12px 14px;border-radius:10px;border:0;background:#0b0c12;color:#f4f3ef}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:28px 0 8px}.tabs a,.chips2 a{text-decoration:none;color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;background:var(--card)}
+.tabs a[aria-current],.chips2 a[aria-current]{background:var(--accent);color:var(--bg);border-color:var(--accent)}.tabs small,.chips2 small{color:var(--muted);margin-left:6px}.tabs a[aria-current] small,.chips2 a[aria-current] small{color:inherit;opacity:.8}
+.chips2{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 6px}.chips2 a{padding:3px 11px;font-size:13px}
+.pager{display:flex;justify-content:space-between;align-items:center;margin:26px 0 0;color:var(--muted);font-size:14px}.pager a{color:var(--accent)}
+.facts{display:grid;grid-template-columns:max-content 1fr;gap:6px 22px;margin:22px 0}.facts dt{margin:0;font-size:14px;color:var(--muted)}.facts dd{margin:0}
 .steps{counter-reset:s;list-style:none;padding:0;margin:18px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
 .steps li{counter-increment:s;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;font-size:15px}.steps li::before{content:counter(s);display:block;font:800 28px/1 var(--mono);color:var(--accent);margin-bottom:8px}
-#app form{display:flex;flex-direction:column;align-items:stretch;border-radius:16px;padding:18px;gap:14px;background:var(--card);border:1px solid var(--line)}
-#app label{display:flex;flex-direction:column;align-items:stretch;gap:6px}#app input,#app select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--fg)}
-#code{background:var(--sunk);border-radius:12px;padding:14px 16px;margin:16px 0}#code b{font:800 28px var(--mono);letter-spacing:.1em}
-#log{margin:16px 0}#log p{margin:4px 0;color:var(--muted)}
-button:disabled{opacity:.6;cursor:wait}.link{background:none;box-shadow:none;color:var(--accent);padding:6px 0;text-decoration:underline}
+#pub{display:flex;flex-direction:column;align-items:stretch;border-radius:16px;padding:18px;gap:14px;background:var(--card);border:1px solid var(--line)}
+#pub label{display:flex;flex-direction:column;align-items:stretch;gap:6px}#pub input,#pub select,#pub textarea{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--fg)}
+button:disabled{opacity:.6;cursor:not-allowed}.gh-btn{display:inline-flex;gap:8px;align-items:center;color:var(--fg)!important;border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:5px 12px;font-size:14px;background:transparent;cursor:pointer;font-weight:600;text-decoration:none}
 `;
 
-function layout(
-	base: string,
-	meta: PageMeta,
-	body: string,
-	script = false,
-): string {
+function layout(base: string, meta: PageMeta, body: string): string {
 	const root = new URL(`${base}/`).pathname.replace(/\/$/, "");
 	return `<!doctype html><html lang="${SITE.lang}"><head>
 ${head(base, meta)}
 <style>${STYLE}${EXTRA}</style></head><body>
-<header class="top stage"><nav class="wrap" aria-label="Site"><a href="${root}/"><img src="${root}/icon.svg" alt="" width="26" height="26">${esc(SITE.name)}</a><span><a href="${root}/console">Console</a> · <a href="${root}/about">About</a></span></nav></header>
+<header class="top stage"><nav class="wrap" aria-label="Site"><a href="${root}/"><img src="${root}/icon.svg" alt="" width="26" height="26">${esc(SITE.name)}</a><span class="navr"><a href="${root}/publish">Publish</a><a href="${root}/about">About</a><span id="gh-slot"></span></span></nav></header>
 <main>${body}</main>
-<footer><div class="wrap">${esc(SITE.name)}: nothing stored here, no cookies. Runs happen in your own GitHub. <a href="${SITE.repo}">Open source</a>, made by <a href="${SITE.author.url}">${esc(SITE.author.name)}</a>.</div></footer>
-${script ? `<script src="${root}/console.js" defer></script>` : ""}
+<footer><div class="wrap">${esc(SITE.name)}: nothing stored here, no cookies. <a href="${SITE.repo}">Open source</a>, made by <a href="${SITE.author.url}">${esc(SITE.author.name)}</a>.</div></footer>
+<script src="${root}/signin.js" defer></script>
 </body></html>`;
 }
 
-const card = (root: string, a: Tool) =>
-	`<li><span class="tag">${esc(a.category)}</span><h3><a href="${root}/tools/${a.id}">${esc(a.name)}</a></h3><p>${esc(a.tagline)}</p></li>`;
+const stars = (n: number) =>
+	n >= 1000 ? `${(n / 1000).toFixed(n >= 10000 ? 0 : 1)}k` : String(n);
 
-const runnable = TOOLS.filter((a) => a.kind === "run");
-const links = TOOLS.filter((a) => a.kind === "link");
+const card = (root: string, e: Entry) =>
+	`<li><span class="tag">${esc(kindLabel(e.kind))}</span><h3><a href="${root}/listing/${e.id}">${esc(e.name)}</a></h3><p>${esc(e.tagline)}</p><div class="meta"><span>${esc(e.group)}</span>${e.stars ? `<span>★ ${stars(e.stars)}</span>` : ""}${e.official ? `<span class="official">by Flisk</span>` : e.author ? `<span>@${esc(e.author)}</span>` : ""}</div></li>`;
 
-export function homePage(base: string): string {
+/** A link to the home page with this search, kept short: empty values are left out. */
+export function homeHref(
+	root: string,
+	q: { q?: string; kind?: string; group?: string; page?: number },
+): string {
+	const p = new URLSearchParams();
+	if (q.q) p.set("q", q.q);
+	if (q.kind) p.set("kind", q.kind);
+	if (q.group) p.set("group", q.group);
+	if (q.page && q.page > 1) p.set("page", String(q.page));
+	const s = p.toString();
+	return `${root}/${s ? `?${s}` : ""}`;
+}
+
+export function homePage(
+	base: string,
+	query: { q?: string; kind?: string; group?: string; page?: number } = {},
+): string {
 	const root = new URL(`${base}/`).pathname.replace(/\/$/, "");
+	const kind = KINDS.some((k) => k.id === query.kind) ? query.kind : undefined;
+	const filtered = Boolean(
+		query.q || kind || query.group || (query.page ?? 1) > 1,
+	);
+	const r = search({ ...query, kind });
+	const gs = groups(kind);
+	const link = (extra: object) =>
+		esc(homeHref(root, { q: query.q, kind, ...extra }));
 	return layout(
 		base,
 		{
 			path: "",
 			title: `${SITE.name}: ${SITE.tagline}`,
 			description: SITE.description,
+			noindex: filtered,
 		},
 		`<section class="hero short stage"><div class="wrap"><h1 class="grad">${esc(SITE.tagline)}</h1>
 <p class="lede">${esc(SITE.description)}</p>
-<a class="cta" href="${root}/console">Open the console</a>
-<p class="reassure"><b>●</b> Free · Sign in with GitHub · Nothing stored here</p></div></section>
-<div class="wrap"><p class="kick">How it works</p><h2>Your GitHub is the server.</h2>
-<ol class="steps"><li>Sign in with GitHub. No password, no key.</li><li>The console forks this repository to your account.</li><li>It starts the Tool as a GitHub Action, on your free minutes.</li><li>The result lands in your fork as a JSON file.</li></ol>
-<p class="kick">Run in your GitHub</p><h2>${runnable.length} tools you can run now</h2>
-<ul class="grid">${runnable.map((a) => card(root, a)).join("")}</ul>
-<p class="kick">Flisk's own tools</p><h2>${links.length} apps and libraries from the Flisk org</h2>
-<ul class="grid">${links.map((a) => card(root, a)).join("")}</ul>
-<h2>Add your own</h2>
-<p>A tool is one file, <code>tools/&lt;name&gt;/main.ts</code>, that exports a function. Open a pull request to the <a href="${SITE.repo}">repository</a> and it joins the store.</p></div>`,
+<form class="search" role="search" action="${root}/" method="get"><input type="search" name="q" value="${esc(query.q ?? "")}" placeholder="Search ${ENTRIES.length} tools, skills and apps" aria-label="Search the store">${kind ? `<input type="hidden" name="kind" value="${kind}">` : ""}<button type="submit">Search</button></form>
+<p class="reassure"><b>●</b> Free · Open source · Sign in with GitHub to add yours</p></div></section>
+<div class="wrap"><nav class="tabs" aria-label="Type"><a href="${link({ kind: undefined })}"${kind ? "" : ' aria-current="page"'}>All<small>${ENTRIES.length}</small></a>${KINDS.map((k) => `<a href="${link({ kind: k.id })}"${kind === k.id ? ' aria-current="page"' : ""}>${esc(k.plural)}<small>${counts(k.id)}</small></a>`).join("")}</nav>
+<nav class="chips2" aria-label="Group">${gs.map((g) => `<a href="${link({ group: g.name })}"${query.group === g.name ? ' aria-current="page"' : ""}>${esc(g.name)}<small>${g.count}</small></a>`).join("")}</nav>
+<h2>${r.total} ${r.total === 1 ? "result" : "results"}${query.q ? ` for “${esc(query.q)}”` : ""}</h2>
+${r.items.length ? `<ul class="grid">${r.items.map((e) => card(root, e)).join("")}</ul>` : `<p>Nothing matches. <a href="${root}/">Clear the search</a>, or <a href="${root}/publish">add it to the store</a>.</p>`}
+<p class="pager"><span>${r.page > 1 ? `<a rel="prev" href="${link({ group: query.group, page: r.page - 1 })}">← Previous</a>` : ""}</span><span>Page ${r.page} of ${r.pages}</span><span>${r.page < r.pages ? `<a rel="next" href="${link({ group: query.group, page: r.page + 1 })}">Next →</a>` : ""}</span></p></div>`,
 	);
 }
 
-export function toolPage(base: string, a: Tool): string {
+export function listingPage(base: string, e: Entry): string {
 	const root = new URL(`${base}/`).pathname.replace(/\/$/, "");
-	const qs = new URLSearchParams({ tool: a.id, ...a.example }).toString();
+	const path = `listing/${e.id}`;
+	const related = search({ group: e.group })
+		.items.filter((x) => x.id !== e.id)
+		.slice(0, 6);
 	return layout(
 		base,
 		{
-			path: `tools/${a.id}`,
-			title: `${a.name}: ${a.tagline}`.slice(0, 60),
-			description: a.description.slice(0, 160),
-			crumbs: [{ name: a.name, path: `tools/${a.id}` }],
+			path,
+			title: `${e.name}: ${kindLabel(e.kind)}, ${e.group}`.slice(0, 60),
+			description: `${e.tagline}. ${e.description}`.slice(0, 160),
+			crumbs: [{ name: e.name, path }],
 		},
-		`<section class="hero short stage"><div class="wrap"><h1 class="grad">${esc(a.name)}</h1>
-<p class="lede">${esc(a.tagline)}</p>${
-			a.kind === "link"
-				? `<a class="cta" href="${esc(a.url ?? "")}" rel="noopener">Open ${esc(a.name)}</a>`
-				: `<a class="cta" href="${root}/console?${esc(qs)}">Run it with GitHub</a>`
-		}</div></section>
-<div class="wrap"><p>${esc(a.description)}</p>${
-			a.kind === "link"
-				? ""
-				: `
-<h2>Input</h2><ul>${a.inputs.map((i) => `<li><code>${esc(i.name)}</code>: ${esc(i.label)}${i.required ? "" : " (optional)"}, like <code>${esc(i.placeholder)}</code></li>`).join("")}</ul>`
-		}
-<h2>${a.kind === "link" ? "What you get" : "Output"}</h2><pre>${esc(a.output)}</pre>
-<h2>Read the catalog from code</h2>
-<pre>curl '${esc(base)}/api/tools/${a.id}'</pre></div>`,
+		`<section class="hero short stage"><div class="wrap"><span class="tag">${esc(kindLabel(e.kind))}</span><h1 class="grad">${esc(e.name)}</h1>
+<p class="lede">${esc(e.tagline)}</p><a class="cta" href="${esc(e.url)}" rel="noopener">Open ${esc(e.name)}</a>${e.repo ? ` <a class="cta alt" href="https://github.com/${esc(e.repo)}" rel="noopener">GitHub</a>` : ""}</div></section>
+<div class="wrap"><p>${esc(e.description)}</p>
+<dl class="facts"><dt>Type</dt><dd>${esc(kindLabel(e.kind))}</dd><dt>Group</dt><dd><a href="${esc(homeHref(root, { group: e.group }))}">${esc(e.group)}</a></dd><dt>Category</dt><dd>${esc(e.category)}</dd>${e.author ? `<dt>By</dt><dd><a href="https://github.com/${esc(e.author)}" rel="noopener">@${esc(e.author)}</a>${e.official ? " (Flisk)" : ""}</dd>` : ""}${e.stars ? `<dt>GitHub stars</dt><dd>${e.stars.toLocaleString("en-US")}</dd>` : ""}${e.license ? `<dt>License</dt><dd>${esc(e.license)}</dd>` : ""}</dl>
+${related.length ? `<h2>More in ${esc(e.group)}</h2><ul class="grid">${related.map((x) => card(root, x)).join("")}</ul>` : ""}
+<h2>Read it from code</h2><pre>curl '${esc(base)}/api/tools/${e.id}'</pre></div>`,
 	);
 }
 
-export function consolePage(
-	base: string,
-	cfg: {
-		clientId: string;
-		repo: string;
-		workflow: string;
-		branch: string;
-		ref: string;
-	},
-): string {
-	const root = new URL(`${base}/`).pathname.replace(/\/$/, "");
+export function publishPage(base: string): string {
 	return layout(
 		base,
 		{
-			path: "console",
-			title: "Console",
+			path: "publish",
+			title: "Add yours to the store",
 			description:
-				`Pick a Tool, sign in with GitHub and run it in your own fork. ${SITE.tagline}.`.slice(
+				`Sign in with GitHub and add your app, dev tool or agent skill to ${SITE.name} with one pull request. Free, no review queue to join.`.slice(
 					0,
 					160,
 				),
-			noindex: true,
-			crumbs: [{ name: "Console", path: "console" }],
+			crumbs: [{ name: "Publish", path: "publish" }],
 		},
-		`<div class="wrap prose"><h1>Console</h1>
-<p class="lede">Sign in with GitHub, pick a Tool and run it in your own fork. The token stays in this browser.</p>
-<noscript><p>The console needs JavaScript to talk to GitHub. Every other page works without it.</p></noscript>
-<div id="app" data-root="${esc(root)}" data-client="${esc(cfg.clientId)}" data-repo="${esc(cfg.repo)}" data-workflow="${esc(cfg.workflow)}" data-branch="${esc(cfg.branch)}" data-ref="${esc(cfg.ref)}">
-<form id="form"><label>Tool <select id="tool"></select></label><p id="about" class="reassure"></p><div id="fields"></div><button type="submit">Run</button></form>
-<div id="code" hidden><p>Open <a href="#" rel="noopener noreferrer">GitHub</a> and enter this code:</p><b></b></div>
-<div id="log" aria-live="polite"></div>
-<button type="button" id="signout" class="link">Sign out of this browser</button></div></div>`,
-		true,
+		`<div class="wrap prose"><h1>Add yours to the store</h1>
+<p class="lede">Sign in with GitHub, fill in the form, and GitHub opens a pull request with your listing. When it is merged, it is in the store.</p>
+<ol class="steps"><li>Sign in with GitHub (top right). We read only your public login.</li><li>Describe your app, tool or skill below.</li><li>GitHub opens a ready pull request. Press <b>Propose new file</b>, then <b>Create pull request</b>.</li><li>A check confirms the file is yours and well formed. Then it is merged.</li></ol>
+<noscript><p>The form needs JavaScript. Without it, add a file named <code>listings/&lt;your github login&gt;--&lt;id&gt;.json</code> in the <a href="${SITE.repo}">repository</a>; the README shows the fields.</p></noscript>
+<form id="pub" hidden data-repo="${esc(SITE.repo)}">
+<p id="who" class="reassure"></p>
+<label>Type <select name="kind"><option value="app">App (a website or service)</option><option value="tool">Dev tool</option><option value="skill">Agent skill</option></select></label>
+<label>Name <input name="name" maxlength="60" required placeholder="Link Checker"></label>
+<label>Id (lowercase, dashes) <input name="id" maxlength="60" required pattern="[a-z0-9][a-z0-9\\-]{0,60}" placeholder="link-checker"></label>
+<label>One line, up to 120 characters <input name="tagline" maxlength="120" required placeholder="Find the broken links on a page"></label>
+<label>Description, up to 600 characters <textarea name="description" maxlength="600" rows="4" required></textarea></label>
+<label>Group <input name="group" maxlength="40" required placeholder="Web"></label>
+<label>Category <input name="category" maxlength="40" required placeholder="Quality"></label>
+<label>Address, https <input name="url" type="url" required placeholder="https://example.com"></label>
+<label>GitHub repo, owner/name (needed for skills) <input name="repo" placeholder="you/link-checker"></label>
+<button type="submit">Open the pull request</button></form>
+<p id="need" class="reassure">Sign in with GitHub to see the form.</p></div>
+<script src="${new URL(`${base}/`).pathname.replace(/\/$/, "")}/publish.js" defer></script>`,
 	);
 }
 
@@ -208,7 +234,7 @@ export function aboutPage(base: string): string {
 <h2>Questions</h2>
 <dl>${SITE.faq.map((f) => `<dt>${esc(f.q)}</dt><dd>${esc(f.a)}</dd>`).join("")}</dl>
 <h2>Use it from an AI assistant</h2>
-<pre>claude mcp add --transport http ${esc(SITE.name.toLowerCase())} ${esc(base)}/mcp</pre></div>`,
+<pre>claude mcp add --transport http ${esc(SITE.name.toLowerCase().replace(/ /g, "-"))} ${esc(base)}/mcp</pre></div>`,
 	);
 }
 
@@ -219,9 +245,9 @@ export function notFoundPage(base: string): string {
 		{
 			path: "404",
 			title: "Page not found",
-			description: `This address is not a page on ${SITE.name}. Browse the Tool store from the home page.`,
+			description: `This address is not a page on ${SITE.name}. Search the store from the home page.`,
 			noindex: true,
 		},
-		`<div class="wrap prose"><h1>Page not found</h1><p class="lede">There is no page at this address. <a href="${root}/">Browse the Tools</a>.</p></div>`,
+		`<div class="wrap prose"><h1>Page not found</h1><p class="lede">There is no page at this address. <a href="${root}/">Search the store</a>.</p></div>`,
 	);
 }

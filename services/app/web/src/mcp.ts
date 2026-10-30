@@ -1,8 +1,8 @@
 // A read-only MCP server over Streamable HTTP. Stateless and answered with plain JSON (no event stream), which the
 // transport allows, so there is no session to keep. Add tools to MCP_TOOLS; each one gets its arguments and returns text.
 
+import { describeEntry, findEntry, KINDS, search } from "./catalog";
 import { SITE } from "./site";
-import { describeTool, findTool, TOOLS } from "./tools";
 
 const PROTOCOL_VERSIONS = ["2025-06-18", "2025-03-26", "2024-11-05"];
 
@@ -21,37 +21,59 @@ interface McpTool {
 const MCP_TOOLS: McpTool[] = [
 	{
 		definition: {
-			name: "list_tools",
-			title: "List Tools",
+			name: "search_store",
+			title: "Search the store",
 			description:
-				"Every Tool in the store: its id, what it does and what input it takes. Tools run in the person's own GitHub Actions through the console, so this server only reads the catalog.",
-			inputSchema: { type: "object", properties: {} },
+				"Search the catalog of developer tools, AI agent skills and apps. Words are matched against the name, tagline, group, category and author. Returns up to 24 results per page, official and most-starred first.",
+			inputSchema: {
+				type: "object",
+				properties: {
+					query: {
+						type: "string",
+						description: "Words to look for, like 'docker compose' or 'review'",
+					},
+					kind: {
+						type: "string",
+						enum: KINDS.map((k) => k.id),
+						description: "Only this type",
+					},
+					page: { type: "number", description: "Page number, from 1" },
+				},
+			},
 			annotations: { readOnlyHint: true, openWorldHint: false },
 		},
-		async run() {
-			return TOOLS.map(describeTool).join("\n\n");
+		async run(args) {
+			const r = search({
+				q: String(args.query ?? ""),
+				kind: args.kind ? String(args.kind) : undefined,
+				page: Number(args.page) || 1,
+			});
+			return `${r.total} results, page ${r.page} of ${r.pages}\n\n${r.items.map(describeEntry).join("\n\n")}`;
 		},
 	},
 	{
 		definition: {
-			name: "get_tool",
-			title: "Get one Tool",
+			name: "get_listing",
+			title: "Get one listing",
 			description:
-				"One Tool with its input fields, its output shape and an example input.",
+				"One listing with its description, address, author and stars.",
 			inputSchema: {
 				type: "object",
 				properties: {
-					id: { type: "string", description: "The Tool id, like repo-stats" },
+					id: {
+						type: "string",
+						description: "The listing id, like readme-score",
+					},
 				},
 				required: ["id"],
 			},
 			annotations: { readOnlyHint: true, openWorldHint: false },
 		},
 		async run(args) {
-			const a = findTool(String(args.id ?? ""));
-			return a
-				? `${describeTool(a)}\nExample input: ${JSON.stringify(a.example)}`
-				: { error: `No Tool with id ${String(args.id)}. Use list_tools.` };
+			const e = findEntry(String(args.id ?? ""));
+			return e
+				? describeEntry(e)
+				: { error: `No listing with id ${String(args.id)}. Use search_store.` };
 		},
 	},
 ];

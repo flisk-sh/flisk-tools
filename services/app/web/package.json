@@ -11,6 +11,7 @@
     "lint": "biome check .",
     "lint:fix": "biome check . --write",
     "icons": "bun scripts/icons.ts",
+    "catalog": "bun scripts/build-catalog.ts",
     "rename": "bun scripts/rename.ts"
   },
   "dependencies": {

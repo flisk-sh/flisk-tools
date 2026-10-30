@@ -1,0 +1,75 @@
+# Checks a pull request that adds a listing: the file is named after the author's GitHub login, it only touches
+# listings/, and the whole catalog still builds. On main, the same build refreshes src/catalog.generated.json.
+name: Listings
+
+on:
+  pull_request:
+    paths: ["listings/**", "catalog/**"]
+  push:
+    branches: [main]
+    paths: ["listings/**", "catalog/**"]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Check listings
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version: 1.4.3
+      - name: Only listings, named after the author
+        env:
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          author="$(echo "$AUTHOR" | tr '[:upper:]' '[:lower:]')"
+          git fetch --no-tags --depth=1 origin "$BASE"
+          changed="$(git diff --name-only "$BASE" HEAD)"
+          # A pull request that adds a listing may touch listings/ only; maintainers change the rest.
+          if echo "$changed" | grep -qv '^listings/'; then
+            if echo "$changed" | grep -q '^listings/'; then
+              echo "::error::A listing pull request may change files in listings/ only."; exit 1
+            fi
+            exit 0
+          fi
+          for f in $changed; do
+            case "$f" in
+              "listings/${author}--"*.json) ;;
+              *) echo "::error file=$f::Name it listings/${author}--<id>.json, after your GitHub login."; exit 1 ;;
+            esac
+          done
+      - name: The catalog builds
+        working-directory: services/app/web
+        run: bun install && bun run catalog && git diff --quiet -- src/catalog.generated.json || echo "::notice::The generated catalog changes after merge."
+
+  refresh:
+    name: Refresh the catalog
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version: 1.4.3
+      - working-directory: services/app/web
+        run: bun install && bun run catalog
+      - name: Commit the new catalog
+        run: |
+          git diff --quiet -- services/app/web/src/catalog.generated.json && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add services/app/web/src/catalog.generated.json
+          git commit -m "chore(catalog): rebuild from listings"
+          git push

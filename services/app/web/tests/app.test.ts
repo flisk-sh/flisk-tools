@@ -1,13 +1,10 @@
 import { describe, expect, it } from "bun:test";
-import { existsSync } from "node:fs";
 import { createApp } from "../src/app";
+import { ENTRIES, findEntry, groups, PAGE_SIZE, search } from "../src/catalog";
+import { PUBLISH_JS, SIGNIN_JS } from "../src/client";
 import { RateLimiter, TtlCache } from "../src/guard";
-import { findTool, TOOLS } from "../src/tools";
 
-const app = createApp({
-	publicUrl: "https://tool.test/",
-	clientId: "Iv1.test",
-});
+const app = createApp({ publicUrl: "https://tool.test/" });
 const rpc = (a: ReturnType<typeof createApp>, body: unknown) =>
 	a.request("/mcp", {
 		method: "POST",
@@ -16,57 +13,81 @@ const rpc = (a: ReturnType<typeof createApp>, body: unknown) =>
 	});
 
 describe("catalog", () => {
-	it("has a tools/<id>/main.ts for every runnable tool, an https address for every link, and ids that are safe in a path", () => {
-		for (const a of TOOLS) {
-			expect(a.id).toMatch(/^[a-z0-9-]+$/);
-			if (a.kind === "link") {
-				expect(a.url).toMatch(/^https:\/\/[^\s]+$/);
-				continue;
-			}
+	it("is large, with Flisk's own apps, roadmap tools and agent skills", () => {
+		expect(ENTRIES.length).toBeGreaterThan(500);
+		for (const kind of ["app", "tool", "skill"])
+			expect(ENTRIES.some((e) => e.kind === kind)).toBe(true);
+		expect(findEntry("readme-score")?.official).toBe(true);
+	});
+
+	it("lists official entries first, then by stars", () => {
+		expect(ENTRIES[0].official).toBe(true);
+		const rest = ENTRIES.filter((e) => !e.official);
+		for (let i = 1; i < rest.length; i++)
+			expect(rest[i - 1].stars ?? 0).toBeGreaterThanOrEqual(rest[i].stars ?? 0);
+	});
+
+	it("searches by every word, filters by kind and group, and pages", () => {
+		const r = search({ q: "docker compose" });
+		expect(r.total).toBeGreaterThan(0);
+		for (const e of r.items)
 			expect(
-				existsSync(`${import.meta.dir}/../../../../tools/${a.id}/main.ts`),
-			).toBe(true);
-			expect(a.inputs.length).toBeGreaterThan(0);
-			for (const i of a.inputs)
-				expect(Object.keys(a.example)).toContain(i.name);
-		}
-		expect(new Set(TOOLS.map((a) => a.id)).size).toBe(TOOLS.length);
+				`${e.name} ${e.tagline} ${e.category} ${e.group}`.toLowerCase(),
+			).toContain("docker");
+		expect(
+			search({ kind: "skill" }).items.every((e) => e.kind === "skill"),
+		).toBe(true);
+		expect(search({}).items).toHaveLength(PAGE_SIZE);
+		expect(search({ page: 9999 }).page).toBe(search({}).pages);
+		expect(search({ q: "zzzz-no-such-thing" }).total).toBe(0);
+		expect(groups("skill")[0].name).toBe("Agent skills");
 	});
 });
 
 describe("pages", () => {
-	it("lists every Tool on the home page under a policy that allows no scripts", async () => {
+	it("serves the home page with a policy that allows only this site's scripts", async () => {
 		const res = await app.request("/");
 		expect(res.status).toBe(200);
-		const csp = res.headers.get("content-security-policy");
-		expect(csp).toContain("default-src 'none'");
-		expect(csp).not.toContain("script-src");
-		const html = await res.text();
-		for (const a of TOOLS) expect(html).toContain(`/tools/${a.id}`);
-		expect(html).not.toContain("<script src");
-	});
-
-	it("sends a link tool to where it lives, and a runnable one to the console", async () => {
-		const link = await (await app.request("/tools/citable")).text();
-		expect(link).toContain('href="https://citable.flisk.si"');
-		expect(link).not.toContain("/console?");
-	});
-
-	it("gives each Tool a page, and 404s an unknown one", async () => {
-		const html = await (await app.request("/tools/repo-stats")).text();
-		expect(html).toContain("console?tool=repo-stats&amp;repo=flisk-sh%2Fflisk");
-		expect((await app.request("/tools/nope")).status).toBe(404);
-	});
-
-	it("allows the console's script, and only that page", async () => {
-		const res = await app.request("/console");
 		const csp = res.headers.get("content-security-policy") ?? "";
+		expect(csp).toContain("default-src 'none'");
 		expect(csp).toContain("script-src 'self'");
-		expect(csp).toContain("connect-src 'self' https://api.github.com");
-		expect(await res.text()).toContain('<script src="/console.js" defer>');
-		const js = await app.request("/console.js");
-		expect(js.headers.get("content-type")).toContain("text/javascript");
-		expect((await js.text()).length).toBeGreaterThan(500);
+		expect(csp).not.toContain("unsafe-eval");
+		const html = await res.text();
+		expect(html).toContain("README Score");
+		expect(html).toContain('<script src="/signin.js" defer>');
+		expect(html).not.toMatch(/<script(?![^>]*(src=|application\/ld\+json))/);
+	});
+
+	it("searches from the address, and keeps filtered pages out of the index", async () => {
+		const html = await (await app.request("/?q=review&kind=skill")).text();
+		expect(html).toContain('<meta name="robots" content="noindex">');
+		expect(html).toContain("results for “review”");
+		const none = await (await app.request("/?q=zzzz-no-such-thing")).text();
+		expect(none).toContain("Nothing matches");
+		const home = await (await app.request("/")).text();
+		expect(home).toContain('content="index,follow');
+	});
+
+	it("escapes what you search for", async () => {
+		const html = await (
+			await app.request("/?q=%3Cscript%3Ealert(1)%3C/script%3E")
+		).text();
+		expect(html).not.toContain("<script>alert");
+	});
+
+	it("gives each listing a page that opens where it lives, and 404s an unknown one", async () => {
+		const html = await (await app.request("/listing/citable")).text();
+		expect(html).toContain('href="https://citable.flisk.si"');
+		expect(html).toContain("(Flisk)");
+		expect((await app.request("/listing/nope")).status).toBe(404);
+	});
+
+	it("has a publish page whose form points at this repository", async () => {
+		const html = await (await app.request("/publish")).text();
+		expect(html).toContain(
+			'data-repo="https://github.com/flisk-sh/flisk-tools"',
+		);
+		expect(html).toContain('<script src="/publish.js" defer>');
 	});
 
 	it("builds links under the prefix a proxy stripped, and ignores a hostile one", async () => {
@@ -76,7 +97,7 @@ describe("pages", () => {
 				headers: { "x-forwarded-prefix": "/api/web" },
 			})
 		).text();
-		expect(html).toContain('href="/api/web/console"');
+		expect(html).toContain('href="/api/web/publish"');
 		expect(html).toContain(
 			'<link rel="canonical" href="http://api.tool.localhost/api/web/">',
 		);
@@ -89,18 +110,40 @@ describe("pages", () => {
 	});
 });
 
+describe("sign-in and publish scripts", () => {
+	it("are served as JavaScript", async () => {
+		for (const path of ["/signin.js", "/publish.js"]) {
+			const res = await app.request(path);
+			expect(res.headers.get("content-type")).toContain("text/javascript");
+		}
+	});
+
+	it("sign in through publish.flisk.si and read only the login from a signed one-hour session", () => {
+		expect(SIGNIN_JS).toContain("https://publish.flisk.si");
+		expect(SIGNIN_JS).toContain("sessionStorage");
+		expect(SIGNIN_JS).toContain("payload.exp > Date.now() / 1000");
+		expect(SIGNIN_JS).not.toContain("localStorage");
+	});
+
+	it("both parse as JavaScript", () => {
+		for (const js of [SIGNIN_JS, PUBLISH_JS])
+			expect(() => new Function(js)).not.toThrow();
+	});
+});
+
 describe("catalog API", () => {
-	it("lists and gets Tools", async () => {
-		const list = (await (await app.request("/api/tools")).json()) as {
-			tools: { id: string }[];
-		};
-		expect(list.tools.map((a) => a.id)).toEqual(TOOLS.map((a) => a.id));
-		const one = (await (
-			await app.request("/api/tools/stack-scanner")
+	it("searches and gets listings", async () => {
+		const r = (await (
+			await app.request("/api/tools?q=readme&kind=app")
 		).json()) as {
+			total: number;
+			items: { id: string }[];
+		};
+		expect(r.items.map((e) => e.id)).toContain("readme-score");
+		const one = (await (await app.request("/api/tools/citable")).json()) as {
 			name: string;
 		};
-		expect(one.name).toBe(findTool("stack-scanner")?.name as string);
+		expect(one.name).toBe("Citable");
 		expect((await app.request("/api/tools/nope")).status).toBe(404);
 	});
 
@@ -113,53 +156,8 @@ describe("catalog API", () => {
 	});
 });
 
-describe("sign-in relay", () => {
-	const seen: { url: string; body: string }[] = [];
-	const fetcher = (async (url: string, init?: RequestInit) => {
-		seen.push({ url, body: String(init?.body) });
-		return Response.json({ device_code: "abc", access_token: "tok" });
-	}) as unknown as typeof fetch;
-	const relay = createApp({ clientId: "Iv1.test", fetcher });
-
-	it("asks GitHub for a device code with the public_repo and workflow scopes", async () => {
-		const res = await relay.request("/auth/device", { method: "POST" });
-		expect(res.status).toBe(200);
-		expect(seen[0].url).toBe("https://github.com/login/device/code");
-		expect(seen[0].body).toContain("client_id=Iv1.test");
-		expect(seen[0].body).toContain("scope=public_repo+workflow");
-	});
-
-	it("trades a device code for a token, and refuses a malformed code", async () => {
-		const ok = await relay.request("/auth/token", {
-			method: "POST",
-			headers: { "content-type": "application/json" },
-			body: JSON.stringify({ device_code: "0123456789abcdef" }),
-		});
-		expect(((await ok.json()) as { access_token: string }).access_token).toBe(
-			"tok",
-		);
-		expect(seen.at(-1)?.body).toContain(
-			"grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Adevice_code",
-		);
-		const bad = await relay.request("/auth/token", {
-			method: "POST",
-			headers: { "content-type": "application/json" },
-			body: JSON.stringify({ device_code: "x&client_id=evil" }),
-		});
-		expect(bad.status).toBe(400);
-	});
-
-	it("says so when no client id is set, and does not accept GET", async () => {
-		const off = createApp();
-		expect((await off.request("/auth/device", { method: "POST" })).status).toBe(
-			503,
-		);
-		expect((await relay.request("/auth/device")).status).toBe(404);
-	});
-});
-
 describe("MCP", () => {
-	it("initializes, lists the tools and reads a Tool", async () => {
+	it("initializes, lists the tools, searches and reads a listing", async () => {
 		const init = (await (
 			await rpc(app, {
 				jsonrpc: "2.0",
@@ -175,27 +173,29 @@ describe("MCP", () => {
 		).toBe(202);
 		const list = (await (
 			await rpc(app, { jsonrpc: "2.0", id: 2, method: "tools/list" })
-		).json()) as { result: { tools: { name: string }[] } };
+		).json()) as {
+			result: { tools: { name: string }[] };
+		};
 		expect(list.result.tools.map((t) => t.name)).toEqual([
-			"list_tools",
-			"get_tool",
+			"search_store",
+			"get_listing",
 		]);
-		const call = (await (
+		const found = (await (
 			await rpc(app, {
 				jsonrpc: "2.0",
 				id: 3,
 				method: "tools/call",
-				params: { name: "get_tool", arguments: { id: "repo-stats" } },
+				params: { name: "search_store", arguments: { query: "readme" } },
 			})
 		).json()) as { result: { content: { text: string }[]; isError: boolean } };
-		expect(call.result.isError).toBe(false);
-		expect(call.result.content[0].text).toContain("Example input");
+		expect(found.result.isError).toBe(false);
+		expect(found.result.content[0].text).toContain("README Score");
 		const missing = (await (
 			await rpc(app, {
 				jsonrpc: "2.0",
 				id: 4,
 				method: "tools/call",
-				params: { name: "get_tool", arguments: { id: "nope" } },
+				params: { name: "get_listing", arguments: { id: "nope" } },
 			})
 		).json()) as { result: { isError: boolean } };
 		expect(missing.result.isError).toBe(true);
@@ -204,7 +204,9 @@ describe("MCP", () => {
 	it("answers unknown methods as JSON-RPC errors", async () => {
 		const bad = (await (
 			await rpc(app, { jsonrpc: "2.0", id: 5, method: "nope" })
-		).json()) as { error: { code: number } };
+		).json()) as {
+			error: { code: number };
+		};
 		expect(bad.error.code).toBe(-32601);
 	});
 });

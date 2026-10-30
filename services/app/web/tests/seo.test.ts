@@ -1,9 +1,9 @@
 import { describe, expect, it } from "bun:test";
 import { createApp } from "../src/app";
 import { ASSETS } from "../src/assets.generated";
+import { ENTRIES } from "../src/catalog";
 import { ICONS } from "../src/seo";
 import { SITE } from "../src/site";
-import { TOOLS } from "../src/tools";
 
 const app = createApp({
 	publicUrl: "https://tool.test/",
@@ -32,7 +32,7 @@ describe("site.ts", () => {
 	});
 });
 
-describe.each(["/", "/about", "/tools/repo-stats"])(
+describe.each(["/", "/about", "/publish", "/listing/readme-score"])(
 	"the head of %s",
 	(path) => {
 		it("has one title, a description, a canonical link and a social card", async () => {
@@ -86,7 +86,7 @@ describe("files for crawlers", () => {
 		expect(robots).toContain("Sitemap: https://tool.test/sitemap.xml");
 	});
 
-	it("sitemap.xml lists the home page, about and every Tool", async () => {
+	it("sitemap.xml lists the home page, about, publish and every listing", async () => {
 		const res = await app.request("/sitemap.xml");
 		expect(res.headers.get("content-type")).toContain("application/xml");
 		const xml = await res.text();
@@ -94,7 +94,8 @@ describe("files for crawlers", () => {
 			"<loc>https://tool.test/</loc><lastmod>2026-10-28</lastmod>",
 		);
 		expect(xml).toContain("<loc>https://tool.test/about</loc>");
-		expect(xml.match(/<url>/g)).toHaveLength(2 + TOOLS.length);
+		expect(xml).toContain("<loc>https://tool.test/listing/readme-score</loc>");
+		expect(xml.match(/<url>/g)).toHaveLength(3 + ENTRIES.length);
 	});
 
 	it("llms.txt, the manifest and security.txt", async () => {

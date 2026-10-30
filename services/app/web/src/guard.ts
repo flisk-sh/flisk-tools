@@ -109,17 +109,11 @@ export class TtlCache<T> {
 	}
 }
 
-/**
- * `withScript` is for the console only: it may load /console.js from this site and talk to api.github.com. Every
- * other page keeps a policy that allows no script at all.
- */
-export function securityHeaders(withScript = false): Record<string, string> {
+export function securityHeaders(): Record<string, string> {
 	return {
 		"content-security-policy": [
 			"default-src 'none'",
-			...(withScript
-				? ["script-src 'self'", "connect-src 'self' https://api.github.com"]
-				: []),
+			"script-src 'self'",
 			"style-src 'unsafe-inline'",
 			"img-src 'self'",
 			"media-src 'self'",

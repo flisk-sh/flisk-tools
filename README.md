@@ -1,46 +1,55 @@
 # Flisk Tools
 
-Run small web and GitHub tools on **your own GitHub**, free. A tiny Apify-style store with no server to pay for, no
-database and no API keys: sign in with GitHub, click Run, get JSON.
+**Every dev tool, agent skill and app, in one free store.** A public, searchable marketplace in the spirit of the
+Apify Store, with no server to pay for, no database and no API keys. Sign in with GitHub to add yours.
+
+## What is in it
+
+| Kind | Where it comes from |
+| --- | --- |
+| Apps | Flisk's own: Flisk CLI, README Score, Citable, Helpdock, Command Comparer, Pages, the DevEx Roadmap and more (`catalog/flisk.json`) |
+| Dev tools | The 376 tools of the [DevEx Roadmap](https://roadmap.flisk.si), with live GitHub stars (`catalog/roadmap.json`) |
+| Agent skills | The 400 agent skills of the roadmap |
+| Yours | One JSON file per listing in `listings/`, added by pull request |
+
+Search, filters and pages live in the address (`/?q=docker&kind=skill&page=2`), so every view is a link and the site
+needs no JavaScript to browse. A listing opens where it lives: its own website or GitHub repository.
 
 ## How it works
 
-| Piece | Where it lives |
-| --- | --- |
-| The store (pages, catalog API, MCP server) | One free Render web service: Bun + Hono, nothing stored. `services/app/web/` |
-| A tool | `tools/<id>/main.ts`: a default-exported function that takes the input and returns JSON |
-| Running it | The console forks this repo to the signed-in person's account and starts `.github/workflows/run-tool.yml` there, on their free Actions minutes |
-| Results | The workflow commits `<ticket>.json` to the `results` branch of the fork; the console reads it back |
-| Sign-in | GitHub device flow with a public client id: no client secret anywhere |
-
-The browser holds the token (localStorage) and calls `api.github.com` itself. The server only relays the two device-flow
-form posts, because github.com sends no CORS headers; it keeps and logs nothing.
+- **The store** is one Bun + Hono service on Render's free plan. The catalog is one JSON file built into the image
+  (`src/catalog.generated.json`); nothing is stored at run time.
+- **Sign-in** is [publish.flisk.si](https://publish.flisk.si), the service the roadmap and Pages already use. It sends the visitor
+  through GitHub, keeps no token and hands back a signed one-hour session that holds only the public login. The page keeps it in
+  `sessionStorage` for that tab.
+- **Publishing** is a pull request. `/publish` (signed in) builds a file named `listings/<login>--<id>.json` and opens
+  GitHub's "new file" page for it. A check confirms the name starts with the author's login; after the merge, a
+  workflow rebuilds the catalog. The author shown in the store comes from the file name, never from the file.
+- **API and MCP**: `/api/tools?q=docker` and `/mcp` (`search_store`, `get_listing`), no key.
 
 ## Run it locally
 
 ```bash
 cd services/app/web
 bun install
-GITHUB_CLIENT_ID=<your OAuth App client id> bun run dev   # http://localhost:4000
+bun run dev          # http://localhost:4000
 bun test && bun run typecheck && bun run lint
-cd ../../.. && bun test tools                              # the Tools' own tests
 ```
 
-Or with Flisk: `flisk up`. Without `GITHUB_CLIENT_ID` the store works and the console says sign-in is not set up.
+Or with Flisk: `flisk up`.
 
-## Add a Tool
+## Change the catalog
 
-1. `tools/<id>/main.ts` with `export default async function main(input: Record<string, string>)` returning JSON.
-2. An entry in `services/app/web/src/tools.ts` (name, tagline, inputs, example). A test fails if the folder is missing.
-3. Open a pull request.
+```bash
+bun run catalog                                   # rebuild src/catalog.generated.json from catalog/ and listings/
+bun scripts/import-roadmap.ts ../path/to/roadmap  # refresh catalog/roadmap.json from a flisk-sh/roadmap checkout
+```
 
 ## Limits, said plainly
 
-- It is not Apify: no proxies, no browser farm, no private storage, no schedules faster than 5 minutes. Actions IPs are
-  blocked by some sites. A run is capped at 15 minutes here (GitHub allows 6 hours).
-- The person pays with their Actions minutes. Public forks are free; private ones use the monthly allowance.
-- A new fork starts with Actions off. The console turns it on through the API; if GitHub refuses, enable it on the
-  fork's Actions tab once.
-- Forks drift from this repo. Sync the fork (GitHub's **Sync fork** button) to get new Tools.
+- It lists and links; it does not run anything for you. Apify runs your code on its servers, which is the part that
+  costs money. Running a tool in the browser or on GitHub Actions would be a separate feature.
+- Sign-in proves a GitHub login to this site. It does not give the site access to your GitHub account.
+- Ratings, reviews and download counts need a database and are not here. GitHub stars stand in.
 
 Deploy: [DEPLOY.md](DEPLOY.md). MIT licensed.
