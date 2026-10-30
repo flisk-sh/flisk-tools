@@ -23,7 +23,7 @@ async function status(url: string): Promise<number> {
 			method: "HEAD",
 			redirect: "follow",
 			signal: AbortSignal.timeout(10_000),
-			headers: { "user-agent": "flisk-runs link-checker" },
+			headers: { "user-agent": "flisk-tools link-checker" },
 		});
 		// Some servers refuse HEAD; ask once more with GET before calling the link broken.
 		if (res.status === 405 || res.status === 403) {
@@ -31,7 +31,7 @@ async function status(url: string): Promise<number> {
 				await fetch(url, {
 					redirect: "follow",
 					signal: AbortSignal.timeout(10_000),
-					headers: { "user-agent": "flisk-runs link-checker" },
+					headers: { "user-agent": "flisk-tools link-checker" },
 				})
 			).status;
 		}

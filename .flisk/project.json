@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "project": {
-    "name": "flisk-runs",
+    "name": "flisk-tools",
     "version": "1.0.0"
   },
   "phases": {

@@ -1,4 +1,4 @@
-# Flisk Runs
+# Flisk Tools
 
 Run small web and GitHub tools on **your own GitHub**, free. A tiny Apify-style store with no server to pay for, no
 database and no API keys: sign in with GitHub, click Run, get JSON.

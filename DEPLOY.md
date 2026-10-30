@@ -5,7 +5,7 @@ Nothing to sign up for besides Render: no database, no keys.
 
 ## 1. Create the service
 
-1. https://dashboard.render.com → **New → Blueprint** → `flisk-sh/flisk-runs`, branch `main`.
+1. https://dashboard.render.com → **New → Blueprint** → `flisk-sh/flisk-tools`, branch `main`.
 2. Render lists one service on the **Free** plan. Apply.
 3. Set `PUBLIC_URL` to the address it got (`https://<name>.onrender.com/`) or to your own domain.
 
@@ -27,10 +27,10 @@ Cloudflare only.
 ## 3. Check it
 
 ```bash
-curl -s https://flisk-runs.onrender.com/ready
-curl -s https://flisk-runs.onrender.com/robots.txt
-curl -s 'https://flisk-runs.onrender.com/api/tools'
-curl -s -X POST https://flisk-runs.onrender.com/mcp -H 'content-type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+curl -s https://flisk-tools.onrender.com/ready
+curl -s https://flisk-tools.onrender.com/robots.txt
+curl -s 'https://flisk-tools.onrender.com/api/tools'
+curl -s -X POST https://flisk-tools.onrender.com/mcp -H 'content-type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
 ```
 
 ## 4. Tell search engines

@@ -3,15 +3,15 @@
 // site.webmanifest and security.txt are all built from it.
 
 export const SITE = {
-	name: "Flisk Runs",
+	name: "Flisk Tools",
 	/** Under 60 characters: the <title> of the home page and the Product Hunt tagline. */
 	tagline: "Run small web tools on your own GitHub, free",
 	/** 140 to 160 characters: the meta description and the link preview text. */
 	description:
 		"A free store of small web and GitHub tools that run in your own GitHub Actions. Sign in with GitHub, click Run, get JSON. No server, no database, no keys.",
 	/** Where the site lives online, ending in a slash. PUBLIC_URL overrides it at run time. */
-	url: "https://flisk-runs.onrender.com/",
-	repo: "https://github.com/flisk-sh/flisk-runs",
+	url: "https://flisk-tools.onrender.com/",
+	repo: "https://github.com/flisk-sh/flisk-tools",
 	lang: "en",
 	locale: "en_US",
 	/** The organization or person behind it, for JSON-LD and the footer. */
@@ -22,7 +22,7 @@ export const SITE = {
 	themeColor: { light: "#fbfaf7", dark: "#141413" },
 	/** Where to report a security problem, for /.well-known/security.txt. */
 	securityContact:
-		"https://github.com/flisk-sh/flisk-runs/security/advisories/new",
+		"https://github.com/flisk-sh/flisk-tools/security/advisories/new",
 	/** Shown on /about and sent as FAQPage JSON-LD. Write the questions people type into search and AI assistants. */
 	faq: [
 		{
