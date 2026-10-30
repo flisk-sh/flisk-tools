@@ -46,6 +46,8 @@ export interface Entry {
 	pushed?: string;
 	release?: string;
 	version?: string;
+	/** Where the roadmap checked the ring: usually the release page. */
+	evidence?: string;
 	dx?: string[];
 	parity?: string[];
 }

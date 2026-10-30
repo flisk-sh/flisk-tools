@@ -54,6 +54,9 @@ export interface Track {
 	stops: Record<string, { main: string[]; side: string[]; tip: string }>;
 }
 
+/** When the roadmap fetched the GitHub numbers behind the rings, as a date. */
+export const DATA_FETCHED = (views as { fetched?: string }).fetched ?? "";
+
 export const FAMILIES = views.families as Family[];
 export const RINGS = views.rings as Ring[];
 export const DX = views.dx as Rubric;

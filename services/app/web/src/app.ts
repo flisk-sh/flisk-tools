@@ -118,6 +118,7 @@ export function createApp(options: AppOptions = {}) {
 				mcp: c.req.query("mcp") === "1",
 				ring: c.req.query("ring"),
 				check: c.req.query("check"),
+				category: c.req.query("category"),
 				page: Number(c.req.query("page")) || 1,
 			}),
 		),
@@ -281,6 +282,7 @@ export function createApp(options: AppOptions = {}) {
 			mcp: c.req.query("mcp") === "1",
 			ring: c.req.query("ring"),
 			check: c.req.query("check"),
+			category: c.req.query("category"),
 			page: Number(c.req.query("page")) || 1,
 		});
 		return c.json(r);

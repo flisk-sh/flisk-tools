@@ -17,7 +17,7 @@ import { jumpLinks } from "./jump";
 import { esc, faqJsonLd, head, type PageMeta } from "./seo";
 import { SITE } from "./site";
 import { STYLE } from "./styles";
-import { DX, PARITY, RINGS as RING_DEFS } from "./views";
+import { DATA_FETCHED, DX, PARITY, RINGS as RING_DEFS } from "./views";
 
 export type View =
 	| "browse"
@@ -130,6 +130,7 @@ interface Browse {
 	mcp?: boolean;
 	ring?: string;
 	check?: string;
+	category?: string;
 	page?: number;
 }
 
@@ -142,6 +143,7 @@ export function homeHref(root: string, q: Browse): string {
 	if (q.mcp) p.set("mcp", "1");
 	if (q.ring) p.set("ring", q.ring);
 	if (q.check) p.set("check", q.check);
+	if (q.category) p.set("category", q.category);
 	if (q.page && q.page > 1) p.set("page", String(q.page));
 	const s = p.toString();
 	return `${root}/${s ? `?${s}` : ""}`;
@@ -154,6 +156,9 @@ export function homePage(base: string, query: Browse = {}): string {
 	const check = FILTER_CHECKS.some((c) => c.id === query.check)
 		? query.check
 		: undefined;
+	const category = ENTRIES.some((e) => e.category === query.category)
+		? query.category
+		: undefined;
 	const filtered = Boolean(
 		query.q ||
 			kind ||
@@ -161,9 +166,10 @@ export function homePage(base: string, query: Browse = {}): string {
 			query.mcp ||
 			ring ||
 			check ||
+			category ||
 			(query.page ?? 1) > 1,
 	);
-	const base0 = { ...query, kind, ring, check };
+	const base0 = { ...query, kind, ring, check, category };
 	const r = search(base0);
 	const f = facets(base0);
 	const link = (extra: Browse) =>
@@ -175,6 +181,7 @@ export function homePage(base: string, query: Browse = {}): string {
 				mcp: query.mcp,
 				ring,
 				check,
+				category,
 				...extra,
 			}),
 		);
@@ -208,7 +215,8 @@ ${filtered ? "" : `<section class="start" aria-label="Start here"><a href="${roo
 <nav class="subtabs" aria-label="Type">${sub(link({ kind: undefined }), "All", f.total, !kind)}${KINDS.map((k) => sub(link({ kind: k.id }), esc(k.plural), f.kinds[k.id] ?? 0, kind === k.id)).join("")}${sub(link({ mcp: !query.mcp, kind: undefined }), "With MCP", facets({ ...base0, mcp: true }).total, Boolean(query.mcp))}</nav>
 <details class="facetbox"${query.group || ring || check ? " open" : ""}><summary>Narrow it down: group, maturity, what it works with</summary><nav class="subtabs" aria-label="Group">${f.groups.map((g) => sub(link({ group: g.name }), esc(g.name), g.count, query.group === g.name)).join("")}</nav>
 ${filterRow}</details>
-${check ? `<p class="note">${esc(DX.criteria.find((c) => c.id === check)?.help ?? "")} Meeting this check is the roadmap's yes or no, so many tools do: combine it with a search to narrow it.</p>` : ""}
+${category ? `<p class="jumps"><span class="flabel">Category</span><a class="chip2" href="${link({ category: undefined })}">${esc(category)} ×</a></p>` : ""}
+${check ? `<p class="note">${esc(DX.criteria.find((c) => c.id === check)?.help ?? "")} This is the roadmap's checklist answer, not a test run here: check the tool's own page before relying on it. Many tools meet it, so combine it with a search.</p>` : ""}
 ${jumps.length ? `<p class="jumps"><span class="flabel">Jump to</span>${jumps.map((j) => `<a class="chip2 jump-${j.kind}" href="${esc(j.href)}">${esc(j.label)}</a>`).join("")}</p>` : ""}
 <p class="count">${r.total} ${r.total === 1 ? "result" : "results"}${query.q ? ` for “${esc(query.q)}”` : ""}</p>
 ${r.items.length ? `<ul class="grid">${r.items.map((e) => card(root, e, check ? FILTER_CHECKS.find((c) => c.id === check)?.label : undefined)).join("")}</ul>` : none}
@@ -272,7 +280,7 @@ function glance(e: Entry): string {
 		.map((id) => PARITY.criteria.find((c) => c.id === id))
 		.filter(Boolean);
 	return `<h2>At a glance</h2><dl class="facts"><dt>Maturity</dt><dd><span class="rk r-${e.ring}">${esc(ring?.label ?? e.ring)}</span>: ${esc(ring?.help ?? "")}</dd><dt>Easy to use</dt><dd>${(e.dx?.length ?? 0) * 10} / 100</dd><dt>Big, real systems</dt><dd>${(e.parity?.length ?? 0) * 10} / 100</dd>${e.version ? `<dt>Latest release</dt><dd>${esc(e.version.replace(/^.*\//, ""))}${e.release ? `, ${esc(e.release)}` : ""}</dd>` : ""}${e.pushed ? `<dt>Last push</dt><dd>${esc(e.pushed)}</dd>` : ""}</dl>
-${met.length ? `<p class="note">Easy to use because it: ${met.map((c) => esc(c?.label ?? "")).join(" · ")}</p>` : ""}${big.length ? `<p class="note">Fits big systems because it: ${big.map((c) => esc(c?.label ?? "")).join(" · ")}</p>` : ""}`;
+${met.length ? `<p class="note">Easy to use because it: ${met.map((c) => esc(c?.label ?? "")).join(" · ")}</p>` : ""}${big.length ? `<p class="note">Fits big systems because it: ${big.map((c) => esc(c?.label ?? "")).join(" · ")}</p>` : ""}<p class="note">The ring and these checks are the <a href="https://roadmap.flisk.si" rel="noopener">DevEx Roadmap</a>'s checklist answers, not a test run here${DATA_FETCHED ? `; GitHub numbers fetched ${esc(DATA_FETCHED)}` : ""}.${e.evidence ? ` <a href="${esc(e.evidence)}" rel="noopener">Evidence for the ring</a>.` : ""}</p>`;
 }
 
 export function listingPage(base: string, e: Entry): string {
@@ -295,7 +303,7 @@ export function listingPage(base: string, e: Entry): string {
 		`<section class="detail" style="${color(e.group === "Agent skills" ? e.category : e.group)}"><span class="sym" aria-hidden="true">${esc(symbol(e))}</span><div><p class="eyebrow">${esc(kindLabel(e.kind))} · ${esc(e.category)}</p><h1>${esc(e.name)}</h1><p class="lede">${esc(e.tagline)}</p><p class="note">${esc(whatIs(e))}</p><p><a class="cta" href="${esc(e.url)}" rel="noopener">Open ${esc(e.name)}</a>${e.repo ? ` <a class="cta alt" href="https://github.com/${esc(e.repo)}" rel="noopener">GitHub</a>` : ""}</p></div></section>
 <p style="max-width:46rem">${esc(e.description)}</p>
 ${e.mcp ? mcpPanel(e) : ""}
-<dl class="facts"><dt>Type</dt><dd>${esc(kindLabel(e.kind))}</dd><dt>Group</dt><dd><a href="${esc(homeHref(root, { group: e.group }))}">${esc(e.group)}</a></dd><dt>Category</dt><dd>${esc(e.category)}</dd>${e.author ? `<dt>By</dt><dd><a href="https://github.com/${esc(e.author)}" rel="noopener">@${esc(e.author)}</a>${e.official ? " (Flisk)" : ""}</dd>` : ""}${e.stars ? `<dt>GitHub stars</dt><dd>${e.stars.toLocaleString("en-US")}</dd>` : ""}${e.license ? `<dt>License</dt><dd>${esc(e.license)}</dd>` : ""}</dl>
+<dl class="facts"><dt>Type</dt><dd>${esc(kindLabel(e.kind))}</dd><dt>Group</dt><dd><a href="${esc(homeHref(root, { group: e.group }))}">${esc(e.group)}</a></dd><dt>Category</dt><dd><a href="${esc(homeHref(root, { category: e.category }))}">${esc(e.category)}</a></dd>${e.author ? `<dt>By</dt><dd><a href="https://github.com/${esc(e.author)}" rel="noopener">@${esc(e.author)}</a>${e.official ? " (Flisk)" : ""}</dd>` : ""}${e.stars ? `<dt>GitHub stars</dt><dd>${e.stars.toLocaleString("en-US")}</dd>` : ""}${e.license ? `<dt>License</dt><dd>${esc(e.license)}</dd>` : ""}</dl>
 ${glance(e)}
 ${similar.length >= 1 && e.ring ? `<p><a class="cta alt" href="${root}/ask?q=${encodeURIComponent([e.name, ...similar.map((s) => s.name)].join(" vs "))}">Compare with ${similar.map((s) => esc(s.name)).join(" and ")}</a></p>` : ""}
 ${related.length ? `<h2>More in ${esc(e.group)}</h2><ul class="grid">${related.map((x) => card(root, x)).join("")}</ul>` : ""}
@@ -320,7 +328,7 @@ export function publishPage(base: string): string {
 		},
 		`<div class="prose"><p class="eyebrow">Publish</p><h1>Add yours to the <em>store</em></h1>
 <p class="lede">Browsing the store needs no sign-in. To add a listing, sign in with GitHub, fill in the form, and GitHub opens a pull request with it. When it is merged, it is in the store.</p>
-<details open><summary>Listing rules</summary><p class="note">A maintainer reviews every pull request. A listing must be public, describe honestly what it does, and link to where it lives. Maturity rings and scores come from the DevEx Roadmap's checklist, so a community listing has none until the roadmap covers it. Stars shown are GitHub's.</p></details>
+<details open><summary>Listing rules</summary><p class="note">A maintainer checks every pull request for: a public address that opens; an honest one-line description of what it does; open source or free to try; no duplicate of an existing listing; and for a skill, a real GitHub repo. There is no fixed review time. Maturity rings and scores come from the <a href="https://github.com/flisk-sh/roadmap" rel="noopener">DevEx Roadmap</a>'s checklist, so to get one, add the tool there with a source. Stars shown are GitHub's.</p></details>
 <details open><summary>What you will fill in</summary><p class="note">Type (app, dev tool or agent skill) · Name · Id (lowercase, dashes) · One line (up to 120 characters) · Description (up to 600) · Group · Category · Address (https) · GitHub repo (needed for a skill) · MCP server address or command (optional). No JavaScript? Add a file named <code>listings/&lt;your github login&gt;--&lt;id&gt;.json</code> in the repository instead, like this:</p><pre>{"kind":"tool","id":"link-checker","name":"Link Checker","tagline":"Find the broken links on a page","description":"Paste a page address and get every broken link on it.","group":"Web","category":"Quality","url":"https://example.com"}</pre></details>
 <ol class="steps"><li>Sign in with GitHub (top right). We read only your public login.</li><li>Describe your app, tool or skill below.</li><li>GitHub opens a ready pull request. On GitHub press the green <b>Commit changes…</b>, then <b>Propose changes</b>, then <b>Create pull request</b>.</li><li>A check confirms the file is yours and well formed. Then it is merged.</li></ol>
 <noscript><p>The form needs JavaScript. Without it, add a file named <code>listings/&lt;your github login&gt;--&lt;id&gt;.json</code> in the <a href="${esc(SITE.repo)}">repository</a>; the listings README shows the fields.</p></noscript>

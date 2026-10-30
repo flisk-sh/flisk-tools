@@ -63,6 +63,7 @@ for (const file of readdirSync(join(dir, "_data/tools")).filter((f) =>
 			pushed: github[String(t.id)]?.pushed?.slice(0, 10),
 			release: github[String(t.id)]?.release?.slice(0, 10),
 			version: github[String(t.id)]?.version,
+			evidence: t.evidence ? String(t.evidence) : undefined,
 			license: t.license ? String(t.license) : undefined,
 			author: String(t.repo ?? "").split("/")[0] || undefined,
 			family,
@@ -103,6 +104,7 @@ const parse = (file: string) =>
 	>;
 const rubric = parse("rubric.yml");
 const views = {
+	fetched: String(json("github.json").fetched ?? "").slice(0, 10),
 	families: yaml("families.yml").map((f) => ({
 		id: f.id,
 		name: f.name,

@@ -156,7 +156,7 @@ describe("loop 3 fixes", () => {
 	it("says what a listing needs and who reviews it", async () => {
 		const page = await html("/publish");
 		expect(page).toContain("Listing rules");
-		expect(page).toContain("A maintainer reviews every pull request");
+		expect(page).toContain("A maintainer checks every pull request");
 	});
 });
 
@@ -223,5 +223,36 @@ describe("loop 5 fixes", () => {
 		expect(await html("/listing/citable")).toContain(
 			"MCP is how AI assistants like Claude plug into a tool",
 		);
+	});
+});
+
+describe("loop 6 fixes", () => {
+	it("filters by category from a listing, and lets you clear it", async () => {
+		const page = await html("/?category=Monorepo+tools");
+		expect(page).toContain("Category");
+		expect(page).toContain("Monorepo tools ×");
+		const r = search({ category: "Monorepo tools" });
+		expect(r.total).toBeGreaterThan(3);
+		expect(r.items.every((e) => e.category === "Monorepo tools")).toBe(true);
+		expect(await html("/listing/turborepo")).toContain(
+			"category=Monorepo+tools",
+		);
+	});
+
+	it("shows where a ring comes from, and when the numbers were fetched", async () => {
+		const page = await html("/listing/pnpm");
+		expect(page).toContain("checklist answers, not a test run here");
+		expect(page).toContain("Evidence for the ring");
+		expect(page).toMatch(/fetched 20\d\d-\d\d-\d\d/);
+	});
+
+	it("is honest that the offline check is the roadmap's answer, not a test", async () => {
+		expect(await html("/?check=offline")).toContain("not a test run here");
+	});
+
+	it("lists what a maintainer checks and how to get a ring", async () => {
+		const page = await html("/publish");
+		expect(page).toContain("no duplicate of an existing listing");
+		expect(page).toContain("add the tool there with a source");
 	});
 });
