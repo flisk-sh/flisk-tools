@@ -48,6 +48,11 @@ export interface Entry {
 	version?: string;
 	/** Where the roadmap checked the ring: usually the release page. */
 	evidence?: string;
+	/** The date the tool's GitHub repository was created, and whether it is archived. */
+	created?: string;
+	archived?: boolean;
+	/** A typical install command, kept by hand in catalog/overrides.json; the tool's own page is the authority. */
+	install?: string;
 	dx?: string[];
 	parity?: string[];
 }
@@ -318,6 +323,14 @@ export function rank(query: Query): Entry[] {
 				let s = sum * (0.4 + 0.6 * coverage);
 				// A retired tool should not lead a beginner to it; a recommended one gets a nudge.
 				s *= e.ring === "hold" ? 0.55 : e.ring === "adopt" ? 1.06 : 1;
+				if (e.archived) s *= 0.5;
+				// The upstream project itself is a reference point, not what a visitor usually wants to install.
+				if (
+					/reference point|not a local dev tool/i.test(
+						`${e.tagline} ${e.description}`,
+					)
+				)
+					s *= words.length > 1 ? 0.25 : 1;
 				if (words.length > 1 && doc.flat.includes(phrase)) s += 8;
 				// The name is exactly what was typed: it is the thing they are looking for. Extra words in a name count against it.
 				const inName = words.filter((w) => doc.name.includes(stem(w))).length;

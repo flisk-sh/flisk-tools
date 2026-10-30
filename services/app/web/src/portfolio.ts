@@ -39,6 +39,9 @@ export interface Fit {
 	/** How many of the role's must-have tools you rated, and how many it lists. */
 	coreKnown: number;
 	coreTotal: number;
+	/** Must-have and every-day tools together: what the job uses day to day. */
+	useKnown: number;
+	useTotal: number;
 	/** Must-have tools you have not rated. */
 	gaps: string[];
 	keyGot: number;
@@ -65,10 +68,16 @@ export function roleFit(me: Me, roles: Role[] = ROLES): Fit[] {
 			const gaps: string[] = [];
 			let coreKnown = 0;
 			let coreTotal = 0;
+			let useKnown = 0;
+			let useTotal = 0;
 			for (const [tier, weight] of TIERS)
 				for (const id of role[tier] ?? []) {
 					if (!toolById(id)) continue;
 					max += weight * 3;
+					if (tier !== "nice") {
+						useTotal++;
+						if (me[id]) useKnown++;
+					}
 					got += weight * (me[id] ?? 0);
 					if (tier === "core") {
 						coreTotal++;
@@ -85,6 +94,8 @@ export function roleFit(me: Me, roles: Role[] = ROLES): Fit[] {
 				pct,
 				coreKnown,
 				coreTotal,
+				useKnown,
+				useTotal,
 				gaps,
 				keyGot,
 				noKey,

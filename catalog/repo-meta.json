@@ -1,0 +1,1374 @@
+{
+	"pip": {
+		"created": "2011-03-06",
+		"archived": false
+	},
+	"yarn": {
+		"created": "2018-09-10",
+		"archived": false
+	},
+	"bun": {
+		"created": "2021-04-14",
+		"archived": false
+	},
+	"uv": {
+		"created": "2023-10-02",
+		"archived": false
+	},
+	"poetry": {
+		"created": "2018-02-28",
+		"archived": false
+	},
+	"deno": {
+		"created": "2018-05-15",
+		"archived": false
+	},
+	"npm": {
+		"created": "2018-07-05",
+		"archived": false
+	},
+	"pnpm": {
+		"created": "2016-01-28",
+		"archived": false
+	},
+	"pdm": {
+		"created": "2019-12-27",
+		"archived": false
+	},
+	"hatch": {
+		"created": "2017-05-31",
+		"archived": false
+	},
+	"pipenv": {
+		"created": "2017-01-20",
+		"archived": false
+	},
+	"pixi": {
+		"created": "2023-04-28",
+		"archived": false
+	},
+	"cargo": {
+		"created": "2014-03-04",
+		"archived": false
+	},
+	"rye": {
+		"created": "2023-04-22",
+		"archived": true
+	},
+	"conda": {
+		"created": "2012-10-15",
+		"archived": false
+	},
+	"go-modules": {
+		"created": "2014-08-19",
+		"archived": false
+	},
+	"maven": {
+		"created": "2009-05-21",
+		"archived": false
+	},
+	"gradle": {
+		"created": "2009-09-09",
+		"archived": false
+	},
+	"mise": {
+		"created": "2023-01-09",
+		"archived": false
+	},
+	"composer": {
+		"created": "2011-06-08",
+		"archived": false
+	},
+	"homebrew": {
+		"created": "2016-03-06",
+		"archived": false
+	},
+	"swiftpm": {
+		"created": "2015-10-23",
+		"archived": false
+	},
+	"nuget": {
+		"created": "2014-04-30",
+		"archived": false
+	},
+	"asdf": {
+		"created": "2014-11-29",
+		"archived": false
+	},
+	"bundler": {
+		"created": "2010-04-16",
+		"archived": false
+	},
+	"nvm": {
+		"created": "2010-04-15",
+		"archived": false
+	},
+	"volta": {
+		"created": "2017-09-25",
+		"archived": false
+	},
+	"fnm": {
+		"created": "2019-01-16",
+		"archived": false
+	},
+	"pyenv": {
+		"created": "2012-08-31",
+		"archived": false
+	},
+	"rustup": {
+		"created": "2015-09-26",
+		"archived": false
+	},
+	"rbenv": {
+		"created": "2011-08-01",
+		"archived": false
+	},
+	"sdkman": {
+		"created": "2012-08-27",
+		"archived": false
+	},
+	"proto": {
+		"created": "2023-02-17",
+		"archived": false
+	},
+	"vite": {
+		"created": "2020-04-21",
+		"archived": false
+	},
+	"rspack": {
+		"created": "2022-04-01",
+		"archived": false
+	},
+	"turbopack": {
+		"created": "2016-10-05",
+		"archived": false
+	},
+	"esbuild": {
+		"created": "2016-06-14",
+		"archived": false
+	},
+	"rolldown": {
+		"created": "2023-09-18",
+		"archived": false
+	},
+	"rollup": {
+		"created": "2015-05-14",
+		"archived": false
+	},
+	"webpack": {
+		"created": "2012-03-10",
+		"archived": false
+	},
+	"parcel": {
+		"created": "2017-08-07",
+		"archived": false
+	},
+	"swc": {
+		"created": "2017-12-22",
+		"archived": false
+	},
+	"just": {
+		"created": "2016-06-17",
+		"archived": false
+	},
+	"pants": {
+		"created": "2012-12-17",
+		"archived": false
+	},
+	"dagger": {
+		"created": "2019-11-20",
+		"archived": false
+	},
+	"tsdown": {
+		"created": "2024-03-08",
+		"archived": false
+	},
+	"bazel": {
+		"created": "2014-06-12",
+		"archived": false
+	},
+	"earthly": {
+		"created": "2020-03-12",
+		"archived": false
+	},
+	"task": {
+		"created": "2017-02-27",
+		"archived": false
+	},
+	"buck2": {
+		"created": "2022-01-21",
+		"archived": false
+	},
+	"devenv": {
+		"created": "2022-10-22",
+		"archived": false
+	},
+	"direnv": {
+		"created": "2011-01-04",
+		"archived": false
+	},
+	"nix": {
+		"created": "2012-02-08",
+		"archived": false
+	},
+	"distrobox": {
+		"created": "2021-11-18",
+		"archived": false
+	},
+	"devbox": {
+		"created": "2022-08-18",
+		"archived": false
+	},
+	"flox": {
+		"created": "2022-12-22",
+		"archived": false
+	},
+	"toolbx": {
+		"created": "2018-08-31",
+		"archived": false
+	},
+	"dev-containers": {
+		"created": "2022-01-11",
+		"archived": false
+	},
+	"devpod": {
+		"created": "2023-01-24",
+		"archived": false
+	},
+	"coder": {
+		"created": "2021-12-22",
+		"archived": false
+	},
+	"eclipse-che": {
+		"created": "2015-03-26",
+		"archived": false
+	},
+	"vagrant": {
+		"created": "2010-01-21",
+		"archived": false
+	},
+	"code-server": {
+		"created": "2019-02-27",
+		"archived": false
+	},
+	"daytona": {
+		"created": "2024-02-06",
+		"archived": true
+	},
+	"lando": {
+		"created": "2017-01-10",
+		"archived": false
+	},
+	"ddev": {
+		"created": "2017-02-01",
+		"archived": false
+	},
+	"laravel-sail": {
+		"created": "2020-11-09",
+		"archived": false
+	},
+	"flisk": {
+		"created": "2026-09-19",
+		"archived": false
+	},
+	"docksal": {
+		"created": "2016-08-30",
+		"archived": false
+	},
+	"tilt": {
+		"created": "2018-08-07",
+		"archived": false
+	},
+	"devspace": {
+		"created": "2018-08-17",
+		"archived": false
+	},
+	"garden": {
+		"created": "2017-12-03",
+		"archived": false
+	},
+	"okteto": {
+		"created": "2018-08-07",
+		"archived": false
+	},
+	"skaffold": {
+		"created": "2018-01-23",
+		"archived": false
+	},
+	"tye": {
+		"created": "2020-02-28",
+		"archived": true
+	},
+	"draft": {
+		"created": "2021-11-18",
+		"archived": false
+	},
+	"werf": {
+		"created": "2016-01-25",
+		"archived": false
+	},
+	"timoni": {
+		"created": "2023-02-11",
+		"archived": false
+	},
+	"helm": {
+		"created": "2015-10-06",
+		"archived": false
+	},
+	"kapp": {
+		"created": "2019-03-15",
+		"archived": false
+	},
+	"kubectl": {
+		"created": "2017-03-30",
+		"archived": false
+	},
+	"kustomize": {
+		"created": "2018-05-11",
+		"archived": false
+	},
+	"helmfile": {
+		"created": "2022-03-27",
+		"archived": false
+	},
+	"tanka": {
+		"created": "2019-07-17",
+		"archived": false
+	},
+	"cdk8s": {
+		"created": "2017-10-04",
+		"archived": false
+	},
+	"krew": {
+		"created": "2018-07-12",
+		"archived": false
+	},
+	"stern": {
+		"created": "2020-10-21",
+		"archived": false
+	},
+	"kubectx": {
+		"created": "2017-03-30",
+		"archived": false
+	},
+	"kubie": {
+		"created": "2020-02-07",
+		"archived": false
+	},
+	"telepresence": {
+		"created": "2017-02-23",
+		"archived": false
+	},
+	"gefyra": {
+		"created": "2021-11-18",
+		"archived": false
+	},
+	"mirrord": {
+		"created": "2022-02-01",
+		"archived": false
+	},
+	"signadot": {
+		"created": "2022-04-29",
+		"archived": false
+	},
+	"kubefwd": {
+		"created": "2018-08-05",
+		"archived": false
+	},
+	"bridge-to-kubernetes": {
+		"created": "2022-07-15",
+		"archived": true
+	},
+	"k9s": {
+		"created": "2019-01-25",
+		"archived": false
+	},
+	"headlamp": {
+		"created": "2019-11-08",
+		"archived": false
+	},
+	"freelens": {
+		"created": "2024-06-19",
+		"archived": false
+	},
+	"kubetail": {
+		"created": "2024-02-12",
+		"archived": false
+	},
+	"aptakube": {
+		"created": "2022-07-10",
+		"archived": false
+	},
+	"kdash": {
+		"created": "2021-04-13",
+		"archived": false
+	},
+	"pm2": {
+		"created": "2013-05-21",
+		"archived": false
+	},
+	"process-compose": {
+		"created": "2022-04-05",
+		"archived": false
+	},
+	"foreman": {
+		"created": "2010-05-18",
+		"archived": false
+	},
+	"hivemind": {
+		"created": "2015-04-08",
+		"archived": false
+	},
+	"goreman": {
+		"created": "2012-09-13",
+		"archived": false
+	},
+	"overmind": {
+		"created": "2016-12-24",
+		"archived": false
+	},
+	"kubernetes-dashboard": {
+		"created": "2015-10-15",
+		"archived": true
+	},
+	"honcho": {
+		"created": "2012-03-13",
+		"archived": false
+	},
+	"concurrently": {
+		"created": "2015-02-05",
+		"archived": false
+	},
+	"mprocs": {
+		"created": "2021-08-30",
+		"archived": false
+	},
+	"nodemon": {
+		"created": "2010-10-03",
+		"archived": false
+	},
+	"bacon": {
+		"created": "2020-10-29",
+		"archived": false
+	},
+	"air": {
+		"created": "2017-10-12",
+		"archived": false
+	},
+	"cargo-watch": {
+		"created": "2014-08-04",
+		"archived": true
+	},
+	"watchexec": {
+		"created": "2016-09-18",
+		"archived": false
+	},
+	"reflex": {
+		"created": "2013-05-21",
+		"archived": false
+	},
+	"watchman": {
+		"created": "2012-11-29",
+		"archived": false
+	},
+	"docker-engine": {
+		"created": "2013-01-18",
+		"archived": false
+	},
+	"podman-desktop": {
+		"created": "2022-03-03",
+		"archived": false
+	},
+	"containerd": {
+		"created": "2015-11-13",
+		"archived": false
+	},
+	"colima": {
+		"created": "2021-09-04",
+		"archived": false
+	},
+	"podman": {
+		"created": "2017-11-01",
+		"archived": false
+	},
+	"lima": {
+		"created": "2021-05-14",
+		"archived": false
+	},
+	"rancher-desktop": {
+		"created": "2020-10-23",
+		"archived": false
+	},
+	"nerdctl": {
+		"created": "2020-12-04",
+		"archived": false
+	},
+	"finch": {
+		"created": "2022-11-07",
+		"archived": false
+	},
+	"apple-container": {
+		"created": "2025-05-30",
+		"archived": false
+	},
+	"docker-compose": {
+		"created": "2013-12-09",
+		"archived": false
+	},
+	"podman-compose": {
+		"created": "2019-03-04",
+		"archived": false
+	},
+	"kind": {
+		"created": "2018-09-12",
+		"archived": false
+	},
+	"kompose": {
+		"created": "2016-06-27",
+		"archived": false
+	},
+	"compose-watch": {
+		"created": "2013-12-09",
+		"archived": false
+	},
+	"k3d": {
+		"created": "2019-04-02",
+		"archived": false
+	},
+	"minikube": {
+		"created": "2016-04-15",
+		"archived": false
+	},
+	"k3s": {
+		"created": "2018-05-31",
+		"archived": false
+	},
+	"microk8s": {
+		"created": "2018-05-09",
+		"archived": false
+	},
+	"kubernetes": {
+		"created": "2014-06-06",
+		"archived": false
+	},
+	"buildkit": {
+		"created": "2017-05-31",
+		"archived": false
+	},
+	"vcluster": {
+		"created": "2021-04-08",
+		"archived": false
+	},
+	"k0s": {
+		"created": "2020-06-10",
+		"archived": false
+	},
+	"ko": {
+		"created": "2019-03-21",
+		"archived": false
+	},
+	"buildpacks": {
+		"created": "2018-06-25",
+		"archived": false
+	},
+	"jib": {
+		"created": "2018-01-22",
+		"archived": false
+	},
+	"depot": {
+		"created": "2021-10-11",
+		"archived": false
+	},
+	"nixpacks": {
+		"created": "2022-03-27",
+		"archived": false
+	},
+	"kaniko": {
+		"created": "2018-01-29",
+		"archived": true
+	},
+	"railpack": {
+		"created": "2025-01-15",
+		"archived": false
+	},
+	"lazydocker": {
+		"created": "2019-05-18",
+		"archived": false
+	},
+	"dive": {
+		"created": "2018-05-13",
+		"archived": false
+	},
+	"buildah": {
+		"created": "2017-01-26",
+		"archived": false
+	},
+	"portainer": {
+		"created": "2016-05-19",
+		"archived": false
+	},
+	"moto": {
+		"created": "2013-02-18",
+		"archived": false
+	},
+	"firebase-emulators": {
+		"created": "2013-12-23",
+		"archived": false
+	},
+	"minio": {
+		"created": "2015-01-14",
+		"archived": true
+	},
+	"azurite": {
+		"created": "2018-02-20",
+		"archived": false
+	},
+	"fake-gcs-server": {
+		"created": "2017-05-14",
+		"archived": false
+	},
+	"miniflare": {
+		"created": "2021-11-10",
+		"archived": false
+	},
+	"appwrite": {
+		"created": "2019-04-08",
+		"archived": false
+	},
+	"supabase-cli": {
+		"created": "2020-11-19",
+		"archived": false
+	},
+	"neon": {
+		"created": "2021-03-26",
+		"archived": false
+	},
+	"nhost": {
+		"created": "2021-02-09",
+		"archived": false
+	},
+	"wiremock": {
+		"created": "2011-10-09",
+		"archived": false
+	},
+	"mockoon": {
+		"created": "2017-07-17",
+		"archived": false
+	},
+	"convex": {
+		"created": "2024-03-08",
+		"archived": false
+	},
+	"msw": {
+		"created": "2018-11-13",
+		"archived": false
+	},
+	"mailpit": {
+		"created": "2022-07-29",
+		"archived": false
+	},
+	"prism": {
+		"created": "2016-03-18",
+		"archived": false
+	},
+	"mailhog": {
+		"created": "2014-04-16",
+		"archived": false
+	},
+	"cloudflare-tunnel": {
+		"created": "2017-10-13",
+		"archived": false
+	},
+	"localtunnel": {
+		"created": "2012-06-18",
+		"archived": false
+	},
+	"tailscale-funnel": {
+		"created": "2020-01-31",
+		"archived": false
+	},
+	"testcontainers": {
+		"created": "2015-04-12",
+		"archived": false
+	},
+	"pact": {
+		"created": "2016-06-03",
+		"archived": false
+	},
+	"microcks": {
+		"created": "2015-02-23",
+		"archived": false
+	},
+	"toxiproxy": {
+		"created": "2014-09-04",
+		"archived": false
+	},
+	"dbmate": {
+		"created": "2015-11-25",
+		"archived": false
+	},
+	"vitest": {
+		"created": "2021-12-03",
+		"archived": false
+	},
+	"golang-migrate": {
+		"created": "2018-01-19",
+		"archived": false
+	},
+	"flyway": {
+		"created": "2012-12-14",
+		"archived": false
+	},
+	"atlas": {
+		"created": "2021-04-30",
+		"archived": false
+	},
+	"liquibase": {
+		"created": "2011-07-08",
+		"archived": false
+	},
+	"drizzle": {
+		"created": "2021-06-24",
+		"archived": false
+	},
+	"prisma": {
+		"created": "2019-06-20",
+		"archived": false
+	},
+	"sqitch": {
+		"created": "2012-01-27",
+		"archived": false
+	},
+	"sqlalchemy": {
+		"created": "2018-11-27",
+		"archived": false
+	},
+	"kysely": {
+		"created": "2021-02-22",
+		"archived": false
+	},
+	"alembic": {
+		"created": "2018-11-27",
+		"archived": false
+	},
+	"typeorm": {
+		"created": "2016-02-29",
+		"archived": false
+	},
+	"sequelize": {
+		"created": "2010-07-22",
+		"archived": false
+	},
+	"sqlc": {
+		"created": "2019-06-21",
+		"archived": false
+	},
+	"ef-core": {
+		"created": "2014-01-23",
+		"archived": false
+	},
+	"mikro-orm": {
+		"created": "2018-03-15",
+		"archived": false
+	},
+	"lerna": {
+		"created": "2015-12-04",
+		"archived": false
+	},
+	"nx": {
+		"created": "2017-08-11",
+		"archived": false
+	},
+	"moonrepo": {
+		"created": "2021-10-23",
+		"archived": false
+	},
+	"turborepo": {
+		"created": "2021-10-05",
+		"archived": false
+	},
+	"rush": {
+		"created": "2016-09-30",
+		"archived": false
+	},
+	"lage": {
+		"created": "2020-05-18",
+		"archived": false
+	},
+	"sqlx": {
+		"created": "2019-12-28",
+		"archived": false
+	},
+	"changesets": {
+		"created": "2019-03-21",
+		"archived": false
+	},
+	"wasp": {
+		"created": "2020-01-30",
+		"archived": false
+	},
+	"dapr": {
+		"created": "2019-06-19",
+		"archived": false
+	},
+	"nitric": {
+		"created": "2020-12-01",
+		"archived": false
+	},
+	"quarkus": {
+		"created": "2018-07-06",
+		"archived": false
+	},
+	"encore": {
+		"created": "2021-02-17",
+		"archived": false
+	},
+	"redwoodjs": {
+		"created": "2019-06-09",
+		"archived": false
+	},
+	"spring-boot": {
+		"created": "2012-10-19",
+		"archived": false
+	},
+	"aspire": {
+		"created": "2023-09-25",
+		"archived": false
+	},
+	"micronaut": {
+		"created": "2018-03-07",
+		"archived": false
+	},
+	"rails": {
+		"created": "2008-04-11",
+		"archived": false
+	},
+	"django": {
+		"created": "2012-04-28",
+		"archived": false
+	},
+	"laravel": {
+		"created": "2013-01-10",
+		"archived": false
+	},
+	"nextjs": {
+		"created": "2016-10-05",
+		"archived": false
+	},
+	"react-router": {
+		"created": "2014-05-16",
+		"archived": false
+	},
+	"astro": {
+		"created": "2021-03-15",
+		"archived": false
+	},
+	"nestjs": {
+		"created": "2017-02-04",
+		"archived": false
+	},
+	"hono": {
+		"created": "2021-12-14",
+		"archived": false
+	},
+	"fastapi": {
+		"created": "2018-12-08",
+		"archived": false
+	},
+	"expo": {
+		"created": "2016-08-15",
+		"archived": false
+	},
+	"aws-sam": {
+		"created": "2017-05-23",
+		"archived": false
+	},
+	"sst": {
+		"created": "2020-08-04",
+		"archived": false
+	},
+	"serverless-framework": {
+		"created": "2015-04-21",
+		"archived": false
+	},
+	"architect": {
+		"created": "2017-07-20",
+		"archived": false
+	},
+	"wrangler": {
+		"created": "2021-11-10",
+		"archived": false
+	},
+	"vercel-cli": {
+		"created": "2016-09-09",
+		"archived": false
+	},
+	"netlify-cli": {
+		"created": "2014-10-11",
+		"archived": false
+	},
+	"azure-functions-core-tools": {
+		"created": "2017-01-04",
+		"archived": false
+	},
+	"create-t3-app": {
+		"created": "2022-05-24",
+		"archived": false
+	},
+	"create-vite": {
+		"created": "2020-04-21",
+		"archived": false
+	},
+	"jhipster": {
+		"created": "2013-10-21",
+		"archived": false
+	},
+	"yeoman": {
+		"created": "2013-02-11",
+		"archived": false
+	},
+	"cookiecutter": {
+		"created": "2013-07-14",
+		"archived": false
+	},
+	"plop": {
+		"created": "2014-04-30",
+		"archived": false
+	},
+	"copier": {
+		"created": "2011-11-01",
+		"archived": false
+	},
+	"terraform": {
+		"created": "2014-03-13",
+		"archived": false
+	},
+	"opentofu": {
+		"created": "2023-08-16",
+		"archived": false
+	},
+	"pulumi": {
+		"created": "2016-10-31",
+		"archived": false
+	},
+	"aws-cdk": {
+		"created": "2017-10-04",
+		"archived": false
+	},
+	"bicep": {
+		"created": "2020-05-13",
+		"archived": false
+	},
+	"crossplane": {
+		"created": "2018-09-08",
+		"archived": false
+	},
+	"terragrunt": {
+		"created": "2016-05-23",
+		"archived": false
+	},
+	"ansible": {
+		"created": "2012-03-06",
+		"archived": false
+	},
+	"opslevel": {
+		"created": "2021-06-19",
+		"archived": false
+	},
+	"port": {
+		"created": "2023-05-22",
+		"archived": false
+	},
+	"cdktf": {
+		"created": "2020-01-08",
+		"archived": true
+	},
+	"cortex": {
+		"created": "2023-10-27",
+		"archived": false
+	},
+	"backstage": {
+		"created": "2020-01-24",
+		"archived": false
+	},
+	"humanitec": {
+		"created": "2023-12-18",
+		"archived": false
+	},
+	"kratix": {
+		"created": "2021-05-17",
+		"archived": false
+	},
+	"roadie": {
+		"created": "2021-06-09",
+		"archived": false
+	},
+	"github-actions": {
+		"created": "2019-04-30",
+		"archived": false
+	},
+	"jenkins": {
+		"created": "2010-11-22",
+		"archived": false
+	},
+	"act": {
+		"created": "2019-01-02",
+		"archived": false
+	},
+	"buildkite": {
+		"created": "2014-01-29",
+		"archived": false
+	},
+	"tekton": {
+		"created": "2018-08-29",
+		"archived": false
+	},
+	"argo-cd": {
+		"created": "2018-02-09",
+		"archived": false
+	},
+	"flux": {
+		"created": "2020-04-24",
+		"archived": false
+	},
+	"kargo": {
+		"created": "2022-07-14",
+		"archived": false
+	},
+	"opentelemetry": {
+		"created": "2019-05-09",
+		"archived": false
+	},
+	"grafana": {
+		"created": "2013-12-11",
+		"archived": false
+	},
+	"jaeger": {
+		"created": "2016-04-15",
+		"archived": false
+	},
+	"otel-lgtm": {
+		"created": "2023-09-26",
+		"archived": false
+	},
+	"signoz": {
+		"created": "2021-01-03",
+		"archived": false
+	},
+	"prometheus": {
+		"created": "2012-11-24",
+		"archived": false
+	},
+	"sentry": {
+		"created": "2010-08-30",
+		"archived": false
+	},
+	"loki": {
+		"created": "2018-04-16",
+		"archived": false
+	},
+	"datadog": {
+		"created": "2016-01-19",
+		"archived": false
+	},
+	"vault": {
+		"created": "2015-02-25",
+		"archived": false
+	},
+	"openbao": {
+		"created": "2023-11-09",
+		"archived": false
+	},
+	"doppler": {
+		"created": "2019-10-04",
+		"archived": false
+	},
+	"sops": {
+		"created": "2015-08-13",
+		"archived": false
+	},
+	"infisical": {
+		"created": "2022-08-05",
+		"archived": false
+	},
+	"renovate": {
+		"created": "2016-12-17",
+		"archived": false
+	},
+	"external-secrets": {
+		"created": "2020-11-17",
+		"archived": false
+	},
+	"trivy": {
+		"created": "2019-04-11",
+		"archived": false
+	},
+	"dependabot": {
+		"created": "2017-06-02",
+		"archived": false
+	},
+	"syft": {
+		"created": "2020-05-07",
+		"archived": false
+	},
+	"grype": {
+		"created": "2020-05-26",
+		"archived": false
+	},
+	"cosign": {
+		"created": "2021-02-04",
+		"archived": false
+	},
+	"snyk": {
+		"created": "2015-10-30",
+		"archived": false
+	},
+	"gitleaks": {
+		"created": "2018-01-27",
+		"archived": false
+	},
+	"langgraph": {
+		"created": "2023-08-09",
+		"archived": false
+	},
+	"crewai": {
+		"created": "2023-10-27",
+		"archived": false
+	},
+	"langchain": {
+		"created": "2022-10-17",
+		"archived": false
+	},
+	"autogen": {
+		"created": "2023-08-18",
+		"archived": false
+	},
+	"ag2": {
+		"created": "2024-11-11",
+		"archived": false
+	},
+	"semantic-kernel": {
+		"created": "2023-02-27",
+		"archived": false
+	},
+	"mastra": {
+		"created": "2024-08-06",
+		"archived": false
+	},
+	"microsoft-agent-framework": {
+		"created": "2025-04-28",
+		"archived": false
+	},
+	"openai-agents-sdk": {
+		"created": "2025-03-11",
+		"archived": false
+	},
+	"claude-agent-sdk": {
+		"created": "2025-06-11",
+		"archived": false
+	},
+	"google-adk": {
+		"created": "2025-04-01",
+		"archived": false
+	},
+	"haystack": {
+		"created": "2019-11-14",
+		"archived": false
+	},
+	"dspy": {
+		"created": "2023-01-09",
+		"archived": false
+	},
+	"pydantic-ai": {
+		"created": "2024-06-21",
+		"archived": false
+	},
+	"llamaindex": {
+		"created": "2022-11-02",
+		"archived": false
+	},
+	"vercel-ai-sdk": {
+		"created": "2023-05-23",
+		"archived": false
+	},
+	"smolagents": {
+		"created": "2024-12-05",
+		"archived": false
+	},
+	"agno": {
+		"created": "2022-05-04",
+		"archived": false
+	},
+	"letta": {
+		"created": "2023-10-11",
+		"archived": false
+	},
+	"inngest": {
+		"created": "2021-06-07",
+		"archived": false
+	},
+	"model-context-protocol": {
+		"created": "2024-09-24",
+		"archived": false
+	},
+	"restate": {
+		"created": "2023-01-04",
+		"archived": false
+	},
+	"mcp-inspector": {
+		"created": "2024-10-03",
+		"archived": false
+	},
+	"temporal": {
+		"created": "2019-10-16",
+		"archived": false
+	},
+	"docker-mcp-toolkit": {
+		"created": "2025-04-22",
+		"archived": false
+	},
+	"smithery": {
+		"created": "2024-12-22",
+		"archived": false
+	},
+	"mcp-registry": {
+		"created": "2025-02-05",
+		"archived": false
+	},
+	"fastmcp": {
+		"created": "2024-11-30",
+		"archived": false
+	},
+	"stagehand": {
+		"created": "2024-03-24",
+		"archived": false
+	},
+	"skills-sh": {
+		"created": "2026-01-14",
+		"archived": false
+	},
+	"e2b": {
+		"created": "2023-03-04",
+		"archived": false
+	},
+	"composio": {
+		"created": "2024-02-23",
+		"archived": false
+	},
+	"playwright-mcp": {
+		"created": "2025-03-21",
+		"archived": false
+	},
+	"codex": {
+		"created": "2025-04-13",
+		"archived": false
+	},
+	"claude-code": {
+		"created": "2025-02-22",
+		"archived": false
+	},
+	"gemini-cli": {
+		"created": "2025-04-17",
+		"archived": false
+	},
+	"opencode": {
+		"created": "2025-04-30",
+		"archived": false
+	},
+	"cline": {
+		"created": "2024-07-06",
+		"archived": false
+	},
+	"warp": {
+		"created": "2021-07-08",
+		"archived": false
+	},
+	"roo-code": {
+		"created": "2024-10-31",
+		"archived": true
+	},
+	"aider": {
+		"created": "2023-05-09",
+		"archived": false
+	},
+	"continue": {
+		"created": "2023-05-24",
+		"archived": false
+	},
+	"zed": {
+		"created": "2021-02-20",
+		"archived": false
+	},
+	"goose": {
+		"created": "2024-08-23",
+		"archived": false
+	},
+	"paradev": {
+		"created": "2025-10-21",
+		"archived": false
+	},
+	"fx": {
+		"created": "2026-08-11",
+		"archived": false
+	},
+	"ollama": {
+		"created": "2023-06-26",
+		"archived": false
+	},
+	"vllm": {
+		"created": "2023-02-09",
+		"archived": false
+	},
+	"localai": {
+		"created": "2023-03-18",
+		"archived": false
+	},
+	"llama-cpp": {
+		"created": "2023-03-10",
+		"archived": false
+	},
+	"t3-code": {
+		"created": "2026-02-08",
+		"archived": false
+	},
+	"docker-model-runner": {
+		"created": "2025-03-28",
+		"archived": false
+	},
+	"jan": {
+		"created": "2023-08-17",
+		"archived": false
+	},
+	"mlx-lm": {
+		"created": "2025-03-11",
+		"archived": false
+	},
+	"arize-phoenix": {
+		"created": "2022-11-09",
+		"archived": false
+	},
+	"langfuse": {
+		"created": "2023-05-18",
+		"archived": false
+	},
+	"openllmetry": {
+		"created": "2023-09-02",
+		"archived": false
+	},
+	"helicone": {
+		"created": "2023-01-31",
+		"archived": false
+	},
+	"braintrust": {
+		"created": "2023-07-17",
+		"archived": false
+	},
+	"opik": {
+		"created": "2023-05-10",
+		"archived": false
+	},
+	"promptfoo": {
+		"created": "2023-04-28",
+		"archived": false
+	}
+}

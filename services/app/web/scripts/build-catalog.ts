@@ -16,7 +16,7 @@ const entries: Entry[] = [];
 // catalog/ is read in name order, so flisk.json wins over the roadmap import when both list the same id.
 const taken = new Set<string>();
 for (const f of files("catalog").filter(
-	(x) => x !== "overrides.json" && x !== "views.json",
+	(x) => x !== "overrides.json" && x !== "views.json" && x !== "repo-meta.json",
 ))
 	for (const e of read(join(root, "catalog", f)) as Entry[]) {
 		if (taken.has(e.id)) continue;
@@ -45,6 +45,13 @@ for (const [id, extra] of Object.entries(overrides)) {
 	if (!e) throw new Error(`catalog/overrides.json: no entry with id ${id}`);
 	Object.assign(e, extra);
 }
+
+// catalog/repo-meta.json (bun scripts/fetch-repo-meta.ts) adds when a tool's repository was created and whether it is archived.
+const meta = read(join(root, "catalog", "repo-meta.json")) as Record<
+	string,
+	{ created: string; archived: boolean }
+>;
+for (const e of entries) if (meta[e.id]) Object.assign(e, meta[e.id]);
 
 const ids = new Set<string>();
 for (const e of entries) {

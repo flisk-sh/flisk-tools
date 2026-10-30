@@ -1,5 +1,101 @@
 {
 	"playwright-mcp": {
-		"mcp": { "transport": "stdio", "command": "npx @playwright/mcp@latest" }
+		"mcp": {
+			"transport": "stdio",
+			"command": "npx @playwright/mcp@latest"
+		}
+	},
+	"bun": {
+		"install": "curl -fsSL https://bun.sh/install | bash"
+	},
+	"pnpm": {
+		"install": "npm install -g pnpm"
+	},
+	"uv": {
+		"install": "curl -LsSf https://astral.sh/uv/install.sh | sh"
+	},
+	"mise": {
+		"install": "curl https://mise.run | sh"
+	},
+	"vite": {
+		"install": "npm create vite@latest"
+	},
+	"turborepo": {
+		"install": "npx create-turbo@latest"
+	},
+	"nx": {
+		"install": "npx create-nx-workspace@latest"
+	},
+	"minikube": {
+		"install": "brew install minikube"
+	},
+	"kind": {
+		"install": "brew install kind"
+	},
+	"k3d": {
+		"install": "brew install k3d"
+	},
+	"k3s": {
+		"install": "curl -sfL https://get.k3s.io | sh -"
+	},
+	"helm": {
+		"install": "brew install helm"
+	},
+	"kubectl": {
+		"install": "brew install kubectl"
+	},
+	"k9s": {
+		"install": "brew install k9s"
+	},
+	"ollama": {
+		"install": "brew install ollama"
+	},
+	"deno": {
+		"install": "curl -fsSL https://deno.land/install.sh | sh"
+	},
+	"lazydocker": {
+		"install": "brew install lazydocker"
+	},
+	"just": {
+		"install": "brew install just"
+	},
+	"esbuild": {
+		"install": "npm install --save-exact --save-dev esbuild"
+	},
+	"vitest": {
+		"install": "npm install -D vitest"
+	},
+	"poetry": {
+		"install": "curl -sSL https://install.python-poetry.org | python3 -"
+	},
+	"direnv": {
+		"install": "brew install direnv"
+	},
+	"act": {
+		"install": "brew install act"
+	},
+	"dive": {
+		"install": "brew install dive"
+	},
+	"podman": {
+		"install": "brew install podman"
+	},
+	"colima": {
+		"install": "brew install colima"
+	},
+	"skaffold": {
+		"install": "brew install skaffold"
+	},
+	"terraform": {
+		"install": "brew tap hashicorp/tap && brew install hashicorp/tap/terraform"
+	},
+	"lerna": {
+		"install": "npm install -g lerna"
+	},
+	"changesets": {
+		"install": "npm install -D @changesets/cli"
+	},
+	"tilt": {
+		"install": "curl -fsSL https://raw.githubusercontent.com/tilt-dev/tilt/master/scripts/install.sh | bash"
 	}
 }

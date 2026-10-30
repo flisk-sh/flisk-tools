@@ -176,8 +176,8 @@ describe("loop 4 fixes", () => {
 	it("reads 'docker' as Docker Desktop in the role finder", async () => {
 		const page = await html("/roles?know=npm,+vite,+docker");
 		expect(page).toContain("Docker Desktop");
-		expect(page).toContain("read the must-have count first");
-		expect(page).toMatch(/\d of \d must-have tools/);
+		expect(page).toContain("knowing a few of them is a normal start");
+		expect(page).toMatch(/\d+ of \d+ tools it uses every day/);
 	});
 
 	it("keeps the 'coming soon' notes out of each station, in one place at the bottom", async () => {
@@ -416,8 +416,8 @@ describe("loop 10 findings", () => {
 describe("remaining gaps", () => {
 	it("answers a role question with must-have counts, not only a small percentage", async () => {
 		const page = await html("/roles?know=npm,+vite,+docker");
-		expect(page).toMatch(/you know \d of its \d must-have tools/);
-		expect(page).toMatch(/\d of \d must-have tools/);
+		expect(page).toMatch(/you know \d+ of the \d+ tools it uses every day/);
+		expect(page).toMatch(/\d+ of \d+ tools it uses every day/);
 	});
 
 	it("opens the journey route where you already know the most, when none is chosen", async () => {
@@ -473,5 +473,39 @@ describe("final loop findings", () => {
 	it("says 'runs offline' on a listing in the same words as the filter", async () => {
 		const page = await html("/listing/turborepo");
 		expect(page).toMatch(/Runs offline, no account \(runs on your machine/);
+	});
+});
+
+describe("evidence and installs", () => {
+	it("says how long a tool's repository has existed, and which repository its stars are from", async () => {
+		const page = await html("/listing/pnpm");
+		expect(page).toMatch(
+			/Repository created<\/dt><dd>2016-01-28 \(\d+ years ago\)/,
+		);
+		expect(page).toContain("(pnpm/pnpm)");
+	});
+
+	it("shows the usual install command for tools that have one, and none for the rest", async () => {
+		const page = await html("/listing/minikube");
+		expect(page).toContain("Typical install");
+		expect(page).toContain("brew install minikube");
+		expect(await html("/listing/npm")).not.toContain("Typical install");
+	});
+
+	it("flags an archived repository on its page and its card", async () => {
+		expect(await html("/listing/daytona")).toContain("no longer maintained");
+		expect(await html("/?q=daytona")).toContain("Archived");
+	});
+
+	it("puts repository age and days since the last release in a comparison", async () => {
+		const page = await html("/ask?q=pnpm+vs+npm+vs+bun");
+		expect(page).toContain("Repository age");
+		expect(page).toMatch(/\d+ days ago/);
+	});
+
+	it("does not put the upstream Kubernetes reference first for 'kubernetes laptop'", () => {
+		expect(search({ q: "kubernetes laptop" }).items[0].id).not.toBe(
+			"kubernetes",
+		);
 	});
 });

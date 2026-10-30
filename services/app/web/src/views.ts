@@ -144,3 +144,26 @@ export function typedTools(
 		.slice(0, 15)
 		.map((n) => ({ n, hit: resolveNames(n, 1)[0] }));
 }
+
+/** "9 years" for a date a while back; "7 months" for a recent one. */
+export function ageOf(date: string | undefined, now = Date.now()): string {
+	const t = date ? Date.parse(date) : Number.NaN;
+	if (Number.isNaN(t)) return "";
+	const months = Math.max(0, Math.floor((now - t) / (30.44 * 86400000)));
+	return months >= 24
+		? `${Math.floor(months / 12)} years`
+		: months >= 12
+			? "1 year"
+			: `${months} ${months === 1 ? "month" : "months"}`;
+}
+
+/** Whole days since a date, or undefined. */
+export function daysSince(
+	date: string | undefined,
+	now = Date.now(),
+): number | undefined {
+	const t = date ? Date.parse(date) : Number.NaN;
+	return Number.isNaN(t)
+		? undefined
+		: Math.max(0, Math.floor((now - t) / 86400000));
+}

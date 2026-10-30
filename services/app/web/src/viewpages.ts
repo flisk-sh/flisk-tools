@@ -21,8 +21,10 @@ import {
 import { esc } from "./seo";
 import { SITE } from "./site";
 import {
+	ageOf,
 	compass,
 	DX,
+	daysSince,
 	FAMILIES,
 	LEVELS,
 	PARITY,
@@ -329,10 +331,10 @@ export function rolesPage(base: string, group?: string, know?: string): string {
 						: ""
 				}.</p>${
 					bestFits.length
-						? `<p class="verdict-line">Your best fit: <b>${esc(bestFits[0].role.name)}</b> (you know ${bestFits[0].coreKnown} of its ${bestFits[0].coreTotal} must-have tools). ${because(bestFits[0].role, meKnow)} Open it below, or start with its Learn next list.</p><ol class="fits">${bestFits
+						? `<p class="verdict-line">Your best fit: <b>${esc(bestFits[0].role.name)}</b> (you know ${bestFits[0].useKnown} of the ${bestFits[0].useTotal} tools it uses every day). ${because(bestFits[0].role, meKnow)} Open it below, or start with its Learn next list.</p><ol class="fits">${bestFits
 								.map(
 									(f) =>
-										`<li><div class="fit-top"><strong><a href="${root}/roles?group=${f.role.group}#${f.role.id}">${esc(f.role.name)}</a></strong><span>${f.coreKnown} of ${f.coreTotal} must-have tools <small class="note">(${f.pct}% of its whole list)</small></span></div><div class="bar"><i style="width:${Math.min(100, f.pct)}%"></i></div>${
+										`<li><div class="fit-top"><strong><a href="${root}/roles?group=${f.role.group}#${f.role.id}">${esc(f.role.name)}</a></strong><span>${f.useKnown} of ${f.useTotal} tools it uses every day <small class="note">(${f.coreKnown} of ${f.coreTotal} must-have)</small></span></div><div class="bar"><i style="width:${Math.round((f.pct / Math.max(1, bestFits[0].pct)) * 100)}%"></i></div>${
 											f.gaps.length
 												? `<p class="note">Learn next: ${f.gaps
 														.slice(0, 4)
@@ -346,7 +348,7 @@ export function rolesPage(base: string, group?: string, know?: string): string {
 								)
 								.join(
 									"",
-								)}</ol><p class="note">The percentage is how much of the job's whole tool list you know, must-have, every-day and good-to-know together; most people sit below 30%, so read the must-have count first. For a finer answer, <a href="${root}/portfolio?me=${encodeURIComponent(meString(meKnow))}">rate how well you know each one</a>.</p>`
+								)}</ol><p class="note">The bars compare roles with each other: the longest is your closest match, whatever its size. Every job lists many tools, so knowing a few of them is a normal start; add more tools you know to sharpen the answer. For a finer answer, <a href="${root}/portfolio?me=${encodeURIComponent(meString(meKnow))}">rate how well you know each one</a>.</p>`
 						: "<p>No role matched those tools yet. Try more tools, like <code>npm, vite, docker</code>.</p>"
 				}</div>`
 			: ""
@@ -493,7 +495,7 @@ export function askPage(base: string, q = ""): string {
 			: '<span class="no">·</span>';
 	const table = picks.length
 		? `<div class="tablewrap"><table class="compare"><thead><tr><th></th>${picks.map((t) => `<th scope="col"><a href="${root}/listing/${t.id}">${esc(t.name)}</a></th>`).join("")}</tr></thead><tbody>
-${row("What it is", (t) => esc(t.tagline))}${row("Adoption ring", (t) => (t.ring ? `<span class="rk r-${t.ring}">${esc(ringLabel(t))}</span>` : "-"))}${row("Easy to use", (t) => (t.dx ? `${t.dx.length * 10} / 100` : "-"))}${showBig ? row("Big, real systems", (t) => (t.parity ? `${t.parity.length * 10} / 100` : "-")) : ""}${row("GitHub stars", (t) => (t.stars ? t.stars.toLocaleString("en-US") : "-"))}${row("Latest release", (t) => (t.version ? `${esc(t.version.replace(/^.*\//, ""))}${t.release ? `, ${esc(t.release)}` : ""}` : "-"))}${row("Last push", (t) => esc(t.pushed ?? "-"))}${row("License", (t) => esc(t.license ?? "-"))}${row("MCP server", (t) => (t.mcp ? "Yes" : "-"))}
+${row("What it is", (t) => esc(t.tagline))}${row("Adoption ring", (t) => (t.ring ? `<span class="rk r-${t.ring}">${esc(ringLabel(t))}</span>` : "-"))}${row("Easy to use", (t) => (t.dx ? `${t.dx.length * 10} / 100` : "-"))}${showBig ? row("Big, real systems", (t) => (t.parity ? `${t.parity.length * 10} / 100` : "-")) : ""}${row("GitHub stars", (t) => (t.stars ? t.stars.toLocaleString("en-US") : "-"))}${row("Repository age", (t) => (t.created ? `${esc(ageOf(t.created))} (since ${esc(t.created.slice(0, 4))})` : "-"))}${row("Status", (t) => (t.archived ? '<span class="rk r-hold">Archived</span>' : "Active"))}${row("Latest release", (t) => (t.version ? `${esc(t.version.replace(/^.*\//, ""))}${t.release ? `, ${esc(t.release)} (${daysSince(t.release) ?? "?"} days ago)` : ""}` : "-"))}${row("Last push", (t) => esc(t.pushed ?? "-"))}${row("License", (t) => esc(t.license ?? "-"))}${row("MCP server", (t) => (t.mcp ? "Yes" : "-"))}
 <tr class="sec"><th scope="row" colspan="${picks.length + 1}">${esc(DX.title)}</th></tr>${DX.criteria.map((c) => row(c.label, (t) => check(t.dx, c.id))).join("")}
 ${showBig ? `<tr class="sec"><th scope="row" colspan="${picks.length + 1}">${esc(PARITY.title)}</th></tr>${PARITY.criteria.map((c) => row(c.label, (t) => check(t.parity, c.id))).join("")}` : ""}
 </tbody></table></div>`

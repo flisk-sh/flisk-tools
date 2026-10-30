@@ -23,7 +23,10 @@ describe("catalog files", () => {
 		const ids = new Set<string>();
 		for (const f of readdirSync(join(root, "catalog")).filter(
 			(x) =>
-				x.endsWith(".json") && x !== "overrides.json" && x !== "views.json",
+				x.endsWith(".json") &&
+				x !== "overrides.json" &&
+				x !== "views.json" &&
+				x !== "repo-meta.json",
 		))
 			for (const e of json(join(root, "catalog", f)) as Entry[]) ids.add(e.id);
 		for (const f of listings) ids.add(json(join(root, "listings", f)).id);

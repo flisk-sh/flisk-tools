@@ -49,6 +49,7 @@ Or with Flisk: `flisk up`.
 ```bash
 bun run catalog                                   # rebuild src/catalog.generated.json from catalog/ and listings/
 bun scripts/import-roadmap.ts ../path/to/roadmap  # refresh catalog/roadmap.json from a flisk-sh/roadmap checkout
+bun scripts/fetch-repo-meta.ts                    # refresh catalog/repo-meta.json: repository age and archived status (needs gh)
 ```
 
 ## Testing usefulness
