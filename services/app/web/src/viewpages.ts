@@ -184,6 +184,12 @@ ${familyTabs(root, "radar", fam)}
 	);
 }
 
+const ROUTE_NAMES: Record<string, string> = {
+	backend: "Backend engineer route",
+	"ai-agents": "AI and agents engineer route",
+	platform: "Platform engineer route",
+};
+
 /** Journeys: seven levels from Package Wrangler to Platform Architect, as a metro line, with a route for each track. */
 export function journeysPage(base: string, trackId?: string): string {
 	const root = rootOf(base);
@@ -208,11 +214,11 @@ export function journeysPage(base: string, trackId?: string): string {
 			crumbs: [{ name: "Journeys", path: "journeys" }],
 		},
 		`${hero("Journeys", "Seven levels, <em>one line</em>", "A metro line from your first lockfile to platform architecture. Pick a route; each station lists the tools to learn and the ones worth knowing.")}
-<nav class="start" aria-label="Route">${TRACKS.map((t) => `<a href="${root}/journeys?track=${t.id}"${t.id === track.id ? ' aria-current="page" class="on"' : ""}><b>${esc(t.name)} route</b><small>${esc(t.blurb)}</small></a>`).join("")}</nav>
+<nav class="start" aria-label="Route">${TRACKS.map((t) => `<a href="${root}/journeys?track=${t.id}"${t.id === track.id ? ' aria-current="page" class="on"' : ""}><b>${esc(ROUTE_NAMES[t.id] ?? `${t.name} route`)}</b><small>${esc(t.blurb)}</small></a>`).join("")}</nav>
 <p class="note">Showing the ${esc(track.name)} route. Each station lists tools to learn first (bold) and tools worth knowing.</p>
 <ol class="metro">${LEVELS.map((l) => {
 			const stop = track.stops[l.id];
-			return `<li id="${l.id}"><span class="station" aria-hidden="true">${l.n}</span><div class="stop"><h3>${esc(l.name)}</h3><p>${esc(l.goal)}</p>${stop?.tip ? `<p class="tip">${esc(stop.tip)}</p>` : ""}<p class="chiplist">${(stop?.main ?? []).map((id) => chip(id, true)).join("")}${(stop?.side ?? []).map((id) => chip(id, false)).join("")}</p><p class="note">You learn: ${l.skills.map(esc).join(" · ")}</p>${l.flisk && l.flisk.status !== "soon" ? `<p class="note">Flisk: ${esc(l.flisk.text)}</p>` : ""}</div></li>`;
+			return `<li id="${l.id}"><span class="station" aria-hidden="true">${l.n}</span><div class="stop"><h3>${esc(l.name)}</h3><p>${esc(l.goal)}</p>${stop?.tip ? `<p class="tip">${esc(stop.tip)}</p>` : ""}<p class="chiplist"><span class="flabel">Learn first</span>${(stop?.main ?? []).map((id) => chip(id, true)).join("")}</p><p class="chiplist"><span class="flabel">Also worth knowing</span>${(stop?.side ?? []).map((id) => chip(id, false)).join("")}</p><p class="note">You learn: ${l.skills.map(esc).join(" · ")}</p>${l.flisk && l.flisk.status !== "soon" ? `<p class="note">Flisk: ${esc(l.flisk.text)}</p>` : ""}</div></li>`;
 		}).join("")}</ol>
 <details class="legend-rings"><summary>Where Flisk helps on this line, and where not yet</summary><ul class="verdict">${LEVELS.filter(
 			(l) => l.flisk,
@@ -261,7 +267,7 @@ export function rolesPage(base: string, group?: string, know?: string): string {
 						: ""
 				}.</p>${
 					bestFits.length
-						? `<ol class="fits">${bestFits
+						? `<p class="verdict-line">Your best fit: <b>${esc(bestFits[0].role.name)}</b> (${bestFits[0].pct}%, ${band(bestFits[0].pct)}). Open it below, or start with its Learn next list.</p><ol class="fits">${bestFits
 								.map(
 									(f) =>
 										`<li><div class="fit-top"><strong><a href="${root}/roles?group=${f.role.group}#${f.role.id}">${esc(f.role.name)}</a></strong><span>${f.pct}% <small class="note">${band(f.pct)}</small></span></div><div class="bar"><i style="width:${Math.min(100, f.pct)}%"></i></div>${
@@ -309,7 +315,7 @@ export function rolesPage(base: string, group?: string, know?: string): string {
 ${finder}
 <nav class="subtabs" aria-label="Group">${ROLE_GROUPS.map((x) => sub(`${root}/roles?group=${x.id}`, x.name, ROLES.filter((r) => r.group === x.id).length, x.id === g.id)).join("")}</nav>
 <p class="note">${esc(g.blurb)} Not sure which job fits? <a href="${root}/portfolio">Rate the tools you know</a> and get your best match.</p>
-<ul class="grid">${list.map((r) => `<li class="card" id="${r.id}" style="${color(r.group)}"><div class="top"><span class="sym" aria-hidden="true">${esc(symbol(r))}</span><h3>${esc(r.name)}</h3></div><p>${esc(r.what)}</p><details><summary>Tools for this job</summary><p class="note">Must have</p><p class="chiplist">${tools(r.core)}</p><p class="note">Every day</p><p class="chiplist">${tools(r.daily)}</p><p class="note">Good to know</p><p class="chiplist">${tools(r.nice)}</p><p class="note">A day: ${r.day.map(esc).join(" · ")}</p></details></li>`).join("")}</ul>`,
+${bestFits.length ? `<details class="legend-rings"><summary>Browse all ${ROLES.length} roles</summary>` : ""}<ul class="grid">${list.map((r) => `<li class="card" id="${r.id}" style="${color(r.group)}"><div class="top"><span class="sym" aria-hidden="true">${esc(symbol(r))}</span><h3>${esc(r.name)}</h3></div><p>${esc(r.what)}</p><details><summary>Tools for this job</summary><p class="note">Must have</p><p class="chiplist">${tools(r.core)}</p><p class="note">Every day</p><p class="chiplist">${tools(r.daily)}</p><p class="note">Good to know</p><p class="chiplist">${tools(r.nice)}</p><p class="note">A day: ${r.day.map(esc).join(" · ")}</p></details></li>`).join("")}</ul>${bestFits.length ? "</details>" : ""}`,
 		"roles",
 	);
 }

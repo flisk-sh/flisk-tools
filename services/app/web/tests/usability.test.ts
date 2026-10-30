@@ -197,3 +197,31 @@ describe("loop 4 fixes", () => {
 		expect(await html("/publish")).toContain('"id":"link-checker"');
 	});
 });
+
+describe("loop 5 fixes", () => {
+	it("says the best fit in a sentence and folds the role catalogue away once there is an answer", async () => {
+		const page = await html("/roles?know=npm,+vite,+docker");
+		expect(page).toContain("Your best fit:");
+		expect(page).toContain("Browse all 44 roles");
+		expect(await html("/roles")).not.toContain("Browse all 44 roles");
+	});
+
+	it("names the routes as jobs and labels what to learn first", async () => {
+		const page = await html("/journeys");
+		expect(page).toContain("Platform engineer route");
+		expect(page).toContain("Learn first");
+		expect(page).toContain("Also worth knowing");
+	});
+
+	it("says plainly what kind of thing a listing is, and what MCP is", async () => {
+		expect(await html("/listing/readme-score")).toContain(
+			"A website: it opens in your browser at readme.flisk.si.",
+		);
+		expect(await html("/listing/mattpocock-code-review")).toContain(
+			"An agent skill: a file your AI coding agent reads",
+		);
+		expect(await html("/listing/citable")).toContain(
+			"MCP is how AI assistants like Claude plug into a tool",
+		);
+	});
+});

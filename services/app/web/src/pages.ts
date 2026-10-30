@@ -67,6 +67,25 @@ const stars = (n: number) =>
 	n >= 1000 ? `${(n / 1000).toFixed(n >= 10000 ? 0 : 1)}k` : String(n);
 
 /** The listing's MCP server: how to add it to Claude Code or any MCP client, and what it offers. */
+/** One plain sentence on what kind of thing a listing is and how a visitor uses it. */
+function whatIs(e: Entry): string {
+	let host = "";
+	try {
+		host = new URL(e.url).hostname;
+	} catch {
+		host = "";
+	}
+	if (e.kind === "skill")
+		return "An agent skill: a file your AI coding agent reads. Open it on GitHub, copy it into your agent's skills folder.";
+	if (host === "github.com")
+		return e.kind === "app"
+			? "A project on GitHub: open it to read how to install and run it."
+			: "A developer tool: its GitHub page has the install steps.";
+	return e.kind === "app"
+		? `A website: it opens in your browser at ${host}.`
+		: `A developer tool: its home page is ${host}; install steps are there.`;
+}
+
 function mcpPanel(e: Entry): string {
 	const m = e.mcp;
 	if (!m) return "";
@@ -79,6 +98,7 @@ function mcpPanel(e: Entry): string {
 			? `{ "mcpServers": { "${e.id}": { "type": "http", "url": "${m.url}" } } }`
 			: `{ "mcpServers": { "${e.id}": { "command": "${(m.command ?? "").split(" ")[0]}", "args": ${JSON.stringify((m.command ?? "").split(" ").slice(1))} } } }`;
 	return `<h2>Use it from your AI <span class="tag mcp">MCP</span></h2>
+<p class="note">MCP is how AI assistants like Claude plug into a tool. Run the command below once and your assistant can use it.</p>
 <p>${where}${m.registry ? `. In the official MCP Registry as <code>${esc(m.registry)}</code>` : ""}.</p>
 <pre>${esc(mcpCommand(e))}</pre>
 <p class="note">Or in any MCP client's config:</p><pre>${esc(json)}</pre>
@@ -272,7 +292,7 @@ export function listingPage(base: string, e: Entry): string {
 			description: `${e.tagline}. ${e.description}`.slice(0, 160),
 			crumbs: [{ name: e.name, path }],
 		},
-		`<section class="detail" style="${color(e.group === "Agent skills" ? e.category : e.group)}"><span class="sym" aria-hidden="true">${esc(symbol(e))}</span><div><p class="eyebrow">${esc(kindLabel(e.kind))} · ${esc(e.category)}</p><h1>${esc(e.name)}</h1><p class="lede">${esc(e.tagline)}</p><p><a class="cta" href="${esc(e.url)}" rel="noopener">Open ${esc(e.name)}</a>${e.repo ? ` <a class="cta alt" href="https://github.com/${esc(e.repo)}" rel="noopener">GitHub</a>` : ""}</p></div></section>
+		`<section class="detail" style="${color(e.group === "Agent skills" ? e.category : e.group)}"><span class="sym" aria-hidden="true">${esc(symbol(e))}</span><div><p class="eyebrow">${esc(kindLabel(e.kind))} · ${esc(e.category)}</p><h1>${esc(e.name)}</h1><p class="lede">${esc(e.tagline)}</p><p class="note">${esc(whatIs(e))}</p><p><a class="cta" href="${esc(e.url)}" rel="noopener">Open ${esc(e.name)}</a>${e.repo ? ` <a class="cta alt" href="https://github.com/${esc(e.repo)}" rel="noopener">GitHub</a>` : ""}</p></div></section>
 <p style="max-width:46rem">${esc(e.description)}</p>
 ${e.mcp ? mcpPanel(e) : ""}
 <dl class="facts"><dt>Type</dt><dd>${esc(kindLabel(e.kind))}</dd><dt>Group</dt><dd><a href="${esc(homeHref(root, { group: e.group }))}">${esc(e.group)}</a></dd><dt>Category</dt><dd>${esc(e.category)}</dd>${e.author ? `<dt>By</dt><dd><a href="https://github.com/${esc(e.author)}" rel="noopener">@${esc(e.author)}</a>${e.official ? " (Flisk)" : ""}</dd>` : ""}${e.stars ? `<dt>GitHub stars</dt><dd>${e.stars.toLocaleString("en-US")}</dd>` : ""}${e.license ? `<dt>License</dt><dd>${esc(e.license)}</dd>` : ""}</dl>
