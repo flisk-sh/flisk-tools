@@ -27,10 +27,10 @@ Cloudflare only.
 ## 3. Check it
 
 ```bash
-curl -s https://flisk-tools.onrender.com/ready
-curl -s https://flisk-tools.onrender.com/robots.txt
-curl -s 'https://flisk-tools.onrender.com/api/tools'
-curl -s -X POST https://flisk-tools.onrender.com/mcp -H 'content-type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+curl -s https://tools.flisk.si/ready
+curl -s https://tools.flisk.si/robots.txt
+curl -s 'https://tools.flisk.si/api/tools'
+curl -s -X POST https://tools.flisk.si/mcp -H 'content-type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
 ```
 
 ## 4. Tell search engines

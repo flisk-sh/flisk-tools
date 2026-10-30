@@ -12,10 +12,10 @@ services:
     # Your own domain: uncomment and put it in PUBLIC_URL too (`bun run rename` does both). Without a payment method
     # on file, Render allows two custom domains per workspace.
     domains:
-      - flisk-tools.onrender.com
+      - tools.flisk.si
     envVars:
       # The address people use. Without a custom domain, your service's https://<name>.onrender.com/.
       - key: PUBLIC_URL
-        value: https://flisk-tools.onrender.com/
+        value: https://tools.flisk.si/
       - key: TRUST_PROXY
         value: last-forwarded

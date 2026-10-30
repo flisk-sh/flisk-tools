@@ -10,7 +10,7 @@ export const SITE = {
 	description:
 		"A free, open store of developer tools, AI agent skills and Flisk apps. Search any of them, and sign in with GitHub to add your own. No server, no database.",
 	/** Where the site lives online, ending in a slash. PUBLIC_URL overrides it at run time. */
-	url: "https://flisk-tools.onrender.com/",
+	url: "https://tools.flisk.si/",
 	repo: "https://github.com/flisk-sh/flisk-tools",
 	lang: "en",
 	locale: "en_US",
