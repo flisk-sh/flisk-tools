@@ -18,7 +18,12 @@ html = html
 		"\n",
 	)
 	.replace(/<(br|hr)\s*\/?>/gi, "\n")
-	.replace(/<input[^>]*placeholder="([^"]*)"[^>]*>/gi, "(search box: $1) ")
+	.replace(/<form[^>]*action="([^"]*)"[^>]*>/gi, "\n(form GET $1) ")
+	.replace(
+		/<input[^>]*name="([^"]*)"[^>]*placeholder="([^"]*)"[^>]*>/gi,
+		"(text box ?$1= : $2) ",
+	)
+	.replace(/<input[^>]*placeholder="([^"]*)"[^>]*>/gi, "(text box: $1) ")
 	.replace(/<button[^>]*>([\s\S]*?)<\/button>/gi, "(button: $1) ")
 	.replace(/<[^>]+>/g, " ")
 	.replace(/&amp;/g, "&")

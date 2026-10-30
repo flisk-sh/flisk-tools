@@ -126,3 +126,36 @@ describe("publish form", () => {
 		expect(page).toContain("Browsing the store needs no sign-in");
 	});
 });
+
+describe("loop 3 fixes", () => {
+	it("accepts ?q= on the roles page as well as ?know=", async () => {
+		expect(await html("/roles?q=npm+vite+docker")).toContain(
+			"Understood: npm, Vite",
+		);
+	});
+
+	it("shows the three journey routes as cards with a line each", async () => {
+		const page = await html("/journeys");
+		expect(page.match(/route<\/b><small>/g)?.length).toBe(3);
+	});
+
+	it("gives a plain verdict and explains the rings under a comparison", async () => {
+		const page = await html("/ask?q=yarn+vs+pnpm+vs+bun");
+		expect(page).toContain("Most recent release:");
+		expect(page).toContain("Most starred:");
+		expect(page).toContain("What the rings mean");
+		expect(page).toContain("There is no single winner");
+	});
+
+	it("ticks each card that meets the active check", async () => {
+		expect(await html("/?check=offline")).toContain(
+			"✓ Runs offline, no account",
+		);
+	});
+
+	it("says what a listing needs and who reviews it", async () => {
+		const page = await html("/publish");
+		expect(page).toContain("Listing rules");
+		expect(page).toContain("A maintainer reviews every pull request");
+	});
+});

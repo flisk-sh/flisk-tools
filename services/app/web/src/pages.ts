@@ -85,8 +85,8 @@ function mcpPanel(e: Entry): string {
 ${m.tools?.length ? `<p class="note">Tools: ${m.tools.map((t) => `<code>${esc(t)}</code>`).join(" ")}</p>` : ""}`;
 }
 
-export const card = (root: string, e: Entry) =>
-	`<li class="card" style="${color(e.group === "Agent skills" ? e.category : e.group)}"><div class="top"><span class="sym" aria-hidden="true">${esc(symbol(e))}</span><h3><a href="${root}/listing/${e.id}">${esc(e.name)}</a></h3></div><p>${esc(e.tagline)}</p><div class="meta"><span class="g">${esc(kindLabel(e.kind))} · ${esc(e.category)}</span>${e.ring ? `<span class="rk r-${e.ring}" title="Maturity: ${e.ring}">${e.ring === "adopt" ? "Adopt" : e.ring === "trial" ? "Trial" : e.ring === "assess" ? "Assess" : "Hold"}</span>` : ""}${e.mcp ? `<span class="mcp">MCP</span>` : ""}${e.stars ? `<span>★ ${stars(e.stars)}</span>` : ""}${e.official ? `<span class="by">by Flisk</span>` : e.kind === "skill" && e.repo ? `<span title="Source repository">${esc(e.repo)}</span>` : e.author ? `<span>@${esc(e.author)}</span>` : ""}</div></li>`;
+export const card = (root: string, e: Entry, proof?: string) =>
+	`<li class="card" style="${color(e.group === "Agent skills" ? e.category : e.group)}"><div class="top"><span class="sym" aria-hidden="true">${esc(symbol(e))}</span><h3><a href="${root}/listing/${e.id}">${esc(e.name)}</a></h3></div><p>${esc(e.tagline)}</p>${proof ? `<p class="proof">✓ ${esc(proof)}</p>` : ""}<div class="meta"><span class="g">${esc(kindLabel(e.kind))} · ${esc(e.category)}</span>${e.ring ? `<span class="rk r-${e.ring}" title="Maturity: ${e.ring}">${e.ring === "adopt" ? "Adopt" : e.ring === "trial" ? "Trial" : e.ring === "assess" ? "Assess" : "Hold"}</span>` : ""}${e.mcp ? `<span class="mcp">MCP</span>` : ""}${e.stars ? `<span>★ ${stars(e.stars)}</span>` : ""}${e.official ? `<span class="by">by Flisk</span>` : e.kind === "skill" && e.repo ? `<span title="Source repository">${esc(e.repo)}</span>` : e.author ? `<span>@${esc(e.author)}</span>` : ""}</div></li>`;
 
 const RING_IDS = ["adopt", "trial", "assess", "hold"];
 const RING_FILTERS = [
@@ -181,14 +181,14 @@ export function homePage(base: string, query: Browse = {}): string {
 		`<section class="hero"><p class="eyebrow">Free · open source · no server, no database</p><h1>Every dev tool, agent skill and app, <em>in one free store</em></h1>
 <p class="lede">${esc(SITE.description)}</p>
 <form class="search" role="search" action="${root}/" method="get"><input type="search" name="q" value="${esc(query.q ?? "")}" placeholder="Search ${ENTRIES.length} tools, skills and apps: try docker, k8s, code review" aria-label="Search the store">${kind ? `<input type="hidden" name="kind" value="${kind}">` : ""}<button type="submit">Search</button></form>
-<p class="note own-mcp">Compare tools: <a href="${root}/ask?q=yarn+vs+pnpm+vs+bun">yarn vs pnpm vs bun</a> · Add this store to your AI (tools: search_store, get_listing): <code>claude mcp add --transport http flisk-tools ${esc(base)}/mcp</code></p></section>
+<div class="callout"><b>Use this store from your AI</b><code>claude mcp add --transport http flisk-tools ${esc(base)}/mcp</code><small>Claude Code. Tools: search_store, get_listing. No key needed. <a href="${root}/listing/flisk-tools">More</a></small></div></section>
 ${filtered ? "" : `<section class="start" aria-label="Start here"><a href="${root}/?q=docker"><b>Find a tool</b><small>Search ${counts("tool")} dev tools by what they do</small></a><a href="${root}/roles"><b>Which role fits me?</b><small>Type the tools you know</small></a><a href="${root}/journeys"><b>Learn a path</b><small>Seven levels, three routes</small></a><a href="${root}/ask?q=yarn+vs+pnpm+vs+bun"><b>Compare tools</b><small>Side by side, from the data</small></a></section>`}
 <nav class="subtabs" aria-label="Type">${sub(link({ kind: undefined }), "All", f.total, !kind)}${KINDS.map((k) => sub(link({ kind: k.id }), esc(k.plural), f.kinds[k.id] ?? 0, kind === k.id)).join("")}${sub(link({ mcp: !query.mcp, kind: undefined }), "With MCP", facets({ ...base0, mcp: true }).total, Boolean(query.mcp))}</nav>
 <details class="facetbox"${query.group || ring || check ? " open" : ""}><summary>Narrow it down: group, maturity, what it works with</summary><nav class="subtabs" aria-label="Group">${f.groups.map((g) => sub(link({ group: g.name }), esc(g.name), g.count, query.group === g.name)).join("")}</nav>
 ${filterRow}</details>
 ${jumps.length ? `<p class="jumps"><span class="flabel">Jump to</span>${jumps.map((j) => `<a class="chip2 jump-${j.kind}" href="${esc(j.href)}">${esc(j.label)}</a>`).join("")}</p>` : ""}
 <p class="count">${r.total} ${r.total === 1 ? "result" : "results"}${query.q ? ` for “${esc(query.q)}”` : ""}</p>
-${r.items.length ? `<ul class="grid">${r.items.map((e) => card(root, e)).join("")}</ul>` : none}
+${r.items.length ? `<ul class="grid">${r.items.map((e) => card(root, e, check ? FILTER_CHECKS.find((c) => c.id === check)?.label : undefined)).join("")}</ul>` : none}
 <p class="pager"><span>${r.page > 1 ? `<a rel="prev" href="${link({ group: query.group, page: r.page - 1 })}">← Previous</a>` : ""}</span><span>Page ${r.page} of ${r.pages}</span><span>${r.page < r.pages ? `<a rel="next" href="${link({ group: query.group, page: r.page + 1 })}">Next →</a>` : ""}</span></p>`,
 		"browse",
 	);
@@ -297,6 +297,7 @@ export function publishPage(base: string): string {
 		},
 		`<div class="prose"><p class="eyebrow">Publish</p><h1>Add yours to the <em>store</em></h1>
 <p class="lede">Browsing the store needs no sign-in. To add a listing, sign in with GitHub, fill in the form, and GitHub opens a pull request with it. When it is merged, it is in the store.</p>
+<details open><summary>Listing rules</summary><p class="note">A maintainer reviews every pull request. A listing must be public, describe honestly what it does, and link to where it lives. Maturity rings and scores come from the DevEx Roadmap's checklist, so a community listing has none until the roadmap covers it. Stars shown are GitHub's.</p></details>
 <details open><summary>What you will fill in</summary><p class="note">Type (app, dev tool or agent skill) · Name · Id (lowercase, dashes) · One line (up to 120 characters) · Description (up to 600) · Group · Category · Address (https) · GitHub repo (needed for a skill) · MCP server address or command (optional). No JavaScript? Add a file named <code>listings/&lt;your github login&gt;--&lt;id&gt;.json</code> in the repository instead.</p></details>
 <ol class="steps"><li>Sign in with GitHub (top right). We read only your public login.</li><li>Describe your app, tool or skill below.</li><li>GitHub opens a ready pull request. On GitHub press the green <b>Commit changes…</b>, then <b>Propose changes</b>, then <b>Create pull request</b>.</li><li>A check confirms the file is yours and well formed. Then it is merged.</li></ol>
 <noscript><p>The form needs JavaScript. Without it, add a file named <code>listings/&lt;your github login&gt;--&lt;id&gt;.json</code> in the <a href="${esc(SITE.repo)}">repository</a>; the listings README shows the fields.</p></noscript>

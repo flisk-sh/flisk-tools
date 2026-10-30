@@ -208,8 +208,8 @@ export function journeysPage(base: string, trackId?: string): string {
 			crumbs: [{ name: "Journeys", path: "journeys" }],
 		},
 		`${hero("Journeys", "Seven levels, <em>one line</em>", "A metro line from your first lockfile to platform architecture. Pick a route; each station lists the tools to learn and the ones worth knowing.")}
-<nav class="subtabs" aria-label="Route">${TRACKS.map((t) => sub(`${root}/journeys?track=${t.id}`, `${t.name} route`, undefined, t.id === track.id)).join("")}</nav>
-<p class="note">${esc(track.blurb)}</p>
+<nav class="start" aria-label="Route">${TRACKS.map((t) => `<a href="${root}/journeys?track=${t.id}"${t.id === track.id ? ' aria-current="page" class="on"' : ""}><b>${esc(t.name)} route</b><small>${esc(t.blurb)}</small></a>`).join("")}</nav>
+<p class="note">Showing the ${esc(track.name)} route. Each station lists tools to learn first (bold) and tools worth knowing.</p>
 <ol class="metro">${LEVELS.map((l) => {
 			const stop = track.stops[l.id];
 			return `<li id="${l.id}"><span class="station" aria-hidden="true">${l.n}</span><div class="stop"><h3>${esc(l.name)}</h3><p>${esc(l.goal)}</p>${stop?.tip ? `<p class="tip">${esc(stop.tip)}</p>` : ""}<p class="chiplist">${(stop?.main ?? []).map((id) => chip(id, true)).join("")}${(stop?.side ?? []).map((id) => chip(id, false)).join("")}</p><p class="note">You learn: ${l.skills.map(esc).join(" · ")}</p>${l.flisk ? `<p class="note flisk-${esc(l.flisk.status)}">Flisk: ${esc(l.flisk.text)}</p>` : ""}</div></li>`;
@@ -341,6 +341,52 @@ export function skillsPage(base: string, cat?: string, page = 1): string {
 	);
 }
 
+/** A plain-words verdict above the compare table: who leads on each thing that can be measured. */
+function verdict(picks: Entry[]): string {
+	if (picks.length < 2) return "";
+	const lead = (
+		label: string,
+		score: (t: Entry) => number,
+		show: (t: Entry) => string,
+	) => {
+		const ranked = [...picks].sort((a, b) => score(b) - score(a));
+		if (score(ranked[0]) <= 0 || score(ranked[0]) === score(ranked[1]))
+			return "";
+		return `<li><b>${esc(label)}:</b> ${esc(ranked[0].name)} <span class="note">${esc(show(ranked[0]))}</span></li>`;
+	};
+	const date = (s?: string) => (s ? Date.parse(s) || 0 : 0);
+	const items = [
+		lead(
+			"Most recent release",
+			(t) => date(t.release),
+			(t) => t.release ?? "",
+		),
+		lead(
+			"Most starred",
+			(t) => t.stars ?? 0,
+			(t) => `${(t.stars ?? 0).toLocaleString("en-US")} stars`,
+		),
+		lead(
+			"Easiest to use",
+			(t) => t.dx?.length ?? 0,
+			(t) => `${(t.dx?.length ?? 0) * 10}/100`,
+		),
+		lead(
+			"Most ready for big systems",
+			(t) => t.parity?.length ?? 0,
+			(t) => `${(t.parity?.length ?? 0) * 10}/100`,
+		),
+	].filter(Boolean);
+	const same = picks.every((t) => t.ring && t.ring === picks[0].ring);
+	return `<div class="result"><h3>At a glance</h3><ul class="verdict">${items.join("")}</ul><p class="note">${same ? `All are ${esc(picks[0].ring ?? "")}: the rings do not separate them, so use the lines above.` : "Maturity ring, from the Adoption Radar rules."} There is no single winner: pick on what matters to you.</p></div>`;
+}
+
+/** What Adopt, Trial, Assess and Hold mean, shown under a comparison so a ring is never a bare word. */
+function ringLegend(picks: Entry[]): string {
+	if (!picks.some((t) => t.ring)) return "";
+	return `<details class="legend-rings"><summary>What the rings mean</summary><ul class="verdict">${RINGS.map((r) => `<li><span class="rk r-${r.id}">${esc(r.label)}</span> ${esc(r.help)}</li>`).join("")}</ul></details>`;
+}
+
 /** Ask: "yarn vs npm vs bun" answered as a side-by-side table from the data, no AI call. */
 export function askPage(base: string, q = ""): string {
 	const root = rootOf(base);
@@ -384,7 +430,7 @@ ${row("What it is", (t) => esc(t.tagline))}${row("Adoption ring", (t) => (t.ring
 		`${hero("Compare", "Compare tools, <em>side by side</em>", "Type two to five tools with vs, a comma or and. The answer comes from the data, every check with its meaning, and no AI is called.")}
 <form class="search" role="search" action="${root}/ask" method="get"><input type="search" name="q" value="${esc(q)}" placeholder="yarn vs npm vs bun" aria-label="Tools to compare"><button type="submit">Compare</button></form>
 <p class="chiplist" style="margin-top:.8rem">${examples.map((x) => `<a class="chip2" href="${root}/ask?q=${encodeURIComponent(x)}">${esc(x)}</a>`).join("")}</p>
-${table}${picks.length ? `<p class="note">Easy to use and Big, real systems count the checks each tool meets, 10 points each; the ticks below show which. Maturity comes from the Adoption Radar rules: release age, version and last update.</p>` : ""}`,
+${verdict(picks)}${table}${ringLegend(picks)}${picks.length ? `<p class="note">Easy to use and Big, real systems count the checks each tool meets, 10 points each; the ticks below show which. Maturity comes from the Adoption Radar rules: release age, version and last update.</p>` : ""}`,
 		"ask",
 	);
 }

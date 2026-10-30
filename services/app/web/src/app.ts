@@ -132,7 +132,13 @@ export function createApp(options: AppOptions = {}) {
 		c.html(journeysPage(baseOf(c), c.req.query("track"))),
 	);
 	app.get("/roles", (c) =>
-		c.html(rolesPage(baseOf(c), c.req.query("group"), c.req.query("know"))),
+		c.html(
+			rolesPage(
+				baseOf(c),
+				c.req.query("group"),
+				c.req.query("know") ?? c.req.query("q"),
+			),
+		),
 	);
 	app.get("/skills", (c) =>
 		c.html(
