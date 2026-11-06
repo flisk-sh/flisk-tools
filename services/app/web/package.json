@@ -15,7 +15,7 @@
     "rename": "bun scripts/rename.ts"
   },
   "dependencies": {
-    "hono": "^4.0.0"
+    "hono": "^4.13.16"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.13",
