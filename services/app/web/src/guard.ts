@@ -113,7 +113,7 @@ export function securityHeaders(): Record<string, string> {
 	return {
 		"content-security-policy": [
 			"default-src 'none'",
-			"script-src 'self'",
+			"script-src 'self' https://flisk.si",
 			"connect-src https://publish.flisk.si",
 			"style-src 'unsafe-inline' https://api.fontshare.com https://fonts.googleapis.com",
 			"font-src https://cdn.fontshare.com https://fonts.gstatic.com",
