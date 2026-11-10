@@ -4,6 +4,6 @@
   <text x="250" y="178" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="60" font-weight="800" fill="#1d1c1a">Flisk Tools</text>
   <text x="96" y="340" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="64" font-weight="800" fill="#1d1c1a" letter-spacing="-1.5">Run small web tools</text>
   <text x="96" y="420" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="64" font-weight="800" fill="#1d1c1a" letter-spacing="-1.5">on your own GitHub, free</text>
-  <text x="96" y="530" font-family="ui-monospace, Menlo, monospace" font-size="34" fill="#6b6862">flisk-tools.onrender.com</text>
+  <text x="96" y="530" font-family="ui-monospace, Menlo, monospace" font-size="34" fill="#6b6862">tools.flisk.si</text>
   <g transform="translate(940 96)"><rect width="164" height="164" rx="24" fill="#1d1c1a"/><text x="82" y="104" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="56" font-weight="800" fill="#fbfaf7">Run</text></g>
 </svg>
