@@ -12,7 +12,11 @@ interface Env {
 let app: ReturnType<typeof createApp> | undefined;
 
 export default {
-	fetch(request: Request, env: Env, ctx: unknown): Response | Promise<Response> {
+	fetch(
+		request: Request,
+		env: Env,
+		ctx: unknown,
+	): Response | Promise<Response> {
 		app ??= createApp({
 			publicUrl: env.PUBLIC_URL || undefined,
 			proxy: parseProxyMode(env.TRUST_PROXY),
