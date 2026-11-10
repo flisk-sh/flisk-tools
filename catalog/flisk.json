@@ -85,16 +85,16 @@
 		"id": "helpdock",
 		"name": "Helpdock",
 		"tagline": "Any GitHub repo's docs, as a help center and an MCP server",
-		"description": "Replace github.com with helpdock.flisk.sh in a repository address to browse its docs, get answers quoted from the exact page, and add the docs to your AI over MCP.",
+		"description": "Replace github.com with helpdock.flisk.si in a repository address to browse its docs, get answers quoted from the exact page, and add the docs to your AI over MCP.",
 		"group": "Flisk apps",
 		"category": "Docs",
-		"url": "https://helpdock.flisk.sh",
+		"url": "https://helpdock.flisk.si",
 		"repo": "flisk-sh/helpdock",
 		"author": "flisk-sh",
 		"official": true,
 		"mcp": {
 			"transport": "http",
-			"url": "https://helpdock.flisk.sh/mcp",
+			"url": "https://helpdock.flisk.si/mcp",
 			"tools": [
 				"search_docs",
 				"ask_help_center"
@@ -109,7 +109,7 @@
 		"description": "Commands side by side across many tabs, with a source link for every cell.",
 		"group": "Flisk apps",
 		"category": "Comparison",
-		"url": "https://cmd.flisk.sh",
+		"url": "https://cmd.flisk.si",
 		"repo": "flisk-sh/command-comparer",
 		"author": "flisk-sh",
 		"official": true
@@ -143,18 +143,18 @@
 	{
 		"kind": "app",
 		"id": "flisk-demos",
-		"name": "Flisk Demos",
+		"name": "Personal Demos",
 		"tagline": "A personalised Flisk demo for what you build",
-		"description": "Open demo.flisk.sh/your-handle/what-you-build-in-dashes and get a demo stack made for you. Also an MCP server (make_demo, get_unfollowers) and a JSON API.",
+		"description": "Open demo.flisk.si/your-handle/what-you-build-in-dashes and get a demo stack made for you. Also an MCP server (make_demo, get_unfollowers) and a JSON API.",
 		"group": "Flisk apps",
 		"category": "Demos",
-		"url": "https://demo.flisk.sh",
+		"url": "https://demo.flisk.si",
 		"repo": "flisk-sh/flisk-demo-worker",
 		"author": "flisk-sh",
 		"official": true,
 		"mcp": {
 			"transport": "http",
-			"url": "https://demo.flisk.sh/mcp",
+			"url": "https://demo.flisk.si/mcp",
 			"tools": [
 				"make_demo",
 				"get_unfollowers"
@@ -240,7 +240,7 @@
 		"id": "flisk-demo-bubbles",
 		"name": "flisk-demo-bubbles",
 		"tagline": "Hand out a personalised Flisk demo for a person from what they build",
-		"description": "Reply with a demo.flisk.sh link, call the JSON API or the make_demo MCP tool, and post the returned reply exactly. plain=1 gives a reply for non-developers.",
+		"description": "Reply with a demo.flisk.si link, call the JSON API or the make_demo MCP tool, and post the returned reply exactly. plain=1 gives a reply for non-developers.",
 		"group": "Flisk apps",
 		"category": "Demos",
 		"url": "https://github.com/flisk-sh/flisk-skills/blob/HEAD/skills/flisk-demo-bubbles/SKILL.md",
