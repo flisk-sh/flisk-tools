@@ -1,7 +1,7 @@
 # Listings
 
 One file per listing, named `<your GitHub login>--<id>.json`. The easiest way to make one is the form at
-<https://flisk-tools.onrender.com/publish> (sign in with GitHub): it opens a ready pull request.
+<https://tools.flisk.si/publish> (sign in with GitHub): it opens a ready pull request.
 
 ```json
 {
