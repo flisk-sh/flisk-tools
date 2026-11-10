@@ -1,9 +1,102 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Flisk Tools: Run small web tools on your own GitHub, free"><title>Flisk Tools</title>
-  <rect width="1200" height="630" fill="#fbfaf7"/>
-  <g transform="translate(96 96) scale(2)"><rect width="64" height="64" rx="14" fill="#f59e0b"/><rect x="13" y="13" width="16" height="16" rx="4.5" fill="#fbfaf7"/><rect x="13" y="35" width="16" height="16" rx="4.5" fill="#fbfaf7"/><rect x="35" y="13" width="16" height="16" rx="4.5" fill="#fbfaf7"/><rect x="35" y="35" width="16" height="16" rx="4.5" fill="#fbfaf7"/></g>
-  <text x="250" y="178" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="60" font-weight="800" fill="#1d1c1a">Flisk Tools</text>
-  <text x="96" y="340" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="64" font-weight="800" fill="#1d1c1a" letter-spacing="-1.5">Run small web tools</text>
-  <text x="96" y="420" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="64" font-weight="800" fill="#1d1c1a" letter-spacing="-1.5">on your own GitHub, free</text>
-  <text x="96" y="530" font-family="ui-monospace, Menlo, monospace" font-size="34" fill="#6b6862">tools.flisk.si</text>
-  <g transform="translate(940 96)"><rect width="164" height="164" rx="24" fill="#1d1c1a"/><text x="82" y="104" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="56" font-weight="800" fill="#fbfaf7">Run</text></g>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Flisk Tools: Every dev tool, agent skill and app, in one free store."><title>Flisk Tools</title>
+  <!-- Share card, built to the Flisk card spec. Render: rsvg-convert -w 1200 -h 630 (or the repo's own icons script). -->
+  <defs>
+    <radialGradient id="glow" cx="0.1" cy="0.08" r="0.75"><stop offset="0" stop-color="#3f2a06"/><stop offset="1" stop-color="#0a0a0e"/></radialGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="#ffffff" stroke-opacity="0.04"/></pattern>
+    <linearGradient id="rule" x1="0" x2="1"><stop offset="0" stop-color="#f59e0b" stop-opacity="0"/><stop offset="0.25" stop-color="#f59e0b"/><stop offset="1" stop-color="#f59e0b" stop-opacity="0.15"/></linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#0b0b10"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <g transform="translate(64 64) scale(0.875)"><rect width="64" height="64" rx="14" fill="#f59e0b"/><rect x="13" y="13" width="16" height="16" rx="4.5" fill="#fbfaf7"/><rect x="13" y="35" width="16" height="16" rx="4.5" fill="#fbfaf7"/><rect x="35" y="13" width="16" height="16" rx="4.5" fill="#fbfaf7"/><rect x="35" y="35" width="16" height="16" rx="4.5" fill="#fbfaf7"/></g>
+  <text x="140" y="99" font-family="'JetBrains Mono', ui-monospace, Menlo, monospace" font-size="19" font-weight="700" letter-spacing="4.6" fill="#fcc419">FLISK TOOLS / FREE STORE</text>
+  <g font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="52" font-weight="800" fill="#ffffff" letter-spacing="-1.2">
+    <text x="64" y="232">Every dev tool,</text>
+    <text x="64" y="296">agent skill and app,</text>
+    <text x="64" y="360">in one free store.</text>
+  </g>
+  <g font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="24" fill="#9a9aa6">
+    <text x="64" y="414">Search 790 listings, or ask from</text>
+    <text x="64" y="446">your AI over MCP.</text>
+  </g>
+  <g font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#f1f3f5" text-anchor="middle">
+    <rect x="64" y="476" width="86" height="44" rx="22" fill="#15161d" stroke="#34374a"/><text x="107" y="505">Free</text>
+    <rect x="162" y="476" width="245" height="44" rx="22" fill="#15161d" stroke="#34374a"/><text x="284.5" y="505">No signup to browse</text>
+    <rect x="419" y="476" width="76" height="44" rx="22" fill="#15161d" stroke="#34374a"/><text x="457" y="505">MCP</text>
+  </g>
+  <rect x="64" y="546" width="520" height="2" fill="url(#rule)"/>
+  <text x="64" y="592" font-family="'JetBrains Mono', ui-monospace, Menlo, monospace" font-size="28" fill="#e9ecef">tools.flisk.si</text>
+  <g transform="translate(616 64)">
+    <rect width="640" height="500" rx="18" fill="#101118" stroke="#2a2d38"/>
+    <circle cx="28" cy="28" r="6" fill="#3a3d48"/><circle cx="48" cy="28" r="6" fill="#3a3d48"/><circle cx="68" cy="28" r="6" fill="#3a3d48"/>
+    <rect x="96" y="14" width="420" height="30" rx="15" fill="#191a22" stroke="#2c2f3a"/>
+    <text x="114" y="34" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" fill="#868e96">Search 790 tools, skills and apps</text>
+    <rect x="0" y="56" width="640" height="1" fill="#2a2d38"/>
+    <g font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600">
+      <rect x="24" y="74" width="74" height="30" rx="15" fill="#2a2c36" stroke="#3a3d48"/><text x="61" y="94" fill="#f1f3f5" text-anchor="middle">All 790</text>
+      <rect x="106" y="74" width="80" height="30" rx="15" fill="none" stroke="#2c2f3a"/><text x="146" y="94" fill="#adb5bd" text-anchor="middle">Apps 13</text>
+      <rect x="194" y="74" width="118" height="30" rx="15" fill="none" stroke="#2c2f3a"/><text x="253" y="94" fill="#adb5bd" text-anchor="middle">Dev tools 375</text>
+      <rect x="320" y="74" width="132" height="30" rx="15" fill="none" stroke="#2c2f3a"/><text x="386" y="94" fill="#adb5bd" text-anchor="middle">Agent skills 402</text>
+    </g>
+    <g transform="translate(24 122)">
+      <rect width="262" height="150" rx="14" fill="#14151c" stroke="#2c2f3a"/>
+      <rect x="18" y="18" width="40" height="40" rx="9" fill="#2f9e44" fill-opacity="0.22" stroke="#40c057" stroke-opacity="0.5"/>
+      <text x="38" y="44" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="800" fill="#8ce99a" text-anchor="middle">Ci</text>
+      <text x="70" y="45" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#f1f3f5">Citable</text>
+      <text x="18" y="86" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" fill="#9a9aa6">Can AI answers cite your</text>
+      <text x="18" y="106" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" fill="#9a9aa6">site? Put citable.flisk.si/</text>
+      <text x="18" y="134" font-family="'JetBrains Mono', ui-monospace, Menlo, monospace" font-size="12.5" fill="#69db7c">App / SEO</text>
+      <rect x="96.39999999999999" y="120" width="40" height="20" rx="10" fill="#40c057"/><text x="116.39999999999999" y="134" font-family="'JetBrains Mono', ui-monospace, Menlo, monospace" font-size="11" font-weight="700" fill="#0b2a12" text-anchor="middle">MCP</text>
+    </g>
+    <g transform="translate(298 122)">
+      <rect width="262" height="150" rx="14" fill="#14151c" stroke="#2c2f3a"/>
+      <rect x="18" y="18" width="40" height="40" rx="9" fill="#2f9e44" fill-opacity="0.22" stroke="#40c057" stroke-opacity="0.5"/>
+      <text x="38" y="44" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="800" fill="#8ce99a" text-anchor="middle">Cc</text>
+      <text x="70" y="45" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#f1f3f5">Command Comparer</text>
+      <text x="18" y="86" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" fill="#9a9aa6">Flisk next to Terraform,</text>
+      <text x="18" y="106" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" fill="#9a9aa6">Compose and Tilt.</text>
+      <text x="18" y="134" font-family="'JetBrains Mono', ui-monospace, Menlo, monospace" font-size="12.5" fill="#69db7c">App / Comparison</text>
+      
+    </g>
+    <g transform="translate(572 122)">
+      <rect width="262" height="150" rx="14" fill="#14151c" stroke="#2c2f3a"/>
+      <rect x="18" y="18" width="40" height="40" rx="9" fill="#2f9e44" fill-opacity="0.22" stroke="#40c057" stroke-opacity="0.5"/>
+      <text x="38" y="44" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="800" fill="#8ce99a" text-anchor="middle">Dr</text>
+      <text x="70" y="45" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#f1f3f5">DevEx Roadmap</text>
+      <text x="18" y="86" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" fill="#9a9aa6">A community-edited map</text>
+      <text x="18" y="106" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" fill="#9a9aa6">of developer tools.</text>
+      <text x="18" y="134" font-family="'JetBrains Mono', ui-monospace, Menlo, monospace" font-size="12.5" fill="#69db7c">App / Comparison</text>
+      
+    </g>
+    <g transform="translate(24 288)">
+      <rect width="262" height="150" rx="14" fill="#14151c" stroke="#2c2f3a"/>
+      <rect x="18" y="18" width="40" height="40" rx="9" fill="#2f9e44" fill-opacity="0.22" stroke="#40c057" stroke-opacity="0.5"/>
+      <text x="38" y="44" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="800" fill="#8ce99a" text-anchor="middle">Fc</text>
+      <text x="70" y="45" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#f1f3f5">Flisk CLI</text>
+      <text x="18" y="86" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" fill="#9a9aa6">Run your whole AI-built</text>
+      <text x="18" y="106" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" fill="#9a9aa6">app with flisk up.</text>
+      <text x="18" y="134" font-family="'JetBrains Mono', ui-monospace, Menlo, monospace" font-size="12.5" fill="#69db7c">App / Dev environment</text>
+      <rect x="187.6" y="120" width="40" height="20" rx="10" fill="#40c057"/><text x="207.6" y="134" font-family="'JetBrains Mono', ui-monospace, Menlo, monospace" font-size="11" font-weight="700" fill="#0b2a12" text-anchor="middle">MCP</text>
+    </g>
+    <g transform="translate(298 288)">
+      <rect width="262" height="150" rx="14" fill="#14151c" stroke="#2c2f3a"/>
+      <rect x="18" y="18" width="40" height="40" rx="9" fill="#2f9e44" fill-opacity="0.22" stroke="#40c057" stroke-opacity="0.5"/>
+      <text x="38" y="44" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="800" fill="#8ce99a" text-anchor="middle">Fd</text>
+      <text x="70" y="45" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#f1f3f5">Flisk Demos</text>
+      <text x="18" y="86" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" fill="#9a9aa6">A personalised Flisk demo</text>
+      <text x="18" y="106" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" fill="#9a9aa6">for what you build.</text>
+      <text x="18" y="134" font-family="'JetBrains Mono', ui-monospace, Menlo, monospace" font-size="12.5" fill="#69db7c">App / Demos</text>
+      <rect x="111.6" y="120" width="40" height="20" rx="10" fill="#40c057"/><text x="131.6" y="134" font-family="'JetBrains Mono', ui-monospace, Menlo, monospace" font-size="11" font-weight="700" fill="#0b2a12" text-anchor="middle">MCP</text>
+    </g>
+    <g transform="translate(572 288)">
+      <rect width="262" height="150" rx="14" fill="#14151c" stroke="#2c2f3a"/>
+      <rect x="18" y="18" width="40" height="40" rx="9" fill="#2f9e44" fill-opacity="0.22" stroke="#40c057" stroke-opacity="0.5"/>
+      <text x="38" y="44" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="800" fill="#8ce99a" text-anchor="middle">Fi</text>
+      <text x="70" y="45" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#f1f3f5">Flisk Import</text>
+      <text x="18" y="86" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" fill="#9a9aa6">Turn a Compose file into</text>
+      <text x="18" y="106" font-family="Inter, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" fill="#9a9aa6">Flisk services.</text>
+      <text x="18" y="134" font-family="'JetBrains Mono', ui-monospace, Menlo, monospace" font-size="12.5" fill="#69db7c">App / Dev environment</text>
+      
+    </g>
+  </g>
 </svg>
