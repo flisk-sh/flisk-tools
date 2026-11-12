@@ -101,6 +101,13 @@ export function createApp(options: AppOptions = {}) {
 		await next();
 		for (const [k, v] of Object.entries(securityHeaders()))
 			if (!c.res.headers.has(k)) c.res.headers.set(k, v);
+		// A filtered view (any query string) is not a page to index or to follow links from: see robotsTxt().
+		if (
+			c.req.method === "GET" &&
+			new URL(c.req.url).search &&
+			!c.res.headers.has("x-robots-tag")
+		)
+			c.res.headers.set("x-robots-tag", "noindex, nofollow");
 	});
 
 	app.get("/health", (c) =>
