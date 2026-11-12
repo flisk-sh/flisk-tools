@@ -86,6 +86,25 @@ describe("files for crawlers", () => {
 		expect(robots).toContain("Sitemap: https://tool.test/sitemap.xml");
 	});
 
+	it("robots.txt keeps every crawler out of the filter URLs, which are endless (GPTBot used up the Workers limit)", async () => {
+		const robots = await page("/robots.txt");
+		// the answer crawlers' group and the default group both carry it, and / stays open
+		expect(robots.match(/Disallow: \/\*\?/g)).toHaveLength(2);
+		expect(robots).toContain("Allow: /");
+	});
+
+	it("a filtered view says noindex, nofollow; a plain page does not", async () => {
+		const filtered = await app.request(
+			"/?category=Security&check=agent-ready&sort=stars&mcp=1",
+		);
+		expect(filtered.status).toBe(200);
+		expect(filtered.headers.get("x-robots-tag")).toBe("noindex, nofollow");
+		const plain = await app.request("/");
+		expect(plain.headers.get("x-robots-tag")).toBeNull();
+		const listing = await app.request("/listing/readme-score");
+		expect(listing.headers.get("x-robots-tag")).toBeNull();
+	});
+
 	it("sitemap.xml lists the home page, about, publish and every listing", async () => {
 		const res = await app.request("/sitemap.xml");
 		expect(res.headers.get("content-type")).toContain("application/xml");
