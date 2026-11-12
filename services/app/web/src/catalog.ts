@@ -473,12 +473,55 @@ export const order = (a: Entry, b: Entry) =>
 	(b.stars ?? 0) - (a.stars ?? 0) ||
 	a.name.localeCompare(b.name);
 
-/** The text for MCP and llms.txt. */
+/** The label for a listing Flisk did not write: anyone can send one, and nobody at Flisk has read it. */
+export function reviewNotice(
+	e: Pick<Entry, "official" | "author">,
+): string | undefined {
+	if (e.official) return undefined;
+	const who = e.author?.replace(/[^\w.-]/g, "");
+	return `${who ? `Listed by @${who}` : "Community listing"}, not reviewed by Flisk. Read it before running anything.`;
+}
+
+/**
+ * The text for MCP. A listing that is not official starts with its review notice, and its command to run
+ * stands on a line of its own, apart from the author's free text, so a client can show it for approval.
+ */
 export function describeEntry(e: Entry): string {
-	const mcp = e.mcp
-		? ` MCP server: ${e.mcp.transport === "http" ? e.mcp.url : `local, run \`${e.mcp.command}\``}${e.mcp.tools?.length ? ` (tools: ${e.mcp.tools.join(", ")})` : ""}.`
-		: "";
-	return `${e.name} (${e.id}, ${kindLabel(e.kind)}): ${e.tagline}. ${e.description} ${e.url}${e.stars ? ` · ${e.stars} stars` : ""}.${mcp}`;
+	const notice = reviewNotice(e);
+	const m = e.mcp;
+	const tools = m?.tools?.length ? ` (tools: ${m.tools.join(", ")})` : "";
+	let mcp = "";
+	let command = "";
+	if (m?.transport === "http") mcp = ` MCP server: ${m.url}${tools}.`;
+	else if (m && notice) {
+		mcp = ` MCP server: local${tools}.`;
+		command = `\nCommand to run, only after the user approves it: ${m.command}`;
+	} else if (m) mcp = ` MCP server: local, run \`${m.command}\`${tools}.`;
+	return `${notice ? `${notice}\n` : ""}${e.name} (${e.id}, ${kindLabel(e.kind)}): ${e.tagline}. ${e.description} ${e.url}${e.stars ? ` · ${e.stars} stars` : ""}.${mcp}${command}`;
+}
+
+/** The same listing as fields, for MCP structuredContent: the command and the notice are their own fields. */
+export function entryFields(e: Entry) {
+	return {
+		id: e.id,
+		name: e.name,
+		kind: e.kind,
+		tagline: e.tagline,
+		description: e.description,
+		url: e.url,
+		author: e.author ?? null,
+		official: e.official === true,
+		stars: e.stars ?? null,
+		reviewNotice: reviewNotice(e) ?? null,
+		mcp: e.mcp
+			? {
+					transport: e.mcp.transport,
+					url: e.mcp.url ?? null,
+					command: e.mcp.command ?? null,
+					tools: e.mcp.tools ?? [],
+				}
+			: null,
+	};
 }
 
 /** What is wrong with a catalog entry, or undefined. Used by `bun run catalog` and the tests. */
