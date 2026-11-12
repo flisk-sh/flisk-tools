@@ -5,6 +5,8 @@
 // on one must still reach the app's 301 (app.ts).
 
 const TTL_SECONDS = 600;
+// Browsers keep a page 5 minutes (a reload within that costs no Worker request); this cache keeps it 10.
+const CACHE_CONTROL = `public, max-age=300, s-maxage=${TTL_SECONDS}`;
 const SKIP = /^\/(api\/|mcp|health|ready)/;
 
 export interface EdgeCache {
@@ -28,7 +30,12 @@ export async function withEdgeCache(
 		return render(request);
 	const key = new Request(url.toString(), { method: "GET" });
 	const hit = await cache.match(key).catch(() => undefined);
-	if (hit) return hit;
+	// A hit comes back with the zone's browser-cache TTL (4 hours) in place of ours; reset it so a deploy shows within minutes.
+	if (hit) {
+		const fresh = new Response(hit.body, hit);
+		fresh.headers.set("cache-control", CACHE_CONTROL);
+		return fresh;
+	}
 	const res = await render(request);
 	if (
 		res.status !== 200 ||
