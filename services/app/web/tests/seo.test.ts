@@ -78,6 +78,40 @@ describe.each(["/", "/about", "/publish", "/listing/readme-score"])(
 );
 
 describe("files for crawlers", () => {
+	it("sends a crawler on a filter URL back to the plain page, and lets people and their assistants filter", async () => {
+		const as = (ua: string) =>
+			app.request("/?kind=tool&sort=new", { headers: { "user-agent": ua } });
+		for (const ua of [
+			"Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Amazonbot/0.1; +https://developer.amazon.com/support/amazonbot) Chrome/119.0.6045.214 Safari/537.36",
+			"Mozilla/5.0 (compatible; MJ12bot/v1.4.8; http://mj12bot.com/)",
+			"Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; GPTBot/1.4; +https://openai.com/gptbot)",
+		]) {
+			const res = await as(ua);
+			expect(res.status).toBe(301);
+			expect(res.headers.get("location")).toBe("https://tool.test/");
+		}
+		expect(
+			(
+				await as(
+					"Mozilla/5.0 (Macintosh) AppleWebKit/537.36 Chrome/130 Safari/537.36",
+				)
+			).status,
+		).toBe(200);
+		expect(
+			(
+				await as(
+					"Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; ChatGPT-User/1.0; +https://openai.com/bot",
+				)
+			).status,
+		).toBe(200);
+		expect((await as("Claude-User")).status).toBe(200);
+		// a crawler on a plain page is served as before
+		expect(
+			(await app.request("/", { headers: { "user-agent": "Amazonbot/0.1" } }))
+				.status,
+		).toBe(200);
+	});
+
 	it("robots.txt names the AI answer crawlers, keeps out the API and points at the sitemap", async () => {
 		const robots = await page("/robots.txt");
 		expect(robots).toContain("User-agent: OAI-SearchBot");
@@ -90,6 +124,8 @@ describe("files for crawlers", () => {
 		const robots = await page("/robots.txt");
 		// the answer crawlers' group and the default group both carry it, and / stays open
 		expect(robots.match(/Disallow: \/\*\?/g)).toHaveLength(2);
+		// and the home page's filters again without a wildcard, for parsers that do not read `*`
+		expect(robots.match(/Disallow: \/\?\n/g)).toHaveLength(2);
 		expect(robots).toContain("Allow: /");
 	});
 

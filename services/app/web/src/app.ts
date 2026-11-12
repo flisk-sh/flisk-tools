@@ -65,6 +65,8 @@ function loadAssets(): Map<string, { body: Uint8Array; type: string }> {
 	return files;
 }
 
+const CRAWLER = /bot\b|bot\/|crawler|spider|slurp|facebookexternalhit/i;
+
 export function createApp(options: AppOptions = {}) {
 	const proxy = options.proxy ?? "none";
 	const limit = new RateLimiter(options.callsPerMinute ?? 120, 60 * 1000);
@@ -96,6 +98,29 @@ export function createApp(options: AppOptions = {}) {
 			clientIp(c.req.raw.headers, env?.requestIP?.(c.req.raw)?.address, proxy),
 		);
 	};
+
+	/**
+	 * A crawler on a filter URL (any query string) goes back to the plain page in one cheap 301. robots.txt asks them to stay
+	 * off, but not every crawler reads `/*?` (Amazonbot and MJ12bot kept walking the filter links after GPTBot stopped, about
+	 * 4,000 Worker requests a day on the account's free 100,000). A fetch a person asked for (ChatGPT-User, Claude-User) is
+	 * not a crawl and keeps its query.
+	 */
+	app.use("*", async (c, next) => {
+		const url = new URL(c.req.url);
+		const ua = c.req.header("user-agent") ?? "";
+		if (
+			url.search &&
+			(c.req.method === "GET" || c.req.method === "HEAD") &&
+			CRAWLER.test(ua) &&
+			!/-User\b/.test(ua)
+		)
+			return c.body(null, 301, {
+				location: `${baseOf(c)}${url.pathname}`,
+				"cache-control": "public, max-age=86400",
+				"x-robots-tag": "noindex, nofollow",
+			});
+		await next();
+	});
 
 	app.use("*", async (c, next) => {
 		await next();

@@ -155,11 +155,12 @@ export const ANSWER_CRAWLERS = [
 /**
  * The filter links on the home page (?category=, check=, group=, kind=, sort=...) combine into an endless set of URLs, and a
  * crawler that follows them never finishes: GPTBot made 180,000 requests a day (2 a second) and used up the Workers Free
- * limit. Every real page (/, /about, /publish, /listing/<id>) has no query string, so `/*?` keeps crawlers on those.
+ * limit. Every real page (/, /about, /publish, /listing/<id>) has no query string, so `/*?` keeps crawlers on those. `/?` says
+ * the same for the home page's filters to a parser that has no wildcards.
  */
 export function robotsTxt(base: string): string {
 	const root = new URL(`${base}/`).pathname.replace(/\/$/, "");
-	const rules = `Allow: /\nDisallow: ${root}/api/\nDisallow: ${root}/mcp\nDisallow: ${root}/*?\n`;
+	const rules = `Allow: /\nDisallow: ${root}/api/\nDisallow: ${root}/mcp\nDisallow: ${root}/*?\nDisallow: ${root}/?\n`;
 	return `${ANSWER_CRAWLERS.map((ua) => `User-agent: ${ua}`).join("\n")}\n${rules}\nUser-agent: *\n${rules}\nSitemap: ${base}/sitemap.xml\n`;
 }
 
