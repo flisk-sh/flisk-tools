@@ -186,6 +186,79 @@ describe("MCP listings", () => {
 		expect(r.result.content[0].text).toContain("MCP server:");
 	});
 
+	it("labels community listings in the MCP tools and leaves official ones alone", async () => {
+		type Call = {
+			result: {
+				content: { text: string }[];
+				structuredContent: {
+					reviewNotice: string | null;
+					mcp: { command: string | null } | null;
+				};
+			};
+		};
+		const get = async (id: string) =>
+			(await (
+				await rpc(app, {
+					jsonrpc: "2.0",
+					id: 1,
+					method: "tools/call",
+					params: { name: "get_listing", arguments: { id } },
+				})
+			).json()) as Call;
+		const community = ENTRIES.find((e) => !e.official && e.author);
+		expect(community).toBeDefined();
+		const c = await get(community?.id ?? "");
+		expect(
+			c.result.content[0].text.startsWith(
+				`Listed by @${community?.author}, not reviewed by Flisk.`,
+			),
+		).toBe(true);
+		expect(c.result.structuredContent.reviewNotice).toContain(
+			"not reviewed by Flisk",
+		);
+		const official = await get("readme-score");
+		expect(official.result.content[0].text).not.toContain("not reviewed");
+		expect(official.result.structuredContent.reviewNotice).toBeNull();
+		// The command of a community server is its own line and its own field, apart from the author's text.
+		const pw = await get("playwright-mcp");
+		expect(pw.result.content[0].text).toContain(
+			"\nCommand to run, only after the user approves it: npx @playwright/mcp@latest",
+		);
+		expect(pw.result.content[0].text).not.toContain("run `npx");
+		expect(pw.result.structuredContent.mcp?.command).toBe(
+			"npx @playwright/mcp@latest",
+		);
+	});
+
+	it("labels community listings in search results too", async () => {
+		const r = (await (
+			await rpc(app, {
+				jsonrpc: "2.0",
+				id: 2,
+				method: "tools/call",
+				params: { name: "search_store", arguments: { query: "playwright" } },
+			})
+		).json()) as { result: { content: { text: string }[] } };
+		expect(r.result.content[0].text).toContain("not reviewed by Flisk");
+	});
+
+	it("marks both MCP tools as open world", async () => {
+		const r = (await (
+			await rpc(app, { jsonrpc: "2.0", id: 3, method: "tools/list" })
+		).json()) as {
+			result: {
+				tools: {
+					annotations: { openWorldHint: boolean; readOnlyHint: boolean };
+				}[];
+			};
+		};
+		expect(r.result.tools).toHaveLength(2);
+		for (const t of r.result.tools) {
+			expect(t.annotations.openWorldHint).toBe(true);
+			expect(t.annotations.readOnlyHint).toBe(true);
+		}
+	});
+
 	it("checks the MCP fields of a listing", () => {
 		const ok = {
 			kind: "app",

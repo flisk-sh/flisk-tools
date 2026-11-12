@@ -1,7 +1,13 @@
 // A read-only MCP server over Streamable HTTP. Stateless and answered with plain JSON (no event stream), which the
 // transport allows, so there is no session to keep. Add tools to MCP_TOOLS; each one gets its arguments and returns text.
 
-import { describeEntry, findEntry, KINDS, search } from "./catalog";
+import {
+	describeEntry,
+	entryFields,
+	findEntry,
+	KINDS,
+	search,
+} from "./catalog";
 import { SITE } from "./site";
 
 const PROTOCOL_VERSIONS = ["2025-06-18", "2025-03-26", "2024-11-05"];
@@ -14,8 +20,10 @@ interface McpTool {
 		inputSchema: object;
 		annotations: object;
 	};
-	/** The text to answer, or { error } for a tool error the model should see. */
-	run(args: Record<string, unknown>): Promise<string | { error: string }>;
+	/** The text to answer (with the same data as fields, when there are any), or { error } for a tool error the model should see. */
+	run(
+		args: Record<string, unknown>,
+	): Promise<{ text: string; data?: object } | { error: string }>;
 }
 
 const MCP_TOOLS: McpTool[] = [
@@ -44,7 +52,8 @@ const MCP_TOOLS: McpTool[] = [
 					page: { type: "number", description: "Page number, from 1" },
 				},
 			},
-			annotations: { readOnlyHint: true, openWorldHint: false },
+			// Open world: the text of a community listing comes from outside Flisk and is not reviewed.
+			annotations: { readOnlyHint: true, openWorldHint: true },
 		},
 		async run(args) {
 			const r = search({
@@ -53,7 +62,15 @@ const MCP_TOOLS: McpTool[] = [
 				mcp: args.mcp === true,
 				page: Number(args.page) || 1,
 			});
-			return `${r.total} results, page ${r.page} of ${r.pages}\n\n${r.items.map(describeEntry).join("\n\n")}`;
+			return {
+				text: `${r.total} results, page ${r.page} of ${r.pages}\n\n${r.items.map(describeEntry).join("\n\n")}`,
+				data: {
+					total: r.total,
+					page: r.page,
+					pages: r.pages,
+					items: r.items.map(entryFields),
+				},
+			};
 		},
 	},
 	{
@@ -72,12 +89,13 @@ const MCP_TOOLS: McpTool[] = [
 				},
 				required: ["id"],
 			},
-			annotations: { readOnlyHint: true, openWorldHint: false },
+			// Open world: the text of a community listing comes from outside Flisk and is not reviewed.
+			annotations: { readOnlyHint: true, openWorldHint: true },
 		},
 		async run(args) {
 			const e = findEntry(String(args.id ?? ""));
 			return e
-				? describeEntry(e)
+				? { text: describeEntry(e), data: entryFields(e) }
 				: { error: `No listing with id ${String(args.id)}. Use search_store.` };
 		},
 	},
@@ -149,9 +167,13 @@ async function handleOne(message: JsonRpcRequest): Promise<unknown> {
 			const out = await tool.run(
 				(params.arguments as Record<string, unknown>) ?? {},
 			);
-			return typeof out === "string"
-				? ok({ content: [{ type: "text", text: out }], isError: false })
-				: ok({ content: [{ type: "text", text: out.error }], isError: true });
+			return "error" in out
+				? ok({ content: [{ type: "text", text: out.error }], isError: true })
+				: ok({
+						content: [{ type: "text", text: out.text }],
+						...(out.data ? { structuredContent: out.data } : {}),
+						isError: false,
+					});
 		}
 		default:
 			return {
