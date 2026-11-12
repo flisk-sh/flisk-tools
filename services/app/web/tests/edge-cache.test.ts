@@ -48,13 +48,32 @@ describe("edge cache for HTML pages", () => {
 		);
 		const again = await run("https://t.test/", p, cache);
 		expect(await again.text()).toBe("<p>1</p>");
-		expect(again.headers.get("cache-control")).toContain("s-maxage=600");
+		expect(again.headers.get("cache-control")).toBe(
+			"public, max-age=300, s-maxage=600",
+		);
 		await run("https://t.test/about", p, cache);
 		expect(p.count()).toBe(2);
 		// a filter view always reaches the app (crawlers there get its 301)
 		await run("https://t.test/?kind=tool", p, cache);
 		await run("https://t.test/?kind=tool", p, cache);
 		expect(p.count()).toBe(4);
+	});
+
+	it("puts its own cache-control on a hit, not the zone's 4-hour browser TTL", async () => {
+		const cache: EdgeCache = {
+			match: async () =>
+				new Response("<p>old</p>", {
+					headers: {
+						"content-type": "text/html",
+						"cache-control": "public, max-age=14400",
+					},
+				}),
+			put: async () => {},
+		};
+		const res = await run("https://t.test/", page(), cache);
+		expect(res.headers.get("cache-control")).toBe(
+			"public, max-age=300, s-maxage=600",
+		);
 	});
 
 	it("never caches the API, MCP, errors, non-HTML or non-GET", async () => {
