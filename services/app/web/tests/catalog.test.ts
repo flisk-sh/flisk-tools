@@ -1,7 +1,7 @@
 import { describe, expect, it } from "bun:test";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { ENTRIES, type Entry, problem } from "../src/catalog";
+import { describeEntry, ENTRIES, type Entry, problem } from "../src/catalog";
 
 const root = join(import.meta.dir, "../../../..");
 const json = (path: string) => JSON.parse(readFileSync(path, "utf8"));
@@ -69,5 +69,26 @@ describe("catalog files", () => {
 		);
 		expect(problem({ ...ok, kind: "nope" as never })).toContain("kind");
 		expect(problem({ ...ok, repo: "no-slash" })).toContain("repo");
+	});
+});
+
+describe("describeEntry", () => {
+	it("says a description that repeats the tagline once, with one full stop", () => {
+		const skill = ENTRIES.find((e) => e.id === "neon-neon-postgres");
+		expect(skill).toBeDefined();
+		const text = describeEntry(skill as Entry);
+		expect(text).not.toContain("..");
+		expect(text.split("Work with Neon Postgres.")).toHaveLength(2);
+	});
+
+	it("keeps a description that adds to the tagline", () => {
+		const e = ENTRIES.find(
+			(x) =>
+				x.description &&
+				x.description.replace(/[.!?]+$/, "") !==
+					x.tagline.replace(/[.!?]+$/, ""),
+		);
+		expect(e).toBeDefined();
+		expect(describeEntry(e as Entry)).toContain((e as Entry).description);
 	});
 });
