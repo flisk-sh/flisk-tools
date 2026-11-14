@@ -126,7 +126,9 @@ describe("portfolio pages", () => {
 			(await app.request("/portfolio")).headers.get(
 				"content-security-policy",
 			) ?? "";
-		expect(csp).toContain("connect-src https://publish.flisk.si https://flisk.sh");
+		expect(csp).toContain(
+			"connect-src https://publish.flisk.si https://flisk.sh",
+		);
 		expect(csp).not.toContain("unsafe-eval");
 	});
 

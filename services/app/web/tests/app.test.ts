@@ -86,7 +86,9 @@ describe("pages", () => {
 		expect(res.status).toBe(200);
 		const csp = res.headers.get("content-security-policy") ?? "";
 		expect(csp).toContain("default-src 'none'");
-		expect(csp).toContain("script-src 'self' https://flisk.si https://flisk.sh");
+		expect(csp).toContain(
+			"script-src 'self' https://flisk.si https://flisk.sh",
+		);
 		expect(csp).not.toContain("unsafe-eval");
 		const html = await res.text();
 		expect(html).toContain("README Score");
