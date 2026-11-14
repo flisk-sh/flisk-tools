@@ -88,7 +88,13 @@ describe("pages", () => {
 		expect(csp).toContain("default-src 'none'");
 		expect(csp).toContain("script-src 'self'");
 		expect(csp).not.toContain("unsafe-eval");
+		// visits are counted by a cookieless script and beacon, so the policy lets both through
+		expect(csp).toContain("script-src 'self' https://flisk.si https://flisk.sh");
+		expect(csp).toContain("connect-src https://publish.flisk.si https://analytics.flisk.si");
 		const html = await res.text();
+		expect(html).toContain(
+			'<script defer data-domain="tools.flisk.si" src="https://flisk.sh/a.js"></script><script src="https://flisk.si/assets/bar.js" defer></script>',
+		);
 		expect(html).toContain("README Score");
 		expect(html).toContain('<script src="/signin.js" defer>');
 		expect(html).not.toMatch(/<script(?![^>]*(src=|application\/ld\+json))/);
