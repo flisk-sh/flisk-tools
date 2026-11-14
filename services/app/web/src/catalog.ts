@@ -497,7 +497,14 @@ export function describeEntry(e: Entry): string {
 		mcp = ` MCP server: local${tools}.`;
 		command = `\nCommand to run, only after the user approves it: ${m.command}`;
 	} else if (m) mcp = ` MCP server: local, run \`${m.command}\`${tools}.`;
-	return `${notice ? `${notice}\n` : ""}${e.name} (${e.id}, ${kindLabel(e.kind)}): ${e.tagline}. ${e.description} ${e.url}${e.stars ? ` · ${e.stars} stars` : ""}.${mcp}${command}`;
+	// One full stop after the tagline, and no description when it only repeats the tagline (most skills).
+	const tagline = e.tagline.trim().replace(/[.!?]+$/, "");
+	const description = e.description.trim();
+	const more =
+		description && description.replace(/[.!?]+$/, "") !== tagline
+			? ` ${description}`
+			: "";
+	return `${notice ? `${notice}\n` : ""}${e.name} (${e.id}, ${kindLabel(e.kind)}): ${tagline}.${more} ${e.url}${e.stars ? ` · ${e.stars} stars` : ""}.${mcp}${command}`;
 }
 
 /** The same listing as fields, for MCP structuredContent: the command and the notice are their own fields. */
