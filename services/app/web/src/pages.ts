@@ -51,7 +51,7 @@ export function layout(
 	return `<!doctype html><html lang="${SITE.lang}"><head>
 ${head(base, meta)}
 ${FONTS}
-<style>${STYLE}</style><script src="https://flisk.si/assets/bar.js" defer></script></head><body>
+<style>${STYLE}</style><script defer data-domain="tools.flisk.si" src="https://flisk.sh/a.js"></script><script src="https://flisk.si/assets/bar.js" defer></script></head><body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header"><div class="wrap bar"><a class="brand" href="${root}/"><img src="${root}/icon.svg" alt="" width="20" height="20"><span>${esc(SITE.name)}</span></a>
 <span class="hook">${ENTRIES.length} listings · ${counts("app")} apps · ${counts("tool")} dev tools · ${counts("skill")} agent skills · ${mcpCount()} with an MCP server · free, no signup to browse</span>
