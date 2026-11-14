@@ -89,6 +89,7 @@ describe("pages", () => {
 		expect(csp).toContain(
 			"script-src 'self' https://flisk.si https://flisk.sh",
 		);
+		expect(csp).toContain("https://analytics.flisk.si");
 		expect(csp).not.toContain("unsafe-eval");
 		const html = await res.text();
 		expect(html).toContain("README Score");

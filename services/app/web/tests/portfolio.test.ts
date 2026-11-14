@@ -127,7 +127,7 @@ describe("portfolio pages", () => {
 				"content-security-policy",
 			) ?? "";
 		expect(csp).toContain(
-			"connect-src https://publish.flisk.si https://flisk.sh",
+			"connect-src https://publish.flisk.si https://analytics.flisk.si",
 		);
 		expect(csp).not.toContain("unsafe-eval");
 	});
