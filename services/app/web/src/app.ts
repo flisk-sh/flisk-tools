@@ -118,6 +118,7 @@ export function createApp(options: AppOptions = {}) {
 				location: `${baseOf(c)}${url.pathname}`,
 				"cache-control": "public, max-age=86400",
 				"x-robots-tag": "noindex, nofollow",
+				...securityHeaders(),
 			});
 		await next();
 	});
