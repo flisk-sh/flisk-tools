@@ -423,3 +423,12 @@ describe("guards", () => {
 		expect(cache.get("c")).toBeUndefined();
 	});
 });
+
+
+describe("security headers", () => {
+	 it("sends strict-transport-security on the home page", async () => {
+		const res = await app.request(`/`);
+		expect(res.status).toBe(200);
+		expect(res.headers.get("strict-transport-security")).toBe("max-age=15552000; includeSubDomains");
+	});
+});
