@@ -1,0 +1,52 @@
+name: Bug report
+description: Report a broken page, broken listing or error on tools.flisk.si
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Thanks for taking the time to report an issue with Flisk Tools (tools.flisk.si).
+  - type: input
+    id: url
+    attributes:
+      label: URL
+      description: The page URL where you observed the issue (e.g. https://tools.flisk.si/?q=...)
+    validations:
+      required: false
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: How can someone else trigger the problem?
+      placeholder: |
+        1. Go to '...'
+        2. Click on '....'
+        3. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+      description: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened instead?
+      description: What was the actual behavior or error?
+    validations:
+      required: true
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser / Environment
+      options:
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+        - Other
+    validations:
+      required: false
