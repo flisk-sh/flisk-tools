@@ -5,7 +5,8 @@
 ## How did you check it?
 
 <!-- Include the exact test command run and result. -->
-<!-- Run these from services/app/web (the repository root has no scripts). -->
+Run these from `services/app/web` (the repository root has no scripts):
+
 - [ ] `bun test`
 - [ ] `bun run typecheck`
 - [ ] `bun run lint`
