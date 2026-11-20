@@ -464,16 +464,11 @@ export function aboutPage(base: string): string {
 
 export function notFoundPage(base: string): string {
 	const root = rootOf(base);
-	return layout(
-		base,
-		{
-			path: "404",
-			title: "Page not found",
-			description: `This address is not a page on ${SITE.name}. Search the store from the home page.`,
-			noindex: true,
-		},
-		`<div class="prose"><h1>Page not found</h1><p class="lede">There is no page at this address. <a href="${root}/">Search the store</a>.</p></div>`,
-	);
+	return `<!doctype html><html lang="${SITE.lang}"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Page not found · ${esc(SITE.name)}</title><meta name="robots" content="noindex">
+<style>body{font:1rem/1.5 system-ui,sans-serif;max-width:42rem;margin:15vh auto;padding:0 1.5rem;color:#18181b;background:#fff}a{color:#166534}@media(prefers-color-scheme:dark){body{color:#fafafa;background:#18181b}a{color:#86efac}}</style>
+</head><body><main><h1>Page not found</h1><p>There is no page at this address. <a href="${root}/">Search the store</a>.</p></main></body></html>`;
 }
 
 export function ratePage(base: string): string {

@@ -145,6 +145,25 @@ describe("pages", () => {
 		expect((await app.request("/listing/nope")).status).toBe(404);
 	});
 
+	it("keeps missing pages lightweight, crawl-safe and linked to home", async () => {
+		for (const path of ["/nope-xyz", "/listing/nope"]) {
+			const response = await app.request(path);
+			expect(response.status).toBe(404);
+			const html = await response.text();
+			expect(new TextEncoder().encode(html).byteLength).toBeLessThan(4096);
+			expect(html).toContain('<meta name="robots" content="noindex">');
+			expect(html).toContain('href="/"');
+			expect(html).not.toMatch(/data:image\//i);
+		}
+
+		const local = createApp();
+		const prefixed = await local.request("http://api.tool.localhost/nope", {
+			headers: { "x-forwarded-prefix": "/api/web" },
+		});
+		expect(prefixed.status).toBe(404);
+		expect(await prefixed.text()).toContain('href="/api/web/"');
+	});
+
 	it("has a publish page whose form points at this repository", async () => {
 		const html = await (await app.request("/publish")).text();
 		expect(html).toContain(
