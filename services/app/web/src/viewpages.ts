@@ -391,16 +391,47 @@ ${bestFits.length ? `<details class="legend-rings"><summary>Browse all ${ROLES.l
 	);
 }
 
-/** Skills: the agent skills, by what they help with. */
-export function skillsPage(base: string, cat?: string, page = 1): string {
+/** Skills: the agent skills, by what they help with, with a search box that keeps the category and sort. */
+export function skillsPage(
+	base: string,
+	cat?: string,
+	page = 1,
+	q?: string,
+	sort?: string,
+): string {
 	const root = rootOf(base);
 	const current = SKILL_CATEGORIES.find((c) => c.id === cat);
-	const r = search({ kind: "skill", category: current?.name, page });
+	const text = (q ?? "").trim().slice(0, 100);
+	const bySort = sort === "stars" ? "stars" : undefined;
+	const r = search({
+		kind: "skill",
+		category: current?.name,
+		q: text || undefined,
+		sort: bySort,
+		page,
+	});
 	const skillCount = counts("skill");
-	const link = (extra: { cat?: string; page?: number }) =>
-		esc(
-			`${root}/skills${extra.cat ? `?cat=${extra.cat}` : ""}${extra.page && extra.page > 1 ? `${extra.cat ? "&" : "?"}page=${extra.page}` : ""}`,
-		);
+	const url = (extra: { cat?: string; page?: number; sort?: string }) => {
+		const p = new URLSearchParams();
+		if (extra.cat) p.set("cat", extra.cat);
+		if (text) p.set("q", text);
+		if (extra.sort) p.set("sort", extra.sort);
+		if (extra.page && extra.page > 1) p.set("page", String(extra.page));
+		const qs = p.toString();
+		return esc(`${root}/skills${qs ? `?${qs}` : ""}`);
+	};
+	const tab = (
+		id: string | undefined,
+		name: string,
+		count: number,
+		on: boolean,
+	) =>
+		sub(url({ cat: id, sort: bySort }).replace(/&amp;/g, "&"), name, count, on);
+	const inCat = (name?: string) =>
+		search({ kind: "skill", category: name, q: text || undefined }).total;
+	const form = `<form class="search" role="search" action="${root}/skills" method="get"><input type="search" name="q" value="${esc(text)}" placeholder="Find a skill: review, test, migrate…" aria-label="Find a skill"${text ? "" : " autofocus"}>${current ? `<input type="hidden" name="cat" value="${current.id}">` : ""}${bySort ? `<input type="hidden" name="sort" value="stars">` : ""}<button type="submit">Find skill</button></form>`;
+	const sorts = `<p class="count">${r.total} ${r.total === 1 ? "skill" : "skills"}${text ? ` for “${esc(text)}”` : ""}${current ? ` in ${esc(current.name)}` : ""} · <a href="${url({ cat: current?.id })}"${bySort ? "" : ' aria-current="true"'}>${text ? "Best match" : "Default"}</a> · <a href="${url({ cat: current?.id, sort: "stars" })}"${bySort ? ' aria-current="true"' : ""}>Most stars</a>${text || current ? ` · <a href="${root}/skills">Clear</a>` : ""}</p>`;
+	const empty = `<p class="note">No skills match${text ? ` “${esc(text)}”` : ""}${current ? ` in ${esc(current.name)}` : ""}. ${current && text ? `<a href="${url({})}">Search all categories</a> or ` : ""}try fewer or simpler words, or <a href="${root}/?q=${encodeURIComponent(text)}">search the whole store</a>.</p>`;
 	return layout(
 		base,
 		{
@@ -411,14 +442,16 @@ export function skillsPage(base: string, cat?: string, page = 1): string {
 					0,
 					160,
 				),
-			noindex: Boolean(current) || r.page > 1,
+			noindex:
+				Boolean(current) || Boolean(text) || Boolean(bySort) || r.page > 1,
 			crumbs: [{ name: "Skills", path: "skills" }],
 		},
 		`${hero("Skills", `${skillCount} agent skills, <em>${current ? esc(current.name) : "by what they do"}</em>`, current?.blurb ?? "Free skills for AI coding agents, from public GitHub repositories, sorted by stars.")}
-<nav class="subtabs" aria-label="Category">${sub(`${root}/skills`, "All", skillCount, !current)}${SKILL_CATEGORIES.map((c) => sub(`${root}/skills?cat=${c.id}`, c.name, ENTRIES.filter((e) => e.kind === "skill" && e.category === c.name).length, current?.id === c.id)).join("")}</nav>
-<p class="count">${r.total} skills</p>
-<ul class="grid">${r.items.map((e) => card(root, e)).join("")}</ul>
-<p class="pager"><span>${r.page > 1 ? `<a rel="prev" href="${link({ cat: current?.id, page: r.page - 1 })}">← Previous</a>` : ""}</span><span>Page ${r.page} of ${r.pages} · ${PAGE_SIZE} per page</span><span>${r.page < r.pages ? `<a rel="next" href="${link({ cat: current?.id, page: r.page + 1 })}">Next →</a>` : ""}</span></p>`,
+${form}
+<nav class="subtabs" aria-label="Category">${tab(undefined, "All", inCat(), !current)}${SKILL_CATEGORIES.map((c) => tab(c.id, c.name, inCat(c.name), current?.id === c.id)).join("")}</nav>
+${sorts}
+${r.total ? `<ul class="grid">${r.items.map((e) => card(root, e)).join("")}</ul>` : empty}
+${r.pages > 1 ? `<p class="pager"><span>${r.page > 1 ? `<a rel="prev" href="${url({ cat: current?.id, sort: bySort, page: r.page - 1 })}">← Previous</a>` : ""}</span><span>Page ${r.page} of ${r.pages} · ${PAGE_SIZE} per page</span><span>${r.page < r.pages ? `<a rel="next" href="${url({ cat: current?.id, sort: bySort, page: r.page + 1 })}">Next →</a>` : ""}</span></p>` : ""}`,
 		"skills",
 	);
 }

@@ -17,7 +17,7 @@ export function withSecurityHeaders(res: Response): Response {
 	if (needsAncestors)
 		out.headers.set(
 			"content-security-policy",
-			`${csp}; frame-ancestors 'self'`,
+			`${csp}; frame-ancestors 'self' https://analytics.flisk.si`,
 		);
 	return out;
 }
