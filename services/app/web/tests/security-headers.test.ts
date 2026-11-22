@@ -66,7 +66,7 @@ describe("withSecurityHeaders", () => {
 			}),
 		);
 		expect(a.headers.get("content-security-policy")).toBe(
-			"default-src 'self'; frame-ancestors 'self'",
+			"default-src 'self'; frame-ancestors 'self' https://analytics.flisk.si",
 		);
 		const b = withSecurityHeaders(
 			new Response("x", {

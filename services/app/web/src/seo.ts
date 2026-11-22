@@ -220,3 +220,22 @@ export function securityTxt(base: string, now = new Date()): string {
 	const expires = new Date(now.getTime() + 180 * 24 * 3600 * 1000);
 	return `Contact: ${SITE.securityContact}\nExpires: ${expires.toISOString().replace(/\.\d+Z$/, "Z")}\nPreferred-Languages: ${SITE.lang}\nCanonical: ${base}/.well-known/security.txt\n`;
 }
+
+/**
+ * The MCP Server Card (SEP-1649) for the /mcp endpoint, served at /.well-known/mcp-server-card.json and
+ * /.well-known/mcp/server-card.json. `base` is the site address without a trailing slash (the one host every other
+ * file here is built from), so the card's URLs always match the host that serves it.
+ */
+export function mcpServerCard(base: string): string {
+	return JSON.stringify({
+		$schema:
+			"https://static.modelcontextprotocol.io/schemas/v1/server-card.schema.json",
+		name: "si.flisk/tools",
+		title: SITE.name,
+		description:
+			"Search the Flisk Tools catalog of tools, agent skills and apps, and read one listing.",
+		version: "1.0.0",
+		websiteUrl: `${base}/`,
+		remotes: [{ type: "streamable-http", url: `${base}/mcp` }],
+	});
+}

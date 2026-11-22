@@ -164,6 +164,52 @@ describe("files for crawlers", () => {
 		expect(security).toMatch(/Expires: \d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ/);
 	});
 
+	it("serves the MCP Server Card at both well-known paths, identical", async () => {
+		const paths = [
+			"/.well-known/mcp-server-card.json",
+			"/.well-known/mcp/server-card.json",
+		];
+		const bodies: string[] = [];
+		for (const path of paths) {
+			const res = await app.request(path);
+			expect(res.status).toBe(200);
+			expect(res.headers.get("content-type")).toBe(
+				"application/json; charset=utf-8",
+			);
+			expect(res.headers.get("access-control-allow-origin")).toBe("*");
+			expect(res.headers.get("cache-control")).toBe("public, max-age=3600");
+			const text = await res.text();
+			bodies.push(text);
+			const card = JSON.parse(text) as {
+				$schema: string;
+				name: string;
+				title: string;
+				description: string;
+				websiteUrl: string;
+				remotes: { type: string; url: string }[];
+			};
+			expect(card.$schema).toBe(
+				"https://static.modelcontextprotocol.io/schemas/v1/server-card.schema.json",
+			);
+			expect(card.name).toBe("si.flisk/tools");
+			// the Server Card schema: description 1-100 characters, title at most 100
+			expect(card.description.length).toBeGreaterThanOrEqual(1);
+			expect(card.description.length).toBeLessThanOrEqual(100);
+			expect(card.title.length).toBeLessThanOrEqual(100);
+			expect(card.websiteUrl).toBe("https://tool.test/");
+			expect(card.remotes[0]).toEqual({
+				type: "streamable-http",
+				url: "https://tool.test/mcp",
+			});
+			const head = await app.request(path, { method: "HEAD" });
+			expect(head.status).toBe(200);
+			expect(head.headers.get("content-type")).toBe(
+				"application/json; charset=utf-8",
+			);
+		}
+		expect(bodies[0]).toBe(bodies[1]);
+	});
+
 	it("serves the icons with their types and a long cache", async () => {
 		const res = await app.request("/og.png");
 		expect(res.headers.get("content-type")).toBe("image/png");
