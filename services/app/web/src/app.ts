@@ -4,6 +4,7 @@ import { Hono } from "hono";
 import { ASSETS } from "./assets.generated";
 import { ENTRIES, findEntry, search } from "./catalog";
 import { PORTFOLIO_JS, PUBLISH_JS, SIGNIN_JS } from "./client";
+import { SEO_CACHE_CONTROL } from "./edge-cache";
 import {
 	clientIp,
 	type ProxyMode,
@@ -74,6 +75,10 @@ export function createApp(options: AppOptions = {}) {
 	const lastmod = (options.builtAt ?? new Date()).toISOString().slice(0, 10);
 	const files = loadAssets();
 	const app = new Hono();
+	// With no fixed public URL, the crawler files may contain proxy-supplied addresses.
+	const seoHeaders = options.publicUrl
+		? { "cache-control": SEO_CACHE_CONTROL }
+		: undefined;
 
 	/**
 	 * The site address without the trailing slash: publicUrl when set (online), else this request's own origin and the
@@ -252,7 +257,7 @@ export function createApp(options: AppOptions = {}) {
 		);
 
 	// For search engines and AI assistants
-	app.get("/robots.txt", (c) => c.text(robotsTxt(baseOf(c))));
+	app.get("/robots.txt", (c) => c.text(robotsTxt(baseOf(c)), 200, seoHeaders));
 	app.get("/sitemap.xml", (c) => {
 		const paths = [
 			"",
@@ -270,6 +275,7 @@ export function createApp(options: AppOptions = {}) {
 		];
 		return c.body(sitemapXml(baseOf(c), paths, lastmod), 200, {
 			"content-type": "application/xml; charset=utf-8",
+			...seoHeaders,
 		});
 	});
 	app.get("/llms.txt", (c) =>
@@ -296,6 +302,8 @@ export function createApp(options: AppOptions = {}) {
 					note: "what it does and stores",
 				},
 			]),
+			200,
+			seoHeaders,
 		),
 	);
 	app.get("/site.webmanifest", (c) =>
@@ -353,6 +361,8 @@ export function createApp(options: AppOptions = {}) {
 				: undefined,
 			page: Number(c.req.query("page")) || 1,
 		});
+		if (!new URL(c.req.url).search)
+			c.header("cache-control", "public, max-age=60");
 		return c.json(r);
 	});
 	app.get("/api/tools/:id", (c) => {

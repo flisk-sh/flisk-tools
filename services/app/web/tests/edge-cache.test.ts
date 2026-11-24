@@ -1,4 +1,5 @@
 import { describe, expect, it } from "bun:test";
+import { createApp } from "../src/app";
 import { type EdgeCache, withEdgeCache } from "../src/edge-cache";
 
 function memoryCache() {
@@ -24,7 +25,7 @@ const page = (status = 200, type = "text/html; charset=UTF-8") => {
 };
 const run = async (
 	url: string,
-	p: ReturnType<typeof page>,
+	p: { render: (request: Request) => Response | Promise<Response> },
 	cache: EdgeCache,
 	method = "GET",
 ) => {
@@ -78,13 +79,40 @@ describe("edge cache for HTML pages", () => {
 
 	it("never caches the API, MCP, errors, non-HTML or non-GET", async () => {
 		const { m, cache } = memoryCache();
-		for (const path of ["/api/listings", "/mcp", "/health"])
+		for (const path of ["/api/tools", "/api/tools?q=readme", "/mcp", "/health"])
 			await run(`https://t.test${path}`, page(), cache);
 		await run("https://t.test/missing", page(404), cache);
+		await run("https://t.test/other.txt", page(200, "text/plain"), cache);
 		await run("https://t.test/robots.txt", page(200, "text/plain"), cache);
 		await run("https://t.test/", page(), cache, "POST");
 		expect(m.size).toBe(0);
 	});
+
+	it.each(["/sitemap.xml", "/robots.txt", "/llms.txt"])(
+		"serves %s from the edge after the first render",
+		async (path) => {
+			const { m, cache } = memoryCache();
+			const app = createApp({ publicUrl: "https://t.test/" });
+			let renders = 0;
+			const p = {
+				render: (request: Request) => {
+					renders++;
+					return app.fetch(request);
+				},
+			};
+			const url = `https://t.test${path}`;
+			const first = await run(url, p, cache);
+			const cached = m.get(url);
+			expect(cached).toBeDefined();
+			cached?.headers.set("cache-control", "public, max-age=14400");
+			const next = await run(url, p, cache);
+			expect(next.headers.get("cache-control")).toBe(
+				"public, max-age=3600, s-maxage=3600",
+			);
+			expect(await next.text()).toBe(await first.text());
+			expect(renders).toBe(1);
+		},
+	);
 
 	it("still answers when the cache is missing or failing", async () => {
 		const p = page();

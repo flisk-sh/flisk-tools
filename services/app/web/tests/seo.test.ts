@@ -120,6 +120,18 @@ describe("files for crawlers", () => {
 		expect(robots).toContain("Sitemap: https://tool.test/sitemap.xml");
 	});
 
+	it.each(["/sitemap.xml", "/robots.txt", "/llms.txt"])(
+		"sets a public cache lifetime for %s only with a fixed public URL",
+		async (path) => {
+			const fixed = await app.request(path);
+			expect(fixed.headers.get("cache-control")).toBe(
+				"public, max-age=3600, s-maxage=3600",
+			);
+			const dynamic = await createApp().request(path);
+			expect(dynamic.headers.get("cache-control")).toBeNull();
+		},
+	);
+
 	it("robots.txt keeps every crawler out of the filter URLs, which are endless (GPTBot used up the Workers limit)", async () => {
 		const robots = await page("/robots.txt");
 		// the answer crawlers' group and the default group both carry it, and / stays open

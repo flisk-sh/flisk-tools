@@ -378,6 +378,19 @@ describe("catalog API", () => {
 		expect(res.status).toBe(429);
 		expect(res.headers.get("retry-after")).toBeTruthy();
 	});
+
+	it("gives only the unfiltered, successful catalog response a cache lifetime", async () => {
+		const tight = createApp({ callsPerMinute: 2 });
+		const filtered = await tight.request("/api/tools?q=readme");
+		expect(filtered.status).toBe(200);
+		expect(filtered.headers.get("cache-control")).toBeNull();
+		const plain = await tight.request("/api/tools");
+		expect(plain.status).toBe(200);
+		expect(plain.headers.get("cache-control")).toBe("public, max-age=60");
+		const blocked = await tight.request("/api/tools");
+		expect(blocked.status).toBe(429);
+		expect(blocked.headers.get("cache-control")).toBeNull();
+	});
 });
 
 describe("MCP", () => {
