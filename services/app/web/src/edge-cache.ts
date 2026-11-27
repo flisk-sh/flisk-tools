@@ -9,9 +9,39 @@ const TTL_SECONDS = 600;
 const CACHE_CONTROL = `public, max-age=300, s-maxage=${TTL_SECONDS}`;
 const SKIP = /^\/(api\/|mcp|health|ready)/;
 
+// A content hash lets a repeat visit get a 304 instead of the whole page. It
+// changes on a deploy because the rendered HTML does, without a version file.
+function etagOf(body: string): string {
+	let h = 0x811c9dc5;
+	for (let i = 0; i < body.length; i++) {
+		h ^= body.charCodeAt(i);
+		h = Math.imul(h, 0x01000193);
+	}
+	return `"${(h >>> 0).toString(16)}-${body.length.toString(16)}"`;
+}
+
 export interface EdgeCache {
 	match(request: Request): Promise<Response | undefined>;
 	put(request: Request, response: Response): Promise<void>;
+}
+
+async function withEtag(request: Request, res: Response): Promise<Response> {
+	if (
+		res.status !== 200 ||
+		!(res.headers.get("content-type") ?? "").includes("text/html") ||
+		res.headers.has("set-cookie")
+	)
+		return res;
+	const etag = etagOf(await res.clone().text());
+	if (request.headers.get("if-none-match") === etag) {
+		return new Response(null, {
+			status: 304,
+			headers: { "cache-control": CACHE_CONTROL, etag },
+		});
+	}
+	const out = new Response(res.body, res);
+	out.headers.set("etag", etag);
+	return out;
 }
 
 export async function withEdgeCache(
@@ -34,7 +64,7 @@ export async function withEdgeCache(
 	if (hit) {
 		const fresh = new Response(hit.body, hit);
 		fresh.headers.set("cache-control", CACHE_CONTROL);
-		return fresh;
+		return withEtag(request, fresh);
 	}
 	const res = await render(request);
 	if (
@@ -50,5 +80,5 @@ export async function withEdgeCache(
 		`public, max-age=0, s-maxage=${TTL_SECONDS}`,
 	);
 	waitUntil(cache.put(key, stored.clone()).catch(() => {}));
-	return stored;
+	return withEtag(request, stored);
 }

@@ -86,6 +86,37 @@ describe("edge cache for HTML pages", () => {
 		expect(m.size).toBe(0);
 	});
 
+	it("gives a cacheable page a content ETag", async () => {
+		const { cache } = memoryCache();
+		const p = page();
+		const res = await run("https://t.test/", p, cache);
+		const etag = res.headers.get("etag");
+		expect(etag).toBeTruthy();
+		expect(etag).toMatch(/^"/);
+		// A different body gets a different ETag, so a deploy reaches users.
+		const other = await run("https://t.test/about", p, cache);
+		expect(other.headers.get("etag")).not.toBe(etag);
+	});
+
+	it("answers a matching If-None-Match with 304 and an empty body", async () => {
+		const { cache } = memoryCache();
+		const p = page();
+		const first = await run("https://t.test/", p, cache);
+		const etag = first.headers.get("etag") as string;
+		const res = await withEdgeCache(
+			new Request("https://t.test/", { headers: { "if-none-match": etag } }),
+			p.render,
+			cache,
+			() => {},
+		);
+		expect(res.status).toBe(304);
+		expect(await res.text()).toBe("");
+		expect(res.headers.get("etag")).toBe(etag);
+		expect(res.headers.get("cache-control")).toBe(
+			"public, max-age=300, s-maxage=600",
+		);
+	});
+
 	it("still answers when the cache is missing or failing", async () => {
 		const p = page();
 		expect(
