@@ -1,13 +1,6 @@
 // The roadmap-style views: Compass, Radar, Journeys, Roles, Skills and Ask. All drawn on the server (SVG and HTML, no
 // script); every dot and chip is a link to the listing.
-import {
-	counts,
-	ENTRIES,
-	type Entry,
-	PAGE_SIZE,
-	search,
-	symbol,
-} from "./catalog";
+import { counts, type Entry, PAGE_SIZE, search, symbol } from "./catalog";
 import { PUBLISH_API } from "./client";
 import { card, color, layout, rootOf } from "./pages";
 import {
